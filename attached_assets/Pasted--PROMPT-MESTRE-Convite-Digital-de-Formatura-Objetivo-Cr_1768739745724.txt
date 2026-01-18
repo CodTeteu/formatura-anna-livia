@@ -1,0 +1,369 @@
+🎯 PROMPT MESTRE — Convite Digital de Formatura
+Objetivo: Criar um convite digital de formatura elegante e moderno em React, com foco total na estrutura visual, hierarquia de componentes e interatividade. Pronto para produção.
+
+📦 Stack Tecnológica
+Categoria	Tecnologia
+Framework	React 18+
+Linguagem	TypeScript
+Build Tool	Vite
+Estilização	Tailwind CSS 3.4+
+Componentes UI	shadcn/ui (baseado em Radix UI)
+Animações	Framer Motion
+Ícones	Lucide React
+Carousel	Embla Carousel (via shadcn/ui)
+Fontes	Google Fonts: Cormorant Garamond, Montserrat, Great Vibes
+Routing	React Router DOM v6
+🎨 Paleta de Cores (Tema Formatura Clássica)
+Paleta elegante inspirada em cerimônias acadêmicas: Azul Marinho, Dourado e Bordô.
+
+Variáveis CSS (Copiar para :root)
+:root {
+  /* ========== CORES PRINCIPAIS ========== */
+  
+  /* Fundo - Off-white elegante */
+  --background: 45 20% 97%;
+  --foreground: 220 30% 15%;
+  /* Primária - Azul Marinho Acadêmico */
+  --primary: 220 60% 25%;
+  --primary-foreground: 45 20% 97%;
+  /* Secundária - Dourado Metálico */
+  --secondary: 42 70% 50%;
+  --secondary-foreground: 220 30% 15%;
+  /* Acento - Bordô/Vinho */
+  --accent: 350 50% 35%;
+  --accent-foreground: 45 20% 97%;
+  /* ========== CORES DE SUPORTE ========== */
+  
+  --muted: 220 15% 90%;
+  --muted-foreground: 220 15% 45%;
+  --card: 45 25% 98%;
+  --card-foreground: 220 30% 15%;
+  --border: 220 20% 85%;
+  --input: 220 20% 85%;
+  --ring: 220 60% 25%;
+  --destructive: 0 70% 50%;
+  --destructive-foreground: 45 20% 97%;
+  --radius: 0.75rem;
+}
+.dark {
+  --background: 220 30% 8%;
+  --foreground: 45 20% 97%;
+  --primary: 42 70% 55%;
+  --primary-foreground: 220 30% 10%;
+  --secondary: 220 50% 40%;
+  --secondary-foreground: 45 20% 97%;
+  --accent: 350 45% 45%;
+  --accent-foreground: 45 20% 97%;
+  --muted: 220 20% 18%;
+  --muted-foreground: 220 15% 65%;
+  --card: 220 25% 12%;
+  --card-foreground: 45 20% 97%;
+  --border: 220 20% 20%;
+  --input: 220 20% 20%;
+  --ring: 42 70% 55%;
+}
+Uso no Tailwind Config
+// tailwind.config.ts
+colors: {
+  background: "hsl(var(--background))",
+  foreground: "hsl(var(--foreground))",
+  primary: {
+    DEFAULT: "hsl(var(--primary))",
+    foreground: "hsl(var(--primary-foreground))",
+  },
+  secondary: {
+    DEFAULT: "hsl(var(--secondary))",
+    foreground: "hsl(var(--secondary-foreground))",
+  },
+  accent: {
+    DEFAULT: "hsl(var(--accent))",
+    foreground: "hsl(var(--accent-foreground))",
+  },
+  muted: {
+    DEFAULT: "hsl(var(--muted))",
+    foreground: "hsl(var(--muted-foreground))",
+  },
+  card: {
+    DEFAULT: "hsl(var(--card))",
+    foreground: "hsl(var(--card-foreground))",
+  },
+  border: "hsl(var(--border))",
+  ring: "hsl(var(--ring))",
+}
+Fontes Customizadas
+fontFamily: {
+  script: ['"Great Vibes"', 'cursive'],           // Títulos decorativos
+  heading: ['"Cormorant Garamond"', 'serif'],     // Títulos elegantes
+  body: ['"Montserrat"', 'sans-serif'],           // Texto corpo moderno
+}
+🏗️ Estrutura de Layout Global
+<div className="min-h-screen flex flex-col relative overflow-x-hidden">
+  <Navigation />
+  <HeroSection />
+  <GraduateSection />       {/* Sobre o Formando */}
+  <GallerySection />        {/* Galeria de Fotos */}
+  <CeremonySection />       {/* Colação de Grau */}
+  <CelebrationSection />    {/* Baile/Festa */}
+  <RSVPSection />           {/* Confirmação de Presença */}
+  <Footer />
+</div>
+📍 SEÇÃO POR SEÇÃO
+1. 🧭 Navigation
+Comportamento:
+
+fixed top-0 left-0 right-0 z-50
+Estado inicial: Fundo transparente, texto claro
+Estado scrolled (após 50px): bg-background/95 backdrop-blur-md shadow-lg
+Desktop:
+
+Logo/Monograma à esquerda (iniciais do formando em fonte script)
+Links: INÍCIO, O FORMANDO, GALERIA, COLAÇÃO, FESTA, CONFIRMAR
+Hover: underline animado
+Mobile:
+
+Menu hamburger → drawer lateral direito
+Links empilhados com animação staggered
+Cap de formatura como ícone decorativo
+2. 🎓 Hero Section
+Layout:
+
+h-screen min-h-[600px]
+Imagem de fundo fullscreen (foto com beca/capelo)
+Efeito parallax no scroll
+Overlays:
+
+<div className="absolute inset-0 bg-primary/40 mix-blend-multiply" />
+<div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/80" />
+Elementos:
+
+Badge: "CONVITE DE FORMATURA" - pill com borda dourada
+Nome do Formando: Fonte script, text-6xl md:text-8xl, cor clara, drop-shadow
+Curso e Instituição: Fonte heading, uppercase, tracking-widest
+Countdown: Grid 4 colunas (Dias, Horas, Min, Seg)
+Cards com bg-black/20 backdrop-blur-md border border-secondary/30
+CTA: "Confirmar Presença →" - botão com borda dourada
+Scroll indicator: ChevronDown com animate-bounce
+3. 👨‍🎓 Graduate Section (O Formando)
+Layout:
+
+Grid 2 colunas em desktop
+Background pattern sutil
+Coluna Esquerda - Foto:
+
+Aspect ratio 3/4, rounded-3xl
+Moldura decorativa dourada offset
+Elementos blur decorativos
+Coluna Direita:
+
+Subtítulo: "SOBRE O FORMANDO" uppercase, tracking-wide
+Nome completo em fonte script
+Biografia/trajetória em fonte body
+Citação inspiradora: Borda esquerda dourada, fundo sutil
+Info Box: Curso, Período, Instituição em grid
+Animações:
+
+Slide-in da esquerda/direita com Framer Motion
+Elementos decorativos com parallax
+4. 📸 Gallery Section
+Layout:
+
+Background alternativo (muted)
+Carousel horizontal com auto-scroll (4s)
+Itens:
+
+basis-[85%] md:basis-1/2 lg:basis-1/3
+Aspect ratio 4/5, rounded-2xl
+Hover: scale-110, overlay gradiente aparece
+Moldura sutil dourada
+Controles:
+
+Setas laterais (botões circulares com blur)
+Dots de paginação
+5. 🎓 Ceremony Section (Colação de Grau)
+Layout:
+
+2 cards principais lado a lado
+Card 1 - Cerimônia de Colação:
+
+Imagem do local com overlay
+Data e horário em fonte script sobre a imagem
+Descrição do evento
+CTAs: Google Agenda + Outlook
+Card 2 - Local:
+
+Mapa/imagem do local
+Nome do local em fonte script
+Endereço completo
+CTAs: Google Maps + Waze
+Info Adicional (abaixo dos cards):
+
+Grid 3 colunas: Traje, Estacionamento, Chegada
+Ícones: Shirt, Car, Clock
+Descrições curtas
+6. 🎉 Celebration Section (Baile/Festa)
+Layout:
+
+Background com padrão decorativo
+Grid 2 colunas
+Conteúdo:
+
+Subtítulo: "A FESTA CONTINUA"
+Título: "Baile de Formatura" em fonte script
+Descrição do evento
+Info Cards:
+Local da festa
+Horário
+Dress Code
+Open bar/menu
+Imagem:
+
+Foto do local ou decoração
+Rotação sutil com hover reset
+Elementos decorativos (confetti, estrelas)
+CTA: "Ver Convite do Baile" ou informações de ingresso
+
+7. ✉️ RSVP Section
+Layout:
+
+Max-width 3xl, centralizado
+Card com borda e shadow
+Formulário:
+
+Nome Completo - input com ícone User
+Telefone/WhatsApp - input com ícone Phone
+Email - input com ícone Mail
+Participará de:
+ Colação de Grau
+ Baile de Formatura
+ Ambos
+Número de acompanhantes - Select (0-4)
+Mensagem - Textarea opcional
+Submit Button - Gradiente primário, full-width
+Animações:
+
+Campos condicionais com transição suave
+Estados de loading/success
+8. 🦶 Footer
+Layout:
+
+Background: hsl(220, 30%, 15%) (azul marinho escuro)
+Texto claro
+Conteúdo:
+
+Ícone de capelo decorativo
+Nome do formando em fonte script
+Curso e ano
+Citação inspiradora sobre conquistas
+Redes sociais do formando
+Créditos do desenvolvedor
+🎬 Animações Framer Motion
+// Fade in com slide up (padrão)
+initial={{ opacity: 0, y: 30 }}
+animate={{ opacity: 1, y: 0 }}
+transition={{ duration: 0.8, delay: 0.2 }}
+// Entrada da esquerda
+initial={{ opacity: 0, x: -50 }}
+animate={{ opacity: 1, x: 0 }}
+// Scale in para modais
+initial={{ opacity: 0, scale: 0.9 }}
+animate={{ opacity: 1, scale: 1 }}
+// Parallax no Hero
+const backgroundY = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
+// Trigger por visibilidade
+const isInView = useInView(ref, { once: true, margin: "-100px" });
+📱 Responsividade Mobile
+Ajustes Principais
+Navegação: Menu drawer lateral
+Hero: Countdown em 2x2 grid
+Grids: Coluna única em mobile
+Tipografia: Tamanhos reduzidos
+Cards: Padding reduzido
+Floating CTA: Botão fixo no bottom para confirmar presença
+Mobile CSS
+@media (max-width: 767px) {
+  section:not(#inicio) {
+    padding-top: 2.5rem !important;
+    padding-bottom: 2.5rem !important;
+  }
+  
+  .font-script {
+    font-size: 2.5rem !important;
+  }
+  
+  #inicio .font-script {
+    font-size: 3rem !important;
+  }
+  
+  input, select, textarea {
+    font-size: 16px !important; /* Previne zoom */
+  }
+}
+🧩 Componentes Reutilizáveis
+Glass Card
+.glass-card {
+  @apply bg-background/80 backdrop-blur-xl border border-border/30 rounded-2xl shadow-xl;
+}
+Gold Accent Line
+.gold-line {
+  @apply w-24 h-[2px] bg-gradient-to-r from-transparent via-secondary to-transparent mx-auto;
+}
+Section Header
+<div className="text-center mb-16">
+  <p className="font-body text-secondary uppercase tracking-[0.3em] text-xs font-semibold mb-4">
+    {subtitle}
+  </p>
+  <h2 className="font-script text-4xl md:text-6xl text-primary mb-4">
+    {title}
+  </h2>
+  <div className="gold-line" />
+</div>
+Graduation Cap Icon (SVG)
+<svg viewBox="0 0 24 24" className="w-8 h-8 text-secondary">
+  <path fill="currentColor" d="M12 3L1 9l4 2.18v6L12 21l7-3.82v-6l2-1.09V17h2V9L12 3zm6.82 6L12 12.72 5.18 9 12 5.28 18.82 9zM17 15.99l-5 2.73-5-2.73v-3.72L12 15l5-2.73v3.72z"/>
+</svg>
+✅ Checklist de Implementação
+ Setup Vite + React + TypeScript + Tailwind
+ Configurar shadcn/ui
+ Adicionar Framer Motion + Lucide
+ Importar Google Fonts
+ Implementar variáveis CSS de cor
+ Criar Navigation (desktop + mobile drawer)
+ Hero com parallax e countdown
+ Seção do Formando com grid
+ Galeria com carousel auto-scroll
+ Seção Colação de Grau
+ Seção Baile/Festa
+ Formulário RSVP completo
+ Footer elegante
+ Floating CTA mobile
+ Scroll progress indicator
+ Testar responsividade
+ Otimizar imagens
+🚫 NÃO IMPLEMENTAR
+❌ Backend/API
+❌ Banco de dados
+❌ Autenticação
+❌ Pagamentos
+❌ Dashboard admin
+📝 Dados Placeholder (Substituir)
+const GRADUATE = {
+  name: "João Silva",
+  fullName: "João Pedro Oliveira Silva",
+  course: "Engenharia de Software",
+  institution: "Universidade Federal",
+  year: "2026",
+  initials: "JS",
+};
+const CEREMONY = {
+  date: new Date("2026-07-15T19:00:00"),
+  dateFormatted: "15 de Julho de 2026",
+  time: "19:00",
+  venue: "Teatro Municipal",
+  address: "Av. Central, 1000 - Centro",
+};
+const CELEBRATION = {
+  date: new Date("2026-07-15T23:00:00"),
+  time: "23:00",
+  venue: "Salão de Festas Excellence",
+  dressCode: "Traje Social",
+};
