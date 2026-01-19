@@ -116,16 +116,22 @@ export function RSVPSection() {
       const whatsappMessage = `Acabei de confirmar minha presença na sua formatura, será uma honra fazer parte desse momento. ❤️\nNome: ${values.name}\nAcompanhante(s): ${companionList}\nObrigada pelo convite!!`;
 
       const encodedMessage = encodeURIComponent(whatsappMessage);
-      const whatsappUrl = `https://wa.me/5551995649195?text=${encodedMessage}`;
+      const phoneNumber = "5551995649195";
+
+      // Detect if mobile device
+      const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+      // Use whatsapp:// protocol for mobile (opens app directly) or api.whatsapp.com for desktop
+      const whatsappUrl = isMobile
+        ? `whatsapp://send?phone=${phoneNumber}&text=${encodedMessage}`
+        : `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodedMessage}`;
 
       setIsSubmitting(false);
       setIsSuccess(true);
 
-      // Use location.href for better compatibility across all devices
-      // window.open can be blocked by popup blockers
       toast({
         title: "Confirmação enviada com sucesso!",
-        description: "Redirecionando para o WhatsApp...",
+        description: "Abrindo WhatsApp...",
       });
 
       // Small delay to show the toast, then redirect
