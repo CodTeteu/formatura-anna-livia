@@ -1,104 +1,87 @@
 import { motion } from "framer-motion";
 import { Quote } from "lucide-react";
-import graduateImg from "@assets/generated_images/professional_graduate_portrait.png";
+import graduateImg from "/assets/graduate_ana.jpg";
 
 export function GraduateSection() {
   return (
-    <section id="graduate" className="py-24 md:py-32 bg-background relative overflow-hidden">
-      {/* Decorative Background Pattern */}
-      <div className="absolute top-0 right-0 w-1/2 h-full opacity-[0.03] pointer-events-none">
-        <svg viewBox="0 0 100 100" className="w-full h-full fill-primary">
-          <pattern id="grid" x="0" y="0" width="10" height="10" patternUnits="userSpaceOnUse">
-            <circle cx="2" cy="2" r="1" />
-          </pattern>
-          <rect width="100" height="100" fill="url(#grid)" />
-        </svg>
+    <section id="graduate" className="flex flex-col md:flex-row w-full -mt-2 relative z-10 max-w-[1200px] mx-auto md:items-center md:gap-12 md:py-20 md:px-8">
+
+      {/* Mobile Title - Shows before photo on mobile only */}
+      <div className="md:hidden w-full pt-8 pb-6 px-4 text-center">
+        <p className="font-body text-secondary uppercase tracking-[0.3em] text-xs font-semibold mb-3">
+          Formatura
+        </p>
+        <h2 className="font-script text-4xl text-primary">
+          Ana Luiza
+        </h2>
       </div>
 
-      <div className="container mx-auto px-4">
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-16 items-center">
-          
-          {/* Image Column */}
-          <div className="md:col-span-5 relative">
-            <motion.div
-              initial={{ opacity: 0, x: -50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{ duration: 0.8 }}
-              className="relative z-10"
-            >
-              <div className="aspect-[3/4] rounded-3xl overflow-hidden shadow-2xl">
-                <img 
-                  src={graduateImg} 
-                  alt="João Silva" 
-                  className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
-                />
-              </div>
-              
-              {/* Decorative Frame */}
-              <div className="absolute top-6 left-6 w-full h-full border-2 border-secondary/40 rounded-3xl -z-10 translate-x-4 translate-y-4 md:translate-x-6 md:translate-y-6" />
-            </motion.div>
-            
-            {/* Floating Elements */}
-            <motion.div 
-              className="absolute -top-10 -left-10 w-24 h-24 bg-secondary/10 rounded-full blur-2xl -z-10"
-              animate={{ scale: [1, 1.2, 1] }}
-              transition={{ duration: 5, repeat: Infinity }}
-            />
-          </div>
+      {/* Section 1: Image (Mobile: Full Bleed / Desktop: Left Side) */}
+      <div className="relative w-full h-[60vh] min-h-[500px] md:h-auto md:min-h-0 md:aspect-[3/4] md:w-[45%] md:flex-shrink-0 md:rounded-2xl md:shadow-2xl overflow-hidden z-10">
+        <div className="absolute inset-0 z-0">
+          <img
+            src={graduateImg}
+            alt="Ana Luiza"
+            className="w-full h-full object-cover object-[center_15%]"
+          />
+        </div>
 
-          {/* Content Column */}
-          <div className="md:col-span-7">
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-            >
+        {/* Top Fog Gradient - only on mobile */}
+        <div className="absolute top-0 left-0 w-full h-[25%] bg-gradient-to-b from-background to-transparent z-10 pointer-events-none md:hidden" />
+
+        {/* Bottom Fog Gradient - only on mobile */}
+        <div className="absolute bottom-0 left-0 w-full h-[40%] bg-gradient-to-t from-background from-10% to-transparent z-10 pointer-events-none md:hidden" />
+      </div>
+
+      {/* Section 2: Content (Mobile: Below Image / Desktop: Right Side) */}
+      <div className="w-full md:w-[55%] py-10 px-4 -mt-2 md:mt-0 md:py-0 md:px-0 relative z-20">
+        <div className="container mx-auto md:mx-0">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ duration: 0.8 }}
+            className="max-w-3xl mx-auto text-center md:text-left md:mx-0"
+          >
+            {/* Title - Desktop only (mobile shows above photo) */}
+            <div className="hidden md:block">
               <p className="font-body text-secondary uppercase tracking-[0.3em] text-xs font-semibold mb-4">
-                Sobre o Formando
+                Formatura
               </p>
-              <h2 className="font-script text-5xl md:text-7xl text-primary mb-6">
-                João Silva
+              <h2 className="font-script text-4xl md:text-7xl text-primary mb-8">
+                Ana Luiza
               </h2>
-              
-              <div className="prose prose-lg text-muted-foreground mb-8 font-body leading-relaxed">
-                <p>
-                  A jornada acadêmica foi marcada por desafios, descobertas e, acima de tudo, crescimento. 
-                  Cada projeto, cada noite de estudo e cada amizade construída ao longo destes anos 
-                  contribuiu para formar não apenas um profissional, mas a pessoa que me tornei.
-                </p>
-                <p>
-                  A Engenharia de Software me ensinou que com a lógica certa e persistência, 
-                  qualquer problema pode ser solucionado. Agora, estou pronto para aplicar esse conhecimento 
-                  e construir o futuro.
-                </p>
-              </div>
+            </div>
 
-              {/* Quote */}
-              <div className="relative pl-8 border-l-2 border-secondary mb-10 py-2">
-                <Quote className="absolute top-0 left-0 w-4 h-4 text-secondary/40 -translate-x-1/2 -translate-y-1/2 fill-current" />
-                <p className="font-heading italic text-xl md:text-2xl text-primary/80">
-                  "O sucesso não é o final, o fracasso não é fatal: é a coragem de continuar que conta."
-                </p>
-                <cite className="block mt-4 text-sm uppercase tracking-wider text-muted-foreground not-italic">
-                  — Winston Churchill
-                </cite>
-              </div>
+            <div className="prose prose-base md:prose-lg text-primary/80 mb-10 font-body leading-relaxed">
+              <p>
+                Foram anos aprendendo a enxergar além do que os olhos veem. Hoje celebro minha formatura em Radiologia, fruto de muito estudo e vontade de trabalhar 4 horas por dia. Te aguardo para comemorar comigo com o desejo mais sincero de nunca te encontrar no meu trabalho.
+              </p>
+            </div>
 
-              {/* Info Grid */}
-              <div className="grid grid-cols-2 gap-6 pt-6 border-t border-border">
-                <div>
-                  <span className="block text-xs uppercase text-muted-foreground tracking-wider mb-1">Curso</span>
-                  <span className="font-heading text-lg text-primary font-bold">Engenharia de Software</span>
-                </div>
-                <div>
-                  <span className="block text-xs uppercase text-muted-foreground tracking-wider mb-1">Universidade</span>
-                  <span className="font-heading text-lg text-primary font-bold">Universidade Federal</span>
-                </div>
+            {/* Quote */}
+            <div className="relative mb-6 py-6 px-8 max-w-2xl text-center md:text-left bg-primary/5 rounded-xl mx-auto md:mx-0">
+              <Quote className="absolute top-0 left-1/2 md:left-8 w-8 h-8 text-secondary -translate-x-1/2 md:translate-x-0 -translate-y-1/2 fill-current bg-background md:bg-white/50 p-1.5 rounded-full" />
+              <p className="font-heading italic text-lg md:text-2xl text-primary">
+                "Liberdade é pouco. O que eu desejo ainda não tem nome."
+              </p>
+              <cite className="block mt-4 text-sm uppercase tracking-wider text-primary/70 not-italic">
+                — Clarice Lispector
+              </cite>
+            </div>
+
+            {/* Info Grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-4 border-t border-primary/10">
+              <div className="text-center md:text-left">
+                <span className="block text-xs uppercase text-primary/60 tracking-wider mb-2">Curso</span>
+                <span className="font-heading text-2xl text-primary font-bold">Radiologia</span>
               </div>
-            </motion.div>
-          </div>
+              <div className="text-center md:text-left">
+                <span className="block text-xs uppercase text-primary/60 tracking-wider mb-2">Universidade</span>
+                <span className="font-heading text-2xl text-primary font-bold">Uniasselvi</span>
+              </div>
+            </div>
+          </motion.div>
         </div>
       </div>
     </section>

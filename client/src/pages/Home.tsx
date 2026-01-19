@@ -3,7 +3,8 @@ import { HeroSection } from "@/components/HeroSection";
 import { GraduateSection } from "@/components/GraduateSection";
 import { GallerySection } from "@/components/GallerySection";
 import { CeremonySection } from "@/components/CeremonySection";
-import { CelebrationSection } from "@/components/CelebrationSection";
+import { LiveStreamSection } from "@/components/LiveStreamSection";
+import { DinnerSection } from "@/components/DinnerSection";
 import { RSVPSection } from "@/components/RSVPSection";
 import { Footer } from "@/components/Footer";
 import { motion, useScroll, useSpring } from "framer-motion";
@@ -18,6 +19,11 @@ export default function Home() {
 
   return (
     <div className="min-h-screen flex flex-col relative overflow-x-hidden bg-background">
+      {/* Fixed Background Image - Seamless across all sections */}
+      <div className="fixed inset-0 z-0 pointer-events-none">
+        <img src="/assets/theme_background.png" alt="" className="w-full h-full object-cover" />
+      </div>
+
       {/* Scroll Progress Bar */}
       <motion.div
         className="fixed top-0 left-0 right-0 h-1 bg-secondary origin-left z-[100]"
@@ -25,27 +31,24 @@ export default function Home() {
       />
 
       <Navigation />
-      
+
       <main>
         <HeroSection />
+
+        {/* Spacer between Hero and Graduate sections */}
+        <div className="w-full h-16 md:h-24 bg-background" />
+
         <GraduateSection />
         <GallerySection />
         <CeremonySection />
-        <CelebrationSection />
+        <LiveStreamSection />
+        <DinnerSection />
         <RSVPSection />
       </main>
 
       <Footer />
-      
-      {/* Floating CTA for Mobile */}
-      <div className="md:hidden fixed bottom-6 right-6 z-40">
-         <button 
-           onClick={() => document.getElementById("rsvp")?.scrollIntoView({ behavior: "smooth" })}
-           className="w-14 h-14 bg-secondary text-primary rounded-full shadow-xl flex items-center justify-center animate-bounce"
-         >
-           <span className="font-bold text-xs">RSVP</span>
-         </button>
-      </div>
+
+
     </div>
   );
 }
