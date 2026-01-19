@@ -51,16 +51,39 @@ export function CeremonySection() {
                   <span className="block mt-2 text-primary font-semibold">Confirmar presença até 11/02.</span>
                 </p>
                 <div className="flex justify-center">
-                  <a
-                    href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Formatura+Ana+Luiza+-+Radiologia&dates=20260221T193000/20260221T223000&details=A+cerimônia+de+formatura+será+transmitida+ao+vivo.+Em+seguida,+celebraremos+essa+conquista+com+um+jantar+comemorativo+que+iniciará+as+19:30.+Confirmar+presença+até+11/02.&location=Av.+Armando+Fajardo,+2353+-+Igara,+Canoas+-+RS"
-                    target="_blank"
-                    rel="noopener noreferrer"
+                  <Button
+                    variant="outline"
+                    className="border-secondary text-primary hover:bg-secondary/10"
+                    onClick={() => {
+                      const eventTitle = "Formatura Ana Luiza - Radiologia";
+                      const eventDetails = "A cerimônia de formatura será transmitida ao vivo. Em seguida, celebraremos essa conquista com um jantar comemorativo que iniciará as 19:30. Confirmar presença até 11/02.";
+                      const eventLocation = "Av. Armando Fajardo, 2353 - Igara, Canoas - RS";
+                      const startDate = "20260221T193000";
+                      const endDate = "20260221T223000";
+
+                      // Detect device type
+                      const userAgent = navigator.userAgent.toLowerCase();
+                      const isAndroid = /android/i.test(userAgent);
+                      const isIOS = /iphone|ipad|ipod/i.test(userAgent);
+
+                      if (isAndroid) {
+                        // Android: Use Google Calendar intent
+                        const intentUrl = `intent://calendar/event?action=TEMPLATE&text=${encodeURIComponent(eventTitle)}&dates=${startDate}/${endDate}&details=${encodeURIComponent(eventDetails)}&location=${encodeURIComponent(eventLocation)}#Intent;scheme=https;package=com.google.android.calendar;end`;
+                        window.location.href = intentUrl;
+                      } else if (isIOS) {
+                        // iOS: Use Google Calendar app URL scheme, fallback to web
+                        const googleCalUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(eventTitle)}&dates=${startDate}/${endDate}&details=${encodeURIComponent(eventDetails)}&location=${encodeURIComponent(eventLocation)}`;
+                        window.location.href = googleCalUrl;
+                      } else {
+                        // Desktop: Open in new tab
+                        const webUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(eventTitle)}&dates=${startDate}/${endDate}&details=${encodeURIComponent(eventDetails)}&location=${encodeURIComponent(eventLocation)}`;
+                        window.open(webUrl, '_blank');
+                      }
+                    }}
                   >
-                    <Button variant="outline" className="border-secondary text-primary hover:bg-secondary/10">
-                      <Calendar className="w-4 h-4 mr-2" />
-                      Google Agenda
-                    </Button>
-                  </a>
+                    <Calendar className="w-4 h-4 mr-2" />
+                    Google Agenda
+                  </Button>
                 </div>
               </CardContent>
             </Card>
