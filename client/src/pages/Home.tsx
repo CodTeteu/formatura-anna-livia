@@ -8,9 +8,9 @@ import { DinnerSection } from "@/components/DinnerSection";
 import { RSVPSection } from "@/components/RSVPSection";
 import { Footer } from "@/components/Footer";
 import { motion, useScroll, useSpring } from "framer-motion";
-import { useState, useEffect } from "react";
+import { ImageLoadProvider, useImageLoad } from "@/hooks/useImageLoad";
 
-export default function Home() {
+function HomeContent() {
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, {
     stiffness: 100,
@@ -18,26 +18,17 @@ export default function Home() {
     restDelta: 0.001
   });
 
-  // Delay background rendering to allow hero to load first
-  const [showBackground, setShowBackground] = useState(false);
-
-  useEffect(() => {
-    // Wait for hero image to have a chance to load first
-    const timer = setTimeout(() => {
-      setShowBackground(true);
-    }, 500); // 500ms delay
-    return () => clearTimeout(timer);
-  }, []);
+  const { heroLoaded } = useImageLoad();
 
   return (
     <div className="min-h-screen flex flex-col relative overflow-x-hidden bg-background">
-      {/* Fixed Background Image - Delayed render */}
-      {showBackground && (
+      {/* Fixed Background Image - Only renders after hero image loads */}
+      {heroLoaded && (
         <motion.div
           className="fixed inset-0 z-0 pointer-events-none"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 0.5 }}
+          transition={{ duration: 0.3 }}
         >
           <img
             src="/assets/theme_background.png"
@@ -71,8 +62,14 @@ export default function Home() {
       </main>
 
       <Footer />
-
-
     </div>
+  );
+}
+
+export default function Home() {
+  return (
+    <ImageLoadProvider>
+      <HomeContent />
+    </ImageLoadProvider>
   );
 }

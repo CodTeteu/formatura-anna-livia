@@ -3,9 +3,11 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 import heroBg from "@assets/generated_images/cinematic_graduation_hero_background.png";
 import heroMe from "/assets/hero_ana.jpg";
+import { useImageLoad } from "@/hooks/useImageLoad";
 
 export function HeroSection() {
   const ref = useRef(null);
+  const { setHeroLoaded } = useImageLoad();
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start start", "end start"],
@@ -72,6 +74,7 @@ export function HeroSection() {
           className="w-full h-full object-cover object-[center_20%]"
           fetchPriority="high"
           loading="eager"
+          onLoad={() => setHeroLoaded(true)}
         />
         <div className="absolute bottom-0 left-0 w-full h-[30%] bg-gradient-to-t from-background from-10% to-transparent z-0 pointer-events-none" />
       </motion.div>
