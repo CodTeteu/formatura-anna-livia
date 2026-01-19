@@ -264,17 +264,24 @@ function SubmissionsTable({ submissions, onDelete, searchTerm, filterEvent }: Su
                                 <Badge
                                     variant="secondary"
                                     className={`font-normal border-0 ${sub.attendance === 'attending'
-                                            ? 'bg-green-100 text-green-700'
-                                            : 'bg-red-100 text-red-700'
+                                        ? 'bg-green-100 text-green-700'
+                                        : 'bg-red-100 text-red-700'
                                         }`}
                                 >
                                     {eventLabels[sub.attendance] || sub.attendance}
                                 </Badge>
                             </TableCell>
-                            <TableCell className="text-center">
-                                <Badge variant="outline" className="font-medium border-gray-200">
-                                    +{sub.guest_count}
-                                </Badge>
+                            <TableCell>
+                                <div className="flex flex-col gap-1">
+                                    <Badge variant="outline" className="font-medium border-gray-200 w-fit">
+                                        +{sub.guest_count} {sub.guest_count === 1 ? 'pessoa' : 'pessoas'}
+                                    </Badge>
+                                    {sub.companion_names && sub.companion_names.length > 0 && (
+                                        <div className="text-xs text-gray-500 max-w-[200px]">
+                                            {sub.companion_names.filter(n => n.trim()).join(', ')}
+                                        </div>
+                                    )}
+                                </div>
                             </TableCell>
                             <TableCell>
                                 {sub.message ? (
