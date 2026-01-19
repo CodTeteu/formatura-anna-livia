@@ -26,9 +26,12 @@ import { useToast } from "@/hooks/use-toast";
 import { useState, useEffect } from "react";
 
 const formSchema = z.object({
-  name: z.string().min(2, {
-    message: "Nome deve ter pelo menos 2 caracteres.",
-  }),
+  name: z.string()
+    .min(3, { message: "Nome deve ter pelo menos 3 caracteres." })
+    .refine(
+      (val) => val.trim().split(/\s+/).length >= 2,
+      { message: "Por favor, informe nome e sobrenome." }
+    ),
   phone: z.string().min(10, {
     message: "Telefone inválido.",
   }),
@@ -38,7 +41,13 @@ const formSchema = z.object({
   guests: z.string({
     required_error: "Selecione o número de acompanhantes.",
   }),
-  companionNames: z.array(z.string()).optional(),
+  companionNames: z.array(
+    z.string()
+      .refine(
+        (val) => val.trim() === '' || val.trim().split(/\s+/).length >= 2,
+        { message: "Informe nome e sobrenome do acompanhante." }
+      )
+  ).optional(),
   message: z.string().optional(),
 });
 
@@ -111,11 +120,18 @@ export function RSVPSection() {
 
       setIsSubmitting(false);
       setIsSuccess(true);
-      window.open(whatsappUrl, "_blank");
+
+      // Use location.href for better compatibility across all devices
+      // window.open can be blocked by popup blockers
       toast({
         title: "Confirmação enviada com sucesso!",
         description: "Redirecionando para o WhatsApp...",
       });
+
+      // Small delay to show the toast, then redirect
+      setTimeout(() => {
+        window.location.href = whatsappUrl;
+      }, 500);
     } catch (error) {
       console.error("Error submitting RSVP:", error);
       toast({
