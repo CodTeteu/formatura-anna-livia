@@ -70,6 +70,8 @@ export function HeroSection() {
           src={heroMe}
           alt="Ana Luiza Hero"
           className="w-full h-full object-cover object-[center_20%]"
+          fetchPriority="high"
+          loading="eager"
         />
         <div className="absolute bottom-0 left-0 w-full h-[30%] bg-gradient-to-t from-background from-10% to-transparent z-0 pointer-events-none" />
       </motion.div>

@@ -21,7 +21,13 @@ export default function Home() {
     <div className="min-h-screen flex flex-col relative overflow-x-hidden bg-background">
       {/* Fixed Background Image - Seamless across all sections */}
       <div className="fixed inset-0 z-0 pointer-events-none">
-        <img src="/assets/theme_background.png" alt="" className="w-full h-full object-cover" />
+        <img
+          src="/assets/theme_background.png"
+          alt=""
+          className="w-full h-full object-cover"
+          fetchPriority="low"
+          loading="lazy"
+        />
       </div>
 
       {/* Scroll Progress Bar */}
