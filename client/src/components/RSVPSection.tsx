@@ -154,9 +154,13 @@ export function RSVPSection() {
       <div className="container mx-auto px-5 md:px-4 relative z-10">
         <div className="text-center mb-8 md:mb-12">
           <p className="font-body text-secondary uppercase tracking-[0.3em] text-xs font-semibold mb-4">
-            Confirme sua Presença
+            RSVP
           </p>
-          <p className="text-muted-foreground max-w-lg mx-auto text-sm md:text-base">
+          <h2 className="font-script text-4xl md:text-6xl text-primary mb-4">
+            Confirme sua Presença
+          </h2>
+          <div className="w-24 h-[2px] bg-gradient-to-r from-transparent via-secondary to-transparent mx-auto" />
+          <p className="text-muted-foreground max-w-lg mx-auto text-sm md:text-base mt-6">
             Por favor, confirme sua presença até o dia 11 de Fevereiro para que possamos organizar tudo com carinho.
           </p>
         </div>
