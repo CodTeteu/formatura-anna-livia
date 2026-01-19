@@ -8,6 +8,7 @@ import { DinnerSection } from "@/components/DinnerSection";
 import { RSVPSection } from "@/components/RSVPSection";
 import { Footer } from "@/components/Footer";
 import { motion, useScroll, useSpring } from "framer-motion";
+import { useState, useEffect } from "react";
 
 export default function Home() {
   const { scrollYProgress } = useScroll();
@@ -17,18 +18,35 @@ export default function Home() {
     restDelta: 0.001
   });
 
+  // Delay background rendering to allow hero to load first
+  const [showBackground, setShowBackground] = useState(false);
+
+  useEffect(() => {
+    // Wait for hero image to have a chance to load first
+    const timer = setTimeout(() => {
+      setShowBackground(true);
+    }, 500); // 500ms delay
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <div className="min-h-screen flex flex-col relative overflow-x-hidden bg-background">
-      {/* Fixed Background Image - Seamless across all sections */}
-      <div className="fixed inset-0 z-0 pointer-events-none">
-        <img
-          src="/assets/theme_background.png"
-          alt=""
-          className="w-full h-full object-cover"
-          fetchPriority="low"
-          loading="lazy"
-        />
-      </div>
+      {/* Fixed Background Image - Delayed render */}
+      {showBackground && (
+        <motion.div
+          className="fixed inset-0 z-0 pointer-events-none"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5 }}
+        >
+          <img
+            src="/assets/theme_background.png"
+            alt=""
+            className="w-full h-full object-cover"
+            loading="lazy"
+          />
+        </motion.div>
+      )}
 
       {/* Scroll Progress Bar */}
       <motion.div
