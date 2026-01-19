@@ -66,17 +66,17 @@ export function CeremonySection() {
                       const isAndroid = /android/i.test(userAgent);
                       const isIOS = /iphone|ipad|ipod/i.test(userAgent);
 
-                      if (isAndroid) {
-                        // Android: Use Google Calendar intent
-                        const intentUrl = `intent://calendar/event?action=TEMPLATE&text=${encodeURIComponent(eventTitle)}&dates=${startDate}/${endDate}&details=${encodeURIComponent(eventDetails)}&location=${encodeURIComponent(eventLocation)}#Intent;scheme=https;package=com.google.android.calendar;end`;
-                        window.location.href = intentUrl;
-                      } else if (isIOS) {
-                        // iOS: Use Google Calendar app URL scheme, fallback to web
-                        const googleCalUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(eventTitle)}&dates=${startDate}/${endDate}&details=${encodeURIComponent(eventDetails)}&location=${encodeURIComponent(eventLocation)}`;
-                        window.location.href = googleCalUrl;
+                      // Build base Google Calendar URL params
+                      const calParams = `action=TEMPLATE&text=${encodeURIComponent(eventTitle)}&dates=${startDate}/${endDate}&details=${encodeURIComponent(eventDetails)}&location=${encodeURIComponent(eventLocation)}`;
+
+                      if (isAndroid || isIOS) {
+                        // Mobile: Try to open app first, fallback to web
+                        // Use the standard web URL which Android/iOS will prompt to open in app
+                        const mobileUrl = `https://calendar.google.com/calendar/r/eventedit?${calParams}`;
+                        window.location.href = mobileUrl;
                       } else {
                         // Desktop: Open in new tab
-                        const webUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(eventTitle)}&dates=${startDate}/${endDate}&details=${encodeURIComponent(eventDetails)}&location=${encodeURIComponent(eventLocation)}`;
+                        const webUrl = `https://calendar.google.com/calendar/render?${calParams}`;
                         window.open(webUrl, '_blank');
                       }
                     }}
