@@ -436,9 +436,9 @@ export default function Admin() {
                 {/* Stats Cards */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
                     <StatsCard
-                        title="Confirmados"
+                        title="Respostas"
                         value={submissions.length}
-                        suffix="registros"
+                        suffix="formulários"
                         icon={<Users className="w-16 h-16" />}
                         color="primary"
                         delay={0.1}
