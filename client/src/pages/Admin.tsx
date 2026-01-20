@@ -285,7 +285,7 @@ function SubmissionsTable({ submissions, onDelete, searchTerm, filterEvent }: Su
                             </TableCell>
                             <TableCell>
                                 {sub.message ? (
-                                    <div className="max-w-[200px] truncate text-gray-600 italic bg-gray-50 px-2 py-1 rounded text-xs border border-gray-100" title={sub.message}>
+                                    <div className="max-w-[300px] text-gray-600 italic bg-gray-50 px-2 py-1 rounded text-xs border border-gray-100 whitespace-pre-wrap break-words">
                                         "{sub.message}"
                                     </div>
                                 ) : (
