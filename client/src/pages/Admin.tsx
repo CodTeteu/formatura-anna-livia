@@ -15,6 +15,7 @@ import {
     GraduationCap,
     Loader2
 } from "lucide-react";
+import * as XLSX from "xlsx";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
@@ -303,7 +304,7 @@ function SubmissionsTable({ submissions, onDelete, searchTerm, filterEvent }: Su
                                     variant="ghost"
                                     size="icon"
                                     onClick={() => onDelete(sub.id)}
-                                    className="text-gray-300 hover:text-red-500 hover:bg-red-50 opacity-0 group-hover:opacity-100 transition-all rounded-full"
+                                    className="text-gray-400 hover:text-red-500 hover:bg-red-50 transition-all rounded-full"
                                 >
                                     <Trash2 className="w-4 h-4" />
                                 </Button>
@@ -348,24 +349,22 @@ export default function Admin() {
         }
     };
 
-    const exportCSV = () => {
-        const headers = ["Nome", "Telefone", "Email", "Status", "Acompanhantes", "Mensagem", "Data"];
-        const rows = submissions.map(s => [
-            s.name,
-            s.phone,
-            s.email || "",
-            s.attendance === 'attending' ? 'Vai comparecer' : 'Não vai',
-            s.guest_count.toString(),
-            s.message || "",
-            new Date(s.created_at).toLocaleString("pt-BR")
-        ]);
+    const exportExcel = () => {
+        const data = submissions.map(s => ({
+            "Nome": s.name,
+            "Telefone": s.phone,
+            "Email": s.email || "",
+            "Status": s.attendance === 'attending' ? 'Vai comparecer' : 'Não vai',
+            "Acompanhantes": s.guest_count,
+            "Nomes Acompanhantes": s.companion_names?.join(", ") || "",
+            "Mensagem": s.message || "",
+            "Data": new Date(s.created_at).toLocaleString("pt-BR")
+        }));
 
-        const csvContent = [headers, ...rows].map(row => row.map(cell => `"${cell}"`).join(",")).join("\n");
-        const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
-        const link = document.createElement("a");
-        link.href = URL.createObjectURL(blob);
-        link.download = "confirmacoes_rsvp.csv";
-        link.click();
+        const worksheet = XLSX.utils.json_to_sheet(data);
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, worksheet, "Confirmações");
+        XLSX.writeFile(workbook, "confirmacoes_rsvp.xlsx");
     };
 
     // Show loading while checking auth
@@ -414,9 +413,9 @@ export default function Admin() {
                         </div>
                     </div>
                     <div className="flex gap-3">
-                        <Button onClick={exportCSV} variant="outline" className="hidden sm:flex border-primary/20 hover:bg-primary/5 text-primary hover:text-primary">
+                        <Button onClick={exportExcel} variant="outline" className="hidden sm:flex border-primary/20 hover:bg-primary/5 text-primary hover:text-primary">
                             <Download className="w-4 h-4 mr-2" />
-                            Exportar CSV
+                            Exportar Excel
                         </Button>
                         <Button onClick={handleLogout} variant="ghost" className="text-red-500 hover:text-red-600 hover:bg-red-50">
                             <LogOut className="w-4 h-4 mr-2" />
