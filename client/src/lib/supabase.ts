@@ -32,7 +32,7 @@ export interface RSVPSubmission {
     name: string;
     phone: string;
     email?: string;
-    attendance: 'attending' | 'not-attending';
+    attendance: 'attending' | 'not-attending' | 'colacao' | 'jantar' | 'ambos' | 'none';
     guest_count: number;
     companion_names?: string[];
     message?: string;
@@ -44,7 +44,7 @@ export interface InsertRSVP {
     name: string;
     phone: string;
     email?: string;
-    attendance: 'attending' | 'not-attending';
+    attendance: 'attending' | 'not-attending' | 'colacao' | 'jantar' | 'ambos' | 'none';
     guest_count?: number;
     companion_names?: string[];
     message?: string;

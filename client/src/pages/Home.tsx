@@ -3,12 +3,14 @@ import { HeroSection } from "@/components/HeroSection";
 import { GraduateSection } from "@/components/GraduateSection";
 import { GallerySection } from "@/components/GallerySection";
 import { CeremonySection } from "@/components/CeremonySection";
-import { LiveStreamSection } from "@/components/LiveStreamSection";
 import { DinnerSection } from "@/components/DinnerSection";
+import { GiftSection } from "@/components/GiftSection";
 import { RSVPSection } from "@/components/RSVPSection";
 import { Footer } from "@/components/Footer";
 import { motion, useScroll, useSpring } from "framer-motion";
 import { ImageLoadProvider, useImageLoad } from "@/hooks/useImageLoad";
+
+const assetPath = (path: string) => `${import.meta.env.BASE_URL}${path.replace(/^\//, "")}`;
 
 function HomeContent() {
   const { scrollYProgress } = useScroll();
@@ -31,7 +33,7 @@ function HomeContent() {
           transition={{ duration: 0.3 }}
         >
           <img
-            src="/assets/theme_background.png"
+            src={assetPath("/assets/theme_background.png")}
             alt=""
             className="w-full h-full object-cover"
             loading="lazy"
@@ -56,8 +58,8 @@ function HomeContent() {
         <GraduateSection />
         <GallerySection />
         <CeremonySection />
-        <LiveStreamSection />
         <DinnerSection />
+        <GiftSection />
         <RSVPSection />
       </main>
 

@@ -34,6 +34,8 @@ import { useAuth } from "@/hooks/useAuth";
 import { useSubmissions } from "@/hooks/useSubmissions";
 import type { RSVPSubmission } from "@/lib/supabase";
 
+const assetPath = (path: string) => `${import.meta.env.BASE_URL}${path.replace(/^\//, "")}`;
+
 // ===========================================
 // LOGIN FORM COMPONENT
 // ===========================================
@@ -62,7 +64,10 @@ function LoginForm() {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center p-4 bg-[url('/elegant_bg.png')] bg-cover bg-fixed">
+        <div
+            className="min-h-screen flex items-center justify-center p-4 bg-cover bg-fixed"
+            style={{ backgroundImage: `url(${assetPath("/elegant_bg.png")})` }}
+        >
             <div className="absolute inset-0 bg-white/80 backdrop-blur-sm z-0" />
             <Card className="w-full max-w-md relative z-10 border-none shadow-2xl bg-white/90 backdrop-blur-xl">
                 <CardHeader className="text-center space-y-2 pb-8">
@@ -188,7 +193,11 @@ interface SubmissionsTableProps {
 function SubmissionsTable({ submissions, onDelete, searchTerm, filterEvent }: SubmissionsTableProps) {
     const eventLabels: Record<string, string> = {
         attending: "Vai comparecer",
-        "not-attending": "Não vai"
+        "not-attending": "Não vai",
+        colacao: "Colação",
+        jantar: "Jantar",
+        ambos: "Colação + Jantar",
+        none: "Não informado"
     };
 
     const filteredSubmissions = submissions.filter((sub) => {
@@ -264,9 +273,12 @@ function SubmissionsTable({ submissions, onDelete, searchTerm, filterEvent }: Su
                             <TableCell>
                                 <Badge
                                     variant="secondary"
-                                    className={`font-normal border-0 ${sub.attendance === 'attending'
-                                        ? 'bg-green-100 text-green-700'
-                                        : 'bg-red-100 text-red-700'
+                                    className={`font-normal border-0 ${
+                                        sub.attendance === 'attending' || sub.attendance === 'colacao' || sub.attendance === 'ambos'
+                                            ? 'bg-green-100 text-green-700'
+                                            : sub.attendance === 'jantar'
+                                            ? 'bg-blue-100 text-blue-700'
+                                            : 'bg-red-100 text-red-700'
                                         }`}
                                 >
                                     {eventLabels[sub.attendance] || sub.attendance}
@@ -364,7 +376,7 @@ export default function Admin() {
         const worksheet = XLSX.utils.json_to_sheet(data);
         const workbook = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(workbook, worksheet, "Confirmações");
-        XLSX.writeFile(workbook, "confirmacoes_rsvp.xlsx");
+        XLSX.writeFile(workbook, `Confirmacoes_AnaLuiza_${new Date().toLocaleDateString('pt-BR').replace(/\//g, '-')}.xlsx`);
     };
 
     // Show loading while checking auth
@@ -383,13 +395,16 @@ export default function Admin() {
 
     // Calculate stats
     const totalGuests = submissions.reduce((acc, sub) => acc + (sub.guest_count || 0) + 1, 0);
-    const attendingCount = submissions.filter(s => s.attendance === 'attending').length;
-    const notAttendingCount = submissions.filter(s => s.attendance === 'not-attending').length;
+    const attendingCount = submissions.filter(s => s.attendance === 'attending' || s.attendance === 'colacao' || s.attendance === 'ambos').length;
+    const notAttendingCount = submissions.filter(s => s.attendance === 'not-attending' || s.attendance === 'none').length;
 
     return (
         <div className="min-h-screen bg-neutral-50/50">
             {/* Background decoration */}
-            <div className="fixed inset-0 bg-[url('/elegant_bg.png')] opacity-10 pointer-events-none z-0 mix-blend-multiply" />
+            <div
+                className="fixed inset-0 opacity-10 pointer-events-none z-0 mix-blend-multiply"
+                style={{ backgroundImage: `url(${assetPath("/elegant_bg.png")})` }}
+            />
 
             {/* Header */}
             <header className="bg-white/80 backdrop-blur-md border-b border-primary/10 sticky top-0 z-50 shadow-sm relative">

@@ -5,13 +5,13 @@ import { Menu, X, GraduationCap } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import logoInitials from "@assets/generated_images/ana_luiza_logo_initials.png";
 
 const NAV_LINKS = [
   { name: "Início", href: "#hero" },
   { name: "A Formanda", href: "#graduate" },
   { name: "Galeria", href: "#gallery" },
-  { name: "Comemoração", href: "#ceremony" },
+  { name: "Detalhes", href: "#ceremony" },
+  { name: "Presentes", href: "#gifts" },
 ];
 
 export function Navigation() {
@@ -64,14 +64,14 @@ export function Navigation() {
           onClick={(e) => scrollToSection(e, "#hero")}
           className="flex items-center transition-opacity hover:opacity-80"
         >
-          <img
-            src={logoInitials}
-            alt="Ana Luiza Logo"
+          <span
             className={cn(
-              "h-10 md:h-12 w-auto transition-all duration-300 object-contain",
-              isScrolled ? "brightness-0" : "brightness-0 invert"
+              "font-script text-2xl md:text-3xl transition-all duration-300",
+              isScrolled ? "text-primary" : "text-white"
             )}
-          />
+          >
+            AL
+          </span>
         </a>
 
         {/* Desktop Menu */}
@@ -103,9 +103,9 @@ export function Navigation() {
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
         >
           {isMobileMenuOpen ? (
-            <X className={isScrolled ? "text-foreground" : "text-white"} />
+            <X className="text-primary" />
           ) : (
-            <Menu className={isScrolled ? "text-foreground" : "text-white"} />
+            <Menu className="text-primary" />
           )}
         </button>
       </div>
@@ -166,11 +166,9 @@ export function Navigation() {
 
                 {/* Logo */}
                 <div className="flex justify-center py-6">
-                  <img
-                    src={logoInitials}
-                    alt="Ana Luiza"
-                    className="h-14 w-auto brightness-0 invert"
-                  />
+                  <span className="font-script text-4xl text-white">
+                    Anna Lívia
+                  </span>
                 </div>
 
                 {/* Divider */}

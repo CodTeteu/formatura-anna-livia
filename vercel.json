@@ -1,9 +1,37 @@
 {
-    "buildCommand": "npm run build:client",
+    "buildCommand": "VITE_BASE_PATH=/anna-livia/ npm run build:client",
     "outputDirectory": "dist/public",
     "installCommand": "npm install",
     "framework": "vite",
     "rewrites": [
+        {
+            "source": "/anna-livia/assets/(.*)",
+            "destination": "/assets/$1"
+        },
+        {
+            "source": "/anna-livia/gallery/(.*)",
+            "destination": "/gallery/$1"
+        },
+        {
+            "source": "/anna-livia/elegant_bg.png",
+            "destination": "/elegant_bg.png"
+        },
+        {
+            "source": "/anna-livia/favicon.png",
+            "destination": "/favicon.png"
+        },
+        {
+            "source": "/anna-livia/opengraph.jpg",
+            "destination": "/opengraph.jpg"
+        },
+        {
+            "source": "/anna-livia/(.*)",
+            "destination": "/index.html"
+        },
+        {
+            "source": "/anna-livia",
+            "destination": "/index.html"
+        },
         {
             "source": "/(.*)",
             "destination": "/index.html"

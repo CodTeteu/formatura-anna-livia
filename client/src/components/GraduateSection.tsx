@@ -1,6 +1,8 @@
 import { motion } from "framer-motion";
 import { Quote } from "lucide-react";
-import graduateImg from "/assets/graduate_ana.jpg";
+
+const assetPath = (path: string) => `${import.meta.env.BASE_URL}${path.replace(/^\//, "")}`;
+const graduateImg = assetPath("/assets/gallery/gallery_01.jpg");
 
 export function GraduateSection() {
   return (
@@ -12,7 +14,7 @@ export function GraduateSection() {
           Formatura
         </p>
         <h2 className="font-script text-4xl text-primary">
-          Ana Luiza
+          Anna Lívia
         </h2>
       </div>
 
@@ -21,7 +23,7 @@ export function GraduateSection() {
         <div className="absolute inset-0 z-0">
           <img
             src={graduateImg}
-            alt="Ana Luiza"
+            alt="Anna Lívia"
             className="w-full h-full object-cover object-[center_15%]"
           />
         </div>
@@ -49,13 +51,15 @@ export function GraduateSection() {
                 Formatura
               </p>
               <h2 className="font-script text-4xl md:text-7xl text-primary mb-8">
-                Ana Luiza
+                Anna Lívia
               </h2>
             </div>
 
             <div className="prose prose-base md:prose-lg text-primary/80 mb-10 font-body leading-relaxed">
               <p>
-                Foram anos aprendendo a enxergar além do que os olhos veem. Hoje celebro minha formatura em Radiologia, fruto de muito estudo e vontade de trabalhar 4 horas por dia. Te aguardo para comemorar comigo com o desejo mais sincero de nunca te encontrar no meu trabalho.
+                Após anos de aprendizado, desafios e crescimento, tenho a alegria de celebrar minha
+                graduação em Enfermagem, uma conquista construída com esforço, fé e amor pelo cuidado
+                ao próximo. É com grande carinho que convido você para compartilhar comigo este momento único.
               </p>
             </div>
 
@@ -63,10 +67,10 @@ export function GraduateSection() {
             <div className="relative mb-6 py-6 px-8 max-w-2xl text-center md:text-left bg-primary/5 rounded-xl mx-auto md:mx-0">
               <Quote className="absolute top-0 left-1/2 md:left-8 w-8 h-8 text-secondary -translate-x-1/2 md:translate-x-0 -translate-y-1/2 fill-current bg-background md:bg-white/50 p-1.5 rounded-full" />
               <p className="font-heading italic text-lg md:text-2xl text-primary">
-                "Liberdade é pouco. O que eu desejo ainda não tem nome."
+                "É justo que muito custe o que muito vale"
               </p>
               <cite className="block mt-4 text-sm uppercase tracking-wider text-primary/70 not-italic">
-                — Clarice Lispector
+                — Santa Teresa d'Ávila
               </cite>
             </div>
 
@@ -74,11 +78,11 @@ export function GraduateSection() {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-4 border-t border-primary/10">
               <div className="text-center md:text-left">
                 <span className="block text-xs uppercase text-primary/60 tracking-wider mb-2">Curso</span>
-                <span className="font-heading text-2xl text-primary font-bold">Radiologia</span>
+                <span className="font-heading text-2xl text-primary font-bold">Enfermagem</span>
               </div>
               <div className="text-center md:text-left">
                 <span className="block text-xs uppercase text-primary/60 tracking-wider mb-2">Universidade</span>
-                <span className="font-heading text-2xl text-primary font-bold">Uniasselvi</span>
+                <span className="font-heading text-2xl text-primary font-bold">Uniplan</span>
               </div>
             </div>
           </motion.div>

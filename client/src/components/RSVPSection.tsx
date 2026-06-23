@@ -2,7 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { motion, AnimatePresence } from "framer-motion";
-import { User, Phone, CheckCircle2 } from "lucide-react";
+import { User, Phone, CheckCircle2, GraduationCap, UtensilsCrossed } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -23,7 +23,7 @@ import {
 } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/hooks/use-toast";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 
 const formSchema = z.object({
   name: z.string()
@@ -51,6 +51,8 @@ const formSchema = z.object({
   message: z.string().optional(),
 });
 
+const COLACAO_PRICE = 60;
+
 export function RSVPSection() {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -69,6 +71,16 @@ export function RSVPSection() {
   });
 
   const guestCount = parseInt(form.watch("guests") || "0");
+  const selectedEvents = form.watch("events");
+  const hasColacao = selectedEvents.includes("colacao");
+  const hasJantar = selectedEvents.includes("jantar");
+
+  // Calculate total: colação is R$60 per person (including the main guest)
+  const totalPrice = useMemo(() => {
+    if (!hasColacao) return 0;
+    const totalPeople = guestCount + 1; // +1 for the main guest
+    return totalPeople * COLACAO_PRICE;
+  }, [hasColacao, guestCount]);
 
   useEffect(() => {
     const currentCompanions = form.getValues("companionNames") || [];
@@ -82,17 +94,18 @@ export function RSVPSection() {
     setIsSubmitting(true);
 
     try {
-      // Import submitRSVP dynamically to avoid circular deps
       const { submitRSVP } = await import("@/hooks/useSubmissions");
 
-      // Determine attendance based on selected events
-      const isAttending = values.events.includes("attending");
+      // Build attendance string based on selections
+      let attendance: "colacao" | "jantar" | "ambos" | "none" = "none";
+      if (hasColacao && hasJantar) attendance = "ambos";
+      else if (hasColacao) attendance = "colacao";
+      else if (hasJantar) attendance = "jantar";
 
-      // Submit to Supabase
       const result = await submitRSVP({
         name: values.name.trim(),
         phone: values.phone.trim(),
-        attendance: isAttending ? "attending" : "not-attending",
+        attendance,
         guest_count: parseInt(values.guests) || 0,
         companion_names: values.companionNames?.filter(n => n.trim() !== "") || [],
         message: values.message?.trim() || undefined,
@@ -113,15 +126,28 @@ export function RSVPSection() {
         ? values.companionNames.filter(name => name.trim() !== "").join(", ")
         : "Nenhum";
 
-      const whatsappMessage = `Acabei de confirmar minha presença na sua formatura, será uma honra fazer parte desse momento. ❤️\nNome: ${values.name}\nAcompanhante(s): ${companionList}\nObrigada pelo convite!!`;
+      const eventList = [];
+      if (hasColacao) eventList.push("Colação de Grau (R$ 60,00)");
+      if (hasJantar) eventList.push("Jantar no Mirante (cada convidado paga o seu)");
+
+      const whatsappMessage = `Olá! Confirmo minha presença na formatura da Anna Lívia! ❤️
+
+📋 *Dados:*
+Nome: ${values.name}
+Acompanhante(s): ${companionList}
+
+🎓 *Eventos confirmados:*
+${eventList.join("\n")}
+
+${hasColacao ? `💰 *Valor da colação:* R$ ${totalPrice.toFixed(2)} (${guestCount + 1} pessoa(s) x R$ 60,00)` : ""}
+
+Obrigada pelo convite!!`;
 
       const encodedMessage = encodeURIComponent(whatsappMessage);
-      const phoneNumber = "5551995649195";
+      const phoneNumber = "5563985001811";
 
-      // Detect if mobile device
       const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
-      // Use whatsapp:// protocol for mobile (opens app directly) or api.whatsapp.com for desktop
       const whatsappUrl = isMobile
         ? `whatsapp://send?phone=${phoneNumber}&text=${encodedMessage}`
         : `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodedMessage}`;
@@ -134,7 +160,6 @@ export function RSVPSection() {
         description: "Abrindo WhatsApp...",
       });
 
-      // Small delay to show the toast, then redirect
       setTimeout(() => {
         window.location.href = whatsappUrl;
       }, 500);
@@ -161,7 +186,7 @@ export function RSVPSection() {
           </h2>
           <div className="w-24 h-[2px] bg-gradient-to-r from-transparent via-secondary to-transparent mx-auto" />
           <p className="text-muted-foreground max-w-lg mx-auto text-sm md:text-base mt-6">
-            Por favor, confirme sua presença até o dia 11 de Fevereiro para que possamos organizar tudo com carinho.
+            Por favor, confirme sua presença até o dia 20 de Julho para que possamos organizar tudo com carinho.
           </p>
         </div>
 
@@ -184,8 +209,12 @@ export function RSVPSection() {
                   className="mt-6 border-primary text-primary"
                   onClick={() => {
                     const companionList = form.getValues("companionNames")?.filter(n => n.trim() !== "").join(", ") || "Nenhum";
-                    const msg = `Acabei de confirmar minha presença na sua formatura, será uma honra fazer parte desse momento. ❤️\nNome: ${form.getValues("name")}\nAcompanhante(s): ${companionList}\nObrigada pelo convite!!`;
-                    window.open(`https://wa.me/5551995649195?text=${encodeURIComponent(msg)}`, "_blank");
+                    const events = form.getValues("events");
+                    const eventList = [];
+                    if (events.includes("colacao")) eventList.push("Colação de Grau (R$ 60,00)");
+                    if (events.includes("jantar")) eventList.push("Jantar no Mirante");
+                    const msg = `Olá! Confirmo minha presença na formatura da Anna Lívia! ❤️\nNome: ${form.getValues("name")}\nAcompanhante(s): ${companionList}\nEventos: ${eventList.join(", ")}\nObrigada pelo convite!!`;
+                    window.open(`https://wa.me/5563985001811?text=${encodeURIComponent(msg)}`, "_blank");
                   }}
                 >
                   Abrir WhatsApp manualmente
@@ -240,44 +269,52 @@ export function RSVPSection() {
                     />
                   </div>
 
+                  {/* Event Selection */}
                   <FormField
                     control={form.control}
                     name="events"
                     render={() => (
                       <FormItem>
                         <div className="mb-4">
-                          <FormLabel className="text-base">Confirmação de Presença</FormLabel>
+                          <FormLabel className="text-base">Quais eventos você vai participar?</FormLabel>
+                          <p className="text-xs text-muted-foreground mt-1">Selecione um ou ambos</p>
                         </div>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                           <FormField
-                            key="attending"
+                            key="colacao"
                             control={form.control}
                             name="events"
                             render={({ field }) => {
                               return (
                                 <FormItem
-                                  key="attending"
-                                  className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4 hover:bg-muted/50 transition-colors cursor-pointer"
+                                  key="colacao"
+                                  className={`flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4 transition-colors cursor-pointer ${hasColacao ? 'border-primary bg-primary/5' : 'hover:bg-muted/50'}`}
                                 >
                                   <FormControl>
                                     <Checkbox
-                                      checked={field.value?.includes("attending")}
+                                      checked={field.value?.includes("colacao")}
                                       onCheckedChange={(checked) => {
                                         if (checked) {
-                                          const filtered = field.value?.filter(v => v !== "not-attending") || [];
-                                          field.onChange([...filtered, "attending"]);
+                                          field.onChange([...(field.value || []), "colacao"]);
                                         } else {
-                                          field.onChange(field.value?.filter(v => v !== "attending"));
+                                          field.onChange(field.value?.filter(v => v !== "colacao"));
                                         }
                                       }}
                                     />
                                   </FormControl>
-                                  <div className="space-y-1 leading-none">
-                                    <FormLabel className="text-green-600 font-medium">
-                                      ✓ Vou comparecer
+                                  <div className="space-y-1 leading-none flex-1">
+                                    <FormLabel className="text-primary font-medium flex items-center gap-2">
+                                      <GraduationCap className="w-4 h-4" />
+                                      Colação de Grau
                                     </FormLabel>
                                     <p className="text-xs text-muted-foreground">
-                                      Confirmo minha presença no evento
+                                      14/08 às 19:30 • Veredas do Lago
+                                    </p>
+                                    <p className="text-xs font-semibold text-primary mt-1">
+                                      R$ 60,00 por pessoa
+                                    </p>
+                                    <p className="text-[10px] text-muted-foreground/70 mt-1">
+                                      Crianças até 5 anos no colo: grátis. A partir de 5 anos: convite individual.
                                     </p>
                                   </div>
                                 </FormItem>
@@ -285,34 +322,37 @@ export function RSVPSection() {
                             }}
                           />
                           <FormField
-                            key="not-attending"
+                            key="jantar"
                             control={form.control}
                             name="events"
                             render={({ field }) => {
                               return (
                                 <FormItem
-                                  key="not-attending"
-                                  className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4 hover:bg-muted/50 transition-colors cursor-pointer"
+                                  key="jantar"
+                                  className={`flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4 transition-colors cursor-pointer ${hasJantar ? 'border-secondary bg-secondary/5' : 'hover:bg-muted/50'}`}
                                 >
                                   <FormControl>
                                     <Checkbox
-                                      checked={field.value?.includes("not-attending")}
+                                      checked={field.value?.includes("jantar")}
                                       onCheckedChange={(checked) => {
                                         if (checked) {
-                                          const filtered = field.value?.filter(v => v !== "attending") || [];
-                                          field.onChange([...filtered, "not-attending"]);
+                                          field.onChange([...(field.value || []), "jantar"]);
                                         } else {
-                                          field.onChange(field.value?.filter(v => v !== "not-attending"));
+                                          field.onChange(field.value?.filter(v => v !== "jantar"));
                                         }
                                       }}
                                     />
                                   </FormControl>
-                                  <div className="space-y-1 leading-none">
-                                    <FormLabel className="text-red-500 font-medium">
-                                      ✗ Não vou comparecer
+                                  <div className="space-y-1 leading-none flex-1">
+                                    <FormLabel className="text-secondary font-medium flex items-center gap-2">
+                                      <UtensilsCrossed className="w-4 h-4" />
+                                      Jantar no Mirante
                                     </FormLabel>
                                     <p className="text-xs text-muted-foreground">
-                                      Infelizmente não poderei ir
+                                      14/08 às 22:00
+                                    </p>
+                                    <p className="text-xs font-semibold text-secondary mt-1">
+                                      Cada convidado paga o seu
                                     </p>
                                   </div>
                                 </FormItem>
@@ -400,6 +440,47 @@ export function RSVPSection() {
                     )}
                   />
 
+                  {/* Price Summary */}
+                  <AnimatePresence>
+                    {hasColacao && (
+                      <motion.div
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: "auto" }}
+                        exit={{ opacity: 0, height: 0 }}
+                        className="overflow-hidden"
+                      >
+                        <div className="bg-primary/5 border border-primary/10 rounded-xl p-5 space-y-3">
+                          <h4 className="font-heading text-lg font-bold text-primary">Resumo de Valores</h4>
+                          <div className="space-y-2 text-sm">
+                            {hasColacao && (
+                              <div className="flex justify-between">
+                                <span className="text-muted-foreground">Colação de Grau ({guestCount + 1} pessoa(s) × R$ 60,00)</span>
+                                <span className="font-semibold text-primary">R$ {totalPrice.toFixed(2)}</span>
+                              </div>
+                            )}
+                            {hasJantar && (
+                              <div className="flex justify-between">
+                                <span className="text-muted-foreground">Jantar no Mirante</span>
+                                <span className="font-semibold text-secondary">Cada um paga o seu</span>
+                              </div>
+                            )}
+                            {hasColacao && (
+                              <>
+                                <div className="border-t border-primary/10 pt-2 flex justify-between">
+                                  <span className="font-semibold text-primary">Total Colação</span>
+                                  <span className="font-bold text-primary text-lg">R$ {totalPrice.toFixed(2)}</span>
+                                </div>
+                              </>
+                            )}
+                          </div>
+                          <p className="text-[10px] text-muted-foreground/70 italic">
+                            * Crianças até 5 anos no colo são toleradas sem custo na colação. A partir de 5 anos, precisam de convite individual (R$ 60,00).
+                          </p>
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+
                   <Button
                     type="submit"
                     className="w-full bg-[#25D366] hover:bg-[#20ba59] text-white font-bold py-4 md:py-6 text-base md:text-lg rounded-xl min-h-[52px] flex items-center justify-center gap-2"
@@ -411,7 +492,6 @@ export function RSVPSection() {
               </Form>
             )}
 
-            {/* Decorative Top Border */}
             <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-secondary to-transparent opacity-50" />
           </motion.div>
         </div>

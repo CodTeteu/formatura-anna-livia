@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { Calendar, MapPin, Clock, Shirt, Car, Info } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import venueImg from "@assets/generated_images/ana_ceremony.jpg";
+import venueImg from "@assets/generated_images/ceremony_theater_interior.png";
 
 export function CeremonySection() {
   return (
@@ -34,12 +34,12 @@ export function CeremonySection() {
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                 />
                 <div className="absolute inset-0 bg-black/40 flex flex-col items-center justify-center text-white">
-                  <span className="text-5xl font-script mb-2">21</span>
-                  <span className="text-xl uppercase tracking-widest font-heading">Fevereiro</span>
+                  <span className="text-5xl font-script mb-2">14</span>
+                  <span className="text-xl uppercase tracking-widest font-heading">Agosto</span>
                   <span className="text-3xl font-script mt-2">19:30</span>
                   <div className="mt-4 px-4 py-1 border border-white/30 rounded-full bg-black/20 backdrop-blur-sm">
                     <p className="text-[10px] uppercase tracking-[0.2em] font-medium">
-                      Confirmar presença até 11/02
+                      Confirmar presença até 20/07
                     </p>
                   </div>
                 </div>
@@ -47,19 +47,25 @@ export function CeremonySection() {
               <CardContent className="p-8 text-center bg-card">
                 <h3 className="font-heading text-2xl text-primary mb-4 font-bold">Data e hora</h3>
                 <p className="text-muted-foreground mb-6 leading-relaxed">
-                  A cerimônia de formatura será transmitida ao vivo. Em seguida, celebraremos essa conquista com um jantar comemorativo que iniciará as 19:30.
-                  <span className="block mt-2 text-primary font-semibold">Confirmar presença até 11/02.</span>
+                  A cerimônia de colação de grau será um momento especial de celebração.
+                  <span className="block mt-2 text-primary font-semibold">Confirmar presença até 20/07.</span>
+                  <span className="block mt-2 text-sm text-muted-foreground/80">
+                    Serão disponibilizados 10 convites para a colação. Os demais convidados poderão adquirir seu convite por R$ 60,00.
+                  </span>
+                  <span className="block mt-1 text-sm text-muted-foreground/80">
+                    Crianças até 5 anos (no colo) são toleradas sem custo. A partir de 5 anos, precisam de cadeira individual e pagam convite.
+                  </span>
                 </p>
                 <div className="flex justify-center">
                   <Button
                     variant="outline"
                     className="border-secondary text-primary hover:bg-secondary/10"
                     onClick={() => {
-                      const eventTitle = "Formatura Ana Luiza - Radiologia";
-                      const eventDetails = "A cerimônia de formatura será transmitida ao vivo. Em seguida, celebraremos essa conquista com um jantar comemorativo que iniciará as 19:30. Confirmar presença até 11/02.";
-                      const eventLocation = "Av. Armando Fajardo, 2353 - Igara, Canoas - RS";
-                      const startDate = "20260221T193000";
-                      const endDate = "20260221T223000";
+                      const eventTitle = "Formatura Anna Lívia - Enfermagem";
+                      const eventDetails = "Cerimônia de colação de grau - Veredas do Lago. Confirmar presença até 20/07.";
+                      const eventLocation = "Veredas do Lago, Araguaína - TO";
+                      const startDate = "20260814T193000";
+                      const endDate = "20260814T213000";
 
                       // Detect device type
                       const userAgent = navigator.userAgent.toLowerCase();
@@ -70,12 +76,9 @@ export function CeremonySection() {
                       const calParams = `action=TEMPLATE&text=${encodeURIComponent(eventTitle)}&dates=${startDate}/${endDate}&details=${encodeURIComponent(eventDetails)}&location=${encodeURIComponent(eventLocation)}`;
 
                       if (isAndroid || isIOS) {
-                        // Mobile: Try to open app first, fallback to web
-                        // Use the standard web URL which Android/iOS will prompt to open in app
                         const mobileUrl = `https://calendar.google.com/calendar/r/eventedit?${calParams}`;
                         window.location.href = mobileUrl;
                       } else {
-                        // Desktop: Open in new tab
                         const webUrl = `https://calendar.google.com/calendar/render?${calParams}`;
                         window.open(webUrl, '_blank');
                       }
@@ -99,25 +102,25 @@ export function CeremonySection() {
             <Card className="h-full border-none shadow-xl overflow-hidden group">
               <div className="relative h-64 bg-muted overflow-hidden">
                 <img
-                  src="https://lh3.googleusercontent.com/gps-cs-s/AG0ilSzPyMg-pH4etAp68AXMIZxAgv9D8bcskFo0Jmgu-EK3UwxUxmiOf9wK8nx_3CNyahepva8ukLrD-9mrtI_W8gwWvzTs_Ww8N-Fyz-iHdfB9iOYmjUSQUc8d27gPAuGkzmpG-bCtuw=w408-h544-k-no"
-                  alt="Pizzaria Deliciatta Gourmet"
+                  src={venueImg}
+                  alt="Veredas do Lago"
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-6">
-                  <h3 className="text-white font-script text-4xl">Pizzaria Deliciatta Gourmet</h3>
+                  <h3 className="text-white font-script text-4xl">Veredas do Lago</h3>
                 </div>
               </div>
               <CardContent className="p-8 text-center bg-card">
                 <h3 className="font-heading text-2xl text-primary mb-4 font-bold">Localização</h3>
                 <p className="text-muted-foreground mb-2">
-                  Av. Armando Fajardo, 2353 - Igara, Canoas - RS
+                  Veredas do Lago - Araguaína, TO
                 </p>
                 <p className="text-primary font-medium mb-6">
                   19:30 Horas
                 </p>
                 <div className="flex flex-col sm:flex-row justify-center gap-4">
                   <a
-                    href="https://maps.app.goo.gl/FoghBrwrRGTPhQjx5"
+                    href="https://www.google.com/maps/search/Veredas+do+Lago+Araguai%C3%ABna+TO"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -127,7 +130,7 @@ export function CeremonySection() {
                     </Button>
                   </a>
                   <a
-                    href="https://waze.com/ul?q=Av.%20Armando%20Fajardo,%202353%20-%20Igara,%20Canoas%20-%20RS"
+                    href="https://waze.com/ul?q=Veredas%20do%20Lago%20Aragua%C3%ADna%20TO"
                     target="_blank"
                     rel="noopener noreferrer"
                   >

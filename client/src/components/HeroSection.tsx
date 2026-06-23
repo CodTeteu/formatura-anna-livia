@@ -1,8 +1,8 @@
 import { useRef, useState, useEffect } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { ChevronDown } from "lucide-react";
-import heroBg from "@assets/generated_images/cinematic_graduation_hero_background.png";
-import heroMe from "/assets/hero_ana.jpg";
+import heroMobile from "/assets/hero_anna_mobile.jpg";
+import heroPC from "/assets/hero_anna_pc.jpg";
 import { useImageLoad } from "@/hooks/useImageLoad";
 
 export function HeroSection() {
@@ -17,8 +17,8 @@ export function HeroSection() {
   const opacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
 
   const calculateTimeLeft = () => {
-    // Set target date: Feb 21, 2026 at 19:30:00
-    const difference = +new Date("2026-02-21T19:30:00") - +new Date();
+    // Set target date: Aug 14, 2026 at 19:30:00
+    const difference = +new Date("2026-08-14T19:30:00") - +new Date();
 
     if (difference > 0) {
       return {
@@ -68,10 +68,20 @@ export function HeroSection() {
         className="absolute inset-0 z-0"
         style={{ y: backgroundY }}
       >
+        {/* Mobile Hero */}
         <img
-          src={heroMe}
-          alt="Ana Luiza Hero"
-          className="w-full h-full object-cover object-[center_20%]"
+          src={heroMobile}
+          alt="Anna Lívia Hero"
+          className="w-full h-full object-cover block md:hidden"
+          fetchPriority="high"
+          loading="eager"
+          onLoad={() => setHeroLoaded(true)}
+        />
+        {/* PC Hero */}
+        <img
+          src={heroPC}
+          alt="Anna Lívia Hero"
+          className="w-full h-full object-cover hidden md:block"
           fetchPriority="high"
           loading="eager"
           onLoad={() => setHeroLoaded(true)}
@@ -90,7 +100,7 @@ export function HeroSection() {
           transition={{ duration: 1, delay: 0.4 }}
           className="font-script text-6xl md:text-8xl lg:text-9xl text-white mb-4 drop-shadow-xl whitespace-nowrap"
         >
-          Ana Luiza
+          Anna Lívia
         </motion.h1>
 
         <motion.p
@@ -99,7 +109,7 @@ export function HeroSection() {
           transition={{ duration: 0.8, delay: 0.6 }}
           className="text-white/90 text-lg md:text-xl font-heading tracking-[0.3em] uppercase"
         >
-          Radiologia
+          Enfermagem
         </motion.p>
       </motion.div>
 
