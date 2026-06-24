@@ -5,6 +5,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import Home from "@/pages/Home";
 import Admin from "@/pages/Admin";
+import { GiftListPage } from "@/pages/GiftListPage";
 import NotFound from "@/pages/not-found";
 
 const routerBase =
@@ -17,6 +18,7 @@ function Router() {
     <Switch>
       <Route path="/" component={Home} />
       <Route path="/admin" component={Admin} />
+      <Route path="/lista-presentes" component={GiftListPage} />
       <Route component={NotFound} />
     </Switch>
   );
