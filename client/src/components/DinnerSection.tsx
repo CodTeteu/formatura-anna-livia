@@ -1,19 +1,18 @@
 import { motion } from "framer-motion";
 import menuCardBg from "@assets/generated_images/menu_card.png";
-import { MapPin, Clock, Users } from "lucide-react";
 
 export function DinnerSection() {
     return (
-        <section id="dinner" className="py-16 md:py-24 relative overflow-hidden">
+        <section id="cardapio" className="py-16 md:py-24 relative overflow-hidden">
             <div className="absolute inset-0 bg-black/5 pointer-events-none z-10" />
 
             <div className="container mx-auto px-5 md:px-4 relative z-10">
                 <div className="text-center mb-10 md:mb-16">
                     <p className="font-body text-secondary uppercase tracking-[0.3em] text-xs font-semibold mb-4">
-                        Após a Cerimônia
+                        Cardápio
                     </p>
                     <h2 className="font-script text-4xl md:text-6xl text-primary mb-4">
-                        Jantar no Mirante
+                        Jantar de Formatura
                     </h2>
                     <div className="w-24 h-[2px] bg-gradient-to-r from-transparent via-secondary to-transparent mx-auto" />
                 </div>
@@ -35,55 +34,43 @@ export function DinnerSection() {
                             }}
                         >
                             <div className="border border-secondary/30 h-full p-4 md:p-6 flex flex-col items-center text-center">
-                                <p className="font-heading text-secondary tracking-widest text-sm uppercase mb-2">Comemoração</p>
-                                <h2 className="font-script text-3xl md:text-5xl mb-4 text-primary">Mirante</h2>
-
-                                <div className="flex flex-col items-center gap-2 mb-6 text-slate-600 text-sm">
-                                    <p className="flex items-center gap-1.5">
-                                        <Clock className="w-4 h-4 text-secondary" />
-                                        14/08 às 22:00
-                                    </p>
-                                    <p className="flex items-center gap-1.5">
-                                        <MapPin className="w-4 h-4 text-secondary" />
-                                        Mirante - Araguaína, TO
-                                    </p>
-                                </div>
+                                <p className="font-heading text-secondary tracking-widest text-sm uppercase mb-2">Cardápio</p>
+                                <h2 className="font-script text-3xl md:text-5xl mb-4 text-primary">Rodízio de Massas</h2>
 
                                 <div className="w-16 h-0.5 bg-secondary/50 mb-6" />
 
-                                <div className="space-y-4 w-full max-w-sm text-center mb-6">
-                                    <p className="font-body text-slate-700 text-sm leading-relaxed">
-                                        Após a colação de grau, continuaremos a celebração com um jantar especial no Mirante.
-                                    </p>
-                                    <p className="font-body text-slate-700 text-sm leading-relaxed font-semibold text-primary">
-                                        Cada convidado paga o seu jantar.
-                                    </p>
-                                </div>
-
-                                <div className="w-full border-t border-dashed border-secondary/40 my-6" />
-
-                                <div className="w-full max-w-sm">
-                                    <h3 className="font-heading text-lg font-bold text-primary mb-4 uppercase tracking-wide flex items-center justify-center gap-2">
-                                        <Users className="w-5 h-5" />
-                                        Regras de Valores
-                                    </h3>
-                                    <div className="space-y-3">
-                                        <div className="flex justify-between items-center bg-primary/5 rounded-lg px-4 py-3">
-                                            <span className="font-body text-sm text-slate-700">Crianças (0 a 5 anos)</span>
-                                            <span className="font-heading text-lg text-primary font-bold">Grátis</span>
-                                        </div>
-                                        <div className="flex justify-between items-center bg-primary/5 rounded-lg px-4 py-3">
-                                            <span className="font-body text-sm text-slate-700">Crianças (6 a 9 anos)</span>
-                                            <span className="font-heading text-lg text-primary font-bold">Meia</span>
-                                        </div>
-                                        <div className="flex justify-between items-center bg-primary/5 rounded-lg px-4 py-3">
-                                            <span className="font-body text-sm text-slate-700">A partir de 10 anos</span>
-                                            <span className="font-heading text-lg text-primary font-bold">Integral</span>
-                                        </div>
+                                <div className="space-y-6 w-full max-w-sm text-center">
+                                    {/* Entradas */}
+                                    <div>
+                                        <h3 className="font-heading text-xl font-bold text-primary mb-2 uppercase tracking-wide">Entradas</h3>
+                                        <p className="font-body text-slate-700 italic text-sm">
+                                            Batata frita, bolinho de mandioca com carne de sol, quibe frito, croquete, anel de cebola, pizzas variadas.
+                                        </p>
                                     </div>
-                                    <p className="text-xs text-slate-500 mt-4 italic">
-                                        * Valores referentes ao jantar no Mirante. Cada convidado paga o seu.
-                                    </p>
+
+                                    {/* Massas */}
+                                    <div>
+                                        <h3 className="font-heading text-xl font-bold text-primary mb-2 uppercase tracking-wide">Massas</h3>
+                                        <p className="font-body text-slate-700 italic text-sm">
+                                            Macarrão ao alho e óleo, macarrão à bolonhesa, lasanha de frango, lasanha à bolonhesa.
+                                        </p>
+                                    </div>
+
+                                    {/* Bebidas */}
+                                    <div>
+                                        <h3 className="font-heading text-xl font-bold text-primary mb-2 uppercase tracking-wide">Bebidas Inclusas</h3>
+                                        <p className="font-body text-slate-700 italic text-sm">
+                                            Água sem gás, refrigerante, 2 tipos de suco (exceto laranja).
+                                        </p>
+                                    </div>
+
+                                    {/* Sobremesas */}
+                                    <div>
+                                        <h3 className="font-heading text-xl font-bold text-primary mb-2 uppercase tracking-wide">Sobremesas</h3>
+                                        <p className="font-body text-slate-700 italic text-sm">
+                                            Pizza doce de brigadeiro com sorvete, pizza doce de banana com canela, pizza doce de goiabada com queijo.
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
 
