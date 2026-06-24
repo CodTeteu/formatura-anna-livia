@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { Calendar, MapPin, Clock, Shirt, Car, Info } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import venueImg from "@assets/generated_images/ceremony_theater_interior.png";
+import ceremonyBg from "/assets/ceremony_bg.jpg";
 
 export function CeremonySection() {
   return (
@@ -29,11 +29,11 @@ export function CeremonySection() {
             <Card className="h-full border-none shadow-xl overflow-hidden group">
               <div className="relative h-64 overflow-hidden">
                 <img
-                  src={venueImg}
+                  src={ceremonyBg}
                   alt="Local da Comemoração"
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                 />
-                <div className="absolute inset-0 bg-black/40 flex flex-col items-center justify-center text-white">
+                <div className="absolute inset-0 bg-black/40 flex flex-col items-end justify-center text-white pr-8 md:pr-12">
                   <span className="text-5xl font-script mb-2">14</span>
                   <span className="text-xl uppercase tracking-widest font-heading">Agosto</span>
                   <span className="text-3xl font-script mt-2">19:30</span>
@@ -124,7 +124,7 @@ export function CeremonySection() {
             <Card className="h-full border-none shadow-xl overflow-hidden group">
               <div className="relative h-64 bg-muted overflow-hidden">
                 <img
-                  src={venueImg}
+                  src={ceremonyBg}
                   alt="Veredas do Lago"
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                 />
