@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import ceremonyBg from "/assets/ceremony_bg.jpg";
 import veredasImg from "/assets/veredas_do_lago.png";
+import miranteImg from "/assets/mirante.jpg";
 
 export function CeremonySection() {
   return (
@@ -131,11 +132,14 @@ export function CeremonySection() {
             transition={{ duration: 0.6, delay: 0.3 }}
           >
             <Card className="h-full border-none shadow-xl overflow-hidden group">
-              <div className="relative h-56 bg-muted overflow-hidden flex items-center justify-center bg-gradient-to-br from-primary to-primary/80">
-                <div className="text-center text-white p-6">
-                  <Clock className="w-10 h-10 mx-auto mb-3 text-secondary" />
-                  <h3 className="font-script text-3xl mb-1">Jantar</h3>
-                  <p className="text-white/70 text-sm">Restaurante Mirante</p>
+              <div className="relative h-56 bg-muted overflow-hidden">
+                <img
+                  src={miranteImg}
+                  alt="Restaurante Mirante"
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-6">
+                  <h3 className="text-white font-script text-3xl">Mirante</h3>
                 </div>
               </div>
               <CardContent className="p-6 text-center bg-card">
