@@ -7,8 +7,8 @@ import { Button } from "@/components/ui/button";
 
 const assetPath = (path: string) => `${import.meta.env.BASE_URL}${path.replace(/^\//, "")}`;
 
-// Generate gallery photos array (21 photos)
-const PHOTOS = Array.from({ length: 21 }, (_, i) => ({
+// Generate gallery photos array (37 photos)
+const PHOTOS = Array.from({ length: 37 }, (_, i) => ({
   src: assetPath(`/assets/gallery/gallery_${(i + 1).toString().padStart(2, "0")}.jpg`),
   alt: `Momento especial ${i + 1}`,
 }));
