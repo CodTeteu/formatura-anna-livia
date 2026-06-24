@@ -50,12 +50,6 @@ export function CeremonySection() {
                 <p className="text-muted-foreground mb-6 leading-relaxed">
                   A cerimônia de colação de grau será um momento especial de celebração.
                   <span className="block mt-2 text-primary font-semibold">Confirmar presença até 20/07.</span>
-                  <span className="block mt-2 text-sm text-muted-foreground/80">
-                    Serão disponibilizados 10 convites para a colação. Os demais convidados poderão adquirir seu convite por R$ 60,00.
-                  </span>
-                  <span className="block mt-1 text-sm text-muted-foreground/80">
-                    Crianças até 5 anos (no colo) são toleradas sem custo. A partir de 5 anos, precisam de cadeira individual e pagam convite.
-                  </span>
                 </p>
 
                 {/* Pricing */}
