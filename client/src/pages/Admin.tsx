@@ -87,7 +87,7 @@ function LoginForm() {
                                 <Input
                                     id="email"
                                     type="email"
-                                    placeholder="admin@example.com"
+                                    placeholder="admin@admin.com"
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
                                     className="pl-10 h-11 bg-white/50 border-gray-200 focus:border-secondary transition-all"
