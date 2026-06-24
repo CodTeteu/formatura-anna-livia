@@ -3,6 +3,7 @@ import { Quote } from "lucide-react";
 
 const assetPath = (path: string) => `${import.meta.env.BASE_URL}${path.replace(/^\//, "")}`;
 const graduateImg = assetPath("/assets/gallery/gallery_01.jpg");
+const graduateImgMobile = assetPath("/assets/graduate_anna_mobile.jpg");
 
 export function GraduateSection() {
   return (
@@ -21,10 +22,17 @@ export function GraduateSection() {
       {/* Section 1: Image (Mobile: Full Bleed / Desktop: Left Side) */}
       <div className="relative w-full h-[60vh] min-h-[500px] md:h-auto md:min-h-0 md:aspect-[3/4] md:w-[45%] md:flex-shrink-0 md:rounded-2xl md:shadow-2xl overflow-hidden z-10">
         <div className="absolute inset-0 z-0">
+          {/* Mobile Image */}
+          <img
+            src={graduateImgMobile}
+            alt="Anna Lívia"
+            className="w-full h-full object-cover object-[center_15%] block md:hidden"
+          />
+          {/* Desktop Image */}
           <img
             src={graduateImg}
             alt="Anna Lívia"
-            className="w-full h-full object-cover object-[center_15%]"
+            className="w-full h-full object-cover object-[center_15%] hidden md:block"
           />
         </div>
 
