@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "wouter";
 import { motion } from "framer-motion";
 import {
@@ -13,7 +13,8 @@ import {
     Lock,
     LogOut,
     GraduationCap,
-    Loader2
+    Loader2,
+    Gift
 } from "lucide-react";
 import * as XLSX from "xlsx";
 import { Button } from "@/components/ui/button";
@@ -540,7 +541,135 @@ export default function Admin() {
                         )}
                     </CardContent>
                 </Card>
+
+                {/* Gift Selections Section */}
+                <GiftSelectionsSection />
             </main>
+        </div>
+    );
+}
+
+// ===========================================
+// GIFT SELECTIONS SECTION
+// ===========================================
+function GiftSelectionsSection() {
+    const [giftSelections, setGiftSelections] = useState<any[]>([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchGifts = async () => {
+            const { supabase } = await import("@/lib/supabase");
+            const { data, error } = await supabase
+                .from('gift_selections')
+                .select('*')
+                .order('created_at', { ascending: false });
+
+            if (!error && data) {
+                setGiftSelections(data);
+            }
+            setLoading(false);
+        };
+        fetchGifts();
+    }, []);
+
+    const handleDelete = async (id: string) => {
+        const { supabase } = await import("@/lib/supabase");
+        await supabase.from('gift_selections').delete().eq('id', id);
+        setGiftSelections(prev => prev.filter(s => s.id !== id));
+    };
+
+    return (
+        <div className="mt-10">
+            <h2 className="font-heading text-2xl font-bold text-primary mb-6 flex items-center gap-3">
+                <Gift className="w-6 h-6 text-secondary" />
+                Seleções de Presentes
+            </h2>
+            <Card className="border-none shadow-xl shadow-black/5 bg-white overflow-hidden">
+                <CardContent className="p-0">
+                    {loading ? (
+                        <div className="flex items-center justify-center py-24">
+                            <Loader2 className="w-8 h-8 animate-spin text-primary" />
+                        </div>
+                    ) : giftSelections.length === 0 ? (
+                        <div className="flex flex-col items-center justify-center py-24 text-muted-foreground bg-gray-50/50">
+                            <Gift className="w-10 h-10 opacity-30 mb-4" />
+                            <h3 className="text-xl font-heading font-semibold text-gray-900 mb-2">Nenhuma seleção de presente</h3>
+                            <p className="text-sm">As seleções de presentes aparecerão aqui.</p>
+                        </div>
+                    ) : (
+                        <div className="overflow-x-auto">
+                            <Table>
+                                <TableHeader>
+                                    <TableRow className="bg-gray-50/80 border-b border-primary/10">
+                                        <TableHead className="font-semibold text-primary py-5 pl-6">Convidado</TableHead>
+                                        <TableHead className="font-semibold text-primary py-5">Presentes</TableHead>
+                                        <TableHead className="font-semibold text-primary py-5">Valor</TableHead>
+                                        <TableHead className="font-semibold text-primary py-5">Status</TableHead>
+                                        <TableHead className="font-semibold text-primary py-5">Data</TableHead>
+                                        <TableHead className="w-[80px] py-5"></TableHead>
+                                    </TableRow>
+                                </TableHeader>
+                                <TableBody>
+                                    {giftSelections.map((selection: any) => (
+                                        <motion.tr
+                                            key={selection.id}
+                                            initial={{ opacity: 0, x: -10 }}
+                                            animate={{ opacity: 1, x: 0 }}
+                                            className="hover:bg-primary/[0.02] transition-colors border-b border-gray-100 last:border-0"
+                                        >
+                                            <TableCell className="font-medium text-gray-900 py-4 pl-6">
+                                                <div className="flex items-center gap-3">
+                                                    <div className="w-8 h-8 rounded-full bg-secondary/20 flex items-center justify-center text-secondary text-xs font-bold shadow-sm">
+                                                        <Gift className="w-4 h-4" />
+                                                    </div>
+                                                    {selection.guest_name}
+                                                </div>
+                                            </TableCell>
+                                            <TableCell>
+                                                <div className="text-sm max-w-[250px]">
+                                                    {Array.isArray(selection.selected_gifts) &&
+                                                        selection.selected_gifts.map((g: any, i: number) => (
+                                                            <span key={i} className="inline-block bg-primary/5 text-primary text-xs px-2 py-1 rounded mr-1 mb-1">
+                                                                {g.name}
+                                                            </span>
+                                                        ))
+                                                    }
+                                                </div>
+                                            </TableCell>
+                                            <TableCell className="font-semibold text-primary">
+                                                {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(selection.total_value || 0)}
+                                            </TableCell>
+                                            <TableCell>
+                                                <Badge variant="secondary" className={`font-normal border-0 ${
+                                                    selection.payment_status === 'paid' ? 'bg-green-100 text-green-700' :
+                                                    selection.payment_status === 'confirmed' ? 'bg-blue-100 text-blue-700' :
+                                                    'bg-yellow-100 text-yellow-700'
+                                                }`}>
+                                                    {selection.payment_status === 'paid' ? 'Pago' :
+                                                     selection.payment_status === 'confirmed' ? 'Confirmado' : 'Pendente'}
+                                                </Badge>
+                                            </TableCell>
+                                            <TableCell className="text-gray-500 text-sm whitespace-nowrap">
+                                                {new Date(selection.created_at).toLocaleDateString("pt-BR")}
+                                            </TableCell>
+                                            <TableCell>
+                                                <Button
+                                                    variant="ghost"
+                                                    size="icon"
+                                                    onClick={() => handleDelete(selection.id)}
+                                                    className="text-gray-400 hover:text-red-500 hover:bg-red-50 transition-all rounded-full"
+                                                >
+                                                    <Trash2 className="w-4 h-4" />
+                                                </Button>
+                                            </TableCell>
+                                        </motion.tr>
+                                    ))}
+                                </TableBody>
+                            </Table>
+                        </div>
+                    )}
+                </CardContent>
+            </Card>
         </div>
     );
 }

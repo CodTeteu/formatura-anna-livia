@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "wouter";
 import { ArrowLeft, Gift, Search, X, ShoppingCart, Plus, Filter, Check, Copy, QrCode, Loader2 } from "lucide-react";
 import { QRCodeSVG } from "qrcode.react";
+import { supabase } from "@/lib/supabase";
 
 const PIX_KEY = "06010236177";
 const PIX_NAME = "ANNA LIVIA CARVALHO";
@@ -114,10 +115,25 @@ export function GiftListPage() {
         } catch { /* silent */ }
     };
 
-    const sendWhatsApp = () => {
+    const sendWhatsApp = async () => {
         const selectedNames = selectedGifts.length > 0
             ? selectedGifts.map(id => GIFTS.find(g => g.id === id)?.name).filter(Boolean).join(", ")
             : "um presente";
+
+        // Save to Supabase
+        try {
+            await supabase.from('gift_selections').insert([{
+                guest_name: "Convidado",
+                guest_phone: WHATSAPP_NUMBER,
+                selected_gifts: selectedGifts.map(id => GIFTS.find(g => g.id === id)).filter(Boolean),
+                total_value: selectedTotal,
+                payment_status: 'pending',
+                message: `Presente(s): ${selectedNames}`
+            }]);
+        } catch (err) {
+            console.error('Erro ao salvar seleção de presentes:', err);
+        }
+
         const message = `Olá! Acabei de fazer um PIX para presentear a Anna Lívia na formatura! 🎓\n\nPresente(s): ${selectedNames}\nValor: ${formatPrice(selectedTotal)}\n\nQue Deus abençoe essa nova fase! ❤️`;
         window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`, "_blank");
     };
