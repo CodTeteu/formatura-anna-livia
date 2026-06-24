@@ -123,7 +123,7 @@ export function GiftListPage() {
     };
 
     return (
-        <div className="gift-page min-h-screen font-body">
+        <div className="min-h-screen font-body">
             {/* Background */}
             <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden">
                 <div className="absolute top-0 right-0 w-96 h-96 bg-primary/5 rounded-full blur-3xl" />
