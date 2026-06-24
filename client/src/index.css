@@ -40,53 +40,53 @@
 :root {
   /* ========== MAIN COLORS ========== */
 
-  /* Background - Clean White */
-  --background: 0 0% 100%;
-  --foreground: 142 40% 12%;
+  /* Background - Off-white Cream (like the invitation) */
+  --background: 40 20% 96%;
+  --foreground: 100 15% 20%;
 
-  /* Primary - Dark Green (Enfermagem) */
-  --primary: 142 40% 20%;
+  /* Primary - Olive Forest Green (like the text in the image) */
+  --primary: 100 20% 25%;
   --primary-foreground: 0 0% 100%;
 
-  /* Secondary - Gold */
-  --secondary: 42 70% 50%;
+  /* Secondary - Muted Gold (like the decorative elements) */
+  --secondary: 38 50% 48%;
   --secondary-foreground: 0 0% 100%;
 
-  /* Accent - Soft Green */
-  --accent: 142 30% 90%;
-  --accent-foreground: 142 40% 15%;
+  /* Accent - Light Olive */
+  --accent: 100 15% 90%;
+  --accent-foreground: 100 20% 20%;
 
   /* ========== SUPPORT COLORS ========== */
 
-  --muted: 142 10% 95%;
-  --muted-foreground: 142 10% 40%;
-  --card: 0 0% 100%;
-  --card-foreground: 142 40% 12%;
-  --popover: 0 0% 100%;
-  --popover-foreground: 142 40% 12%;
-  --border: 142 10% 88%;
-  --input: 142 10% 88%;
-  --ring: 142 40% 20%;
+  --muted: 40 15% 92%;
+  --muted-foreground: 100 10% 45%;
+  --card: 40 20% 98%;
+  --card-foreground: 100 15% 20%;
+  --popover: 40 20% 98%;
+  --popover-foreground: 100 15% 20%;
+  --border: 40 15% 88%;
+  --input: 40 15% 88%;
+  --ring: 100 20% 25%;
   --destructive: 0 70% 50%;
   --destructive-foreground: 0 0% 100%;
   --radius: 0.75rem;
 }
 
 .dark {
-  --background: 142 30% 8%;
-  --foreground: 0 0% 97%;
-  --primary: 142 40% 45%;
+  --background: 100 15% 8%;
+  --foreground: 40 20% 96%;
+  --primary: 100 20% 50%;
   --primary-foreground: 0 0% 10%;
-  --secondary: 42 70% 55%;
+  --secondary: 38 50% 55%;
   --secondary-foreground: 0 0% 10%;
-  --accent: 142 30% 18%;
-  --accent-foreground: 0 0% 97%;
-  --muted: 142 15% 18%;
-  --muted-foreground: 142 10% 65%;
-  --card: 142 20% 12%;
-  --card-foreground: 0 0% 97%;
-  --popover: 142 20% 12%;
-  --popover-foreground: 0 0% 97%;
+  --accent: 100 15% 15%;
+  --accent-foreground: 40 20% 96%;
+  --muted: 100 10% 18%;
+  --muted-foreground: 100 10% 65%;
+  --card: 100 15% 12%;
+  --card-foreground: 40 20% 96%;
+  --popover: 100 15% 12%;
+  --popover-foreground: 40 20% 96%;
   --border: 142 15% 22%;
   --input: 142 15% 22%;
   --ring: 142 40% 45%;

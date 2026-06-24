@@ -56,6 +56,28 @@ export function CeremonySection() {
                     Crianças até 5 anos (no colo) são toleradas sem custo. A partir de 5 anos, precisam de cadeira individual e pagam convite.
                   </span>
                 </p>
+
+                {/* Pricing */}
+                <div className="bg-primary/5 border border-primary/10 rounded-xl p-4 mb-6">
+                  <div className="space-y-2 text-sm">
+                    <div className="flex justify-between">
+                      <span className="text-muted-foreground">Colação de Grau</span>
+                      <span className="font-semibold text-primary">R$ 60,00</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-muted-foreground">Jantar (Rodízio de Massas)</span>
+                      <span className="font-semibold text-primary">R$ 70,00</span>
+                    </div>
+                    <div className="border-t border-primary/10 pt-2 flex justify-between">
+                      <span className="font-bold text-primary">Total (Colação + Jantar)</span>
+                      <span className="font-bold text-primary text-lg">R$ 130,00</span>
+                    </div>
+                  </div>
+                  <p className="text-[10px] text-muted-foreground/70 mt-2 italic">
+                    * Jantar: cada convidado paga o seu. Crianças 0-5 anos grátis, 6-9 meia, 10+ integral.
+                  </p>
+                </div>
+
                 <div className="flex justify-center">
                   <Button
                     variant="outline"

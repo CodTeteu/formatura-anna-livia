@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "wouter";
 import { ArrowLeft, Gift, Search, X, ShoppingCart, Plus, Filter, Check, Copy, QrCode, Loader2 } from "lucide-react";
+import { QRCodeSVG } from "qrcode.react";
 
 const PIX_KEY = "06010236177";
 const PIX_NAME = "ANNA LIVIA CARVALHO";
@@ -122,7 +123,7 @@ export function GiftListPage() {
     };
 
     return (
-        <div className="min-h-screen font-body" style={{ background: "linear-gradient(135deg, #0a1a0a 0%, #0d2818 50%, #0a1a0a 100%)" }}>
+        <div className="min-h-screen font-body" style={{ background: "linear-gradient(135deg, #1a2a1a 0%, #1e3320 50%, #1a2a1a 100%)" }}>
             {/* Background */}
             <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden">
                 <div className="absolute top-0 right-0 w-96 h-96 bg-primary/5 rounded-full blur-3xl" />
@@ -331,12 +332,15 @@ export function GiftListPage() {
                                 </div>
                             )}
 
-                            {/* PIX Guidance */}
+                            {/* PIX QR Code */}
                             <div className="flex justify-center">
-                                <div className="flex w-full max-w-xs flex-col items-center rounded-2xl border-2 border-dashed border-secondary/30 bg-secondary/5 p-5 text-center shadow-lg">
-                                    <QrCode className="mb-3 h-10 w-10 text-secondary" />
-                                    <p className="text-sm font-bold text-white">Use a chave PIX abaixo</p>
-                                    <p className="mt-1 text-xs text-white/50">Copie a chave e faça o pagamento pelo seu banco</p>
+                                <div className="bg-white rounded-2xl p-4 shadow-lg">
+                                    <QRCodeSVG
+                                        value={`00020126580014BR.GOV.BCB.PIX0136${PIX_KEY}0212Anna Livia05200000BRBCentral PIX54040.005802BR5913ANNA LIVIA CARVALHO6009ARAGUAINA62070503***6304`}
+                                        size={200}
+                                        level="M"
+                                        includeMargin={false}
+                                    />
                                 </div>
                             </div>
 
