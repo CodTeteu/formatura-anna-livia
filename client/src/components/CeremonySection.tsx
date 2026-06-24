@@ -3,6 +3,7 @@ import { Calendar, MapPin, Clock, Shirt, Car, Info } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import ceremonyBg from "/assets/ceremony_bg.jpg";
+import veredasImg from "/assets/veredas_do_lago.png";
 
 export function CeremonySection() {
   return (
@@ -124,7 +125,7 @@ export function CeremonySection() {
             <Card className="h-full border-none shadow-xl overflow-hidden group">
               <div className="relative h-64 bg-muted overflow-hidden">
                 <img
-                  src={ceremonyBg}
+                  src={veredasImg}
                   alt="Veredas do Lago"
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                 />
