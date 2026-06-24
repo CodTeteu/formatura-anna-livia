@@ -7,11 +7,14 @@ import { Button } from "@/components/ui/button";
 
 const assetPath = (path: string) => `${import.meta.env.BASE_URL}${path.replace(/^\//, "")}`;
 
-// Generate gallery photos array (37 photos)
-const PHOTOS = Array.from({ length: 37 }, (_, i) => ({
-  src: assetPath(`/assets/gallery/gallery_${(i + 1).toString().padStart(2, "0")}.jpg`),
-  alt: `Momento especial ${i + 1}`,
-}));
+// Gallery photos with optional memorial overlays
+const PHOTOS = [
+  ...Array.from({ length: 37 }, (_, i) => ({
+    src: assetPath(`/assets/gallery/gallery_${(i + 1).toString().padStart(2, "0")}.jpg`),
+    alt: `Momento especial ${i + 1}`,
+    overlay: i === 15 ? "Em memória do meu avô Mauro Pfaiffer" : i === 16 ? "Em memória minha bisavó Coraci (Dindinha)" : i === 20 ? "Em memória primo Lucas" : null,
+  })),
+];
 
 export function GallerySection() {
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, align: "center" }, [
@@ -94,9 +97,17 @@ export function GallerySection() {
                     <img
                       src={photo.src}
                       alt={photo.alt}
-                      className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
+                      className="w-full h-full object-contain transition-transform duration-700 group-hover:scale-105"
                       loading="lazy"
                     />
+                    {/* Memorial Overlay - always visible */}
+                    {photo.overlay && (
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent flex items-end justify-center p-6 z-10">
+                        <p className="text-white font-heading text-sm md:text-base italic text-center drop-shadow-lg">
+                          {photo.overlay}
+                        </p>
+                      </div>
+                    )}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                     <div className="absolute bottom-0 left-0 right-0 p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-between">
                       <span className="text-white font-heading text-sm italic">
@@ -173,17 +184,27 @@ export function GallerySection() {
             </button>
 
             {/* Image */}
-            <motion.img
-              key={selectedPhoto}
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.9 }}
-              transition={{ duration: 0.2 }}
-              src={PHOTOS[selectedPhoto].src}
-              alt={PHOTOS[selectedPhoto].alt}
-              className="max-w-[90vw] max-h-[85vh] object-contain rounded-lg"
-              onClick={(e) => e.stopPropagation()}
-            />
+            <div className="relative">
+              <motion.img
+                key={selectedPhoto}
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.9 }}
+                transition={{ duration: 0.2 }}
+                src={PHOTOS[selectedPhoto].src}
+                alt={PHOTOS[selectedPhoto].alt}
+                className="max-w-[90vw] max-h-[85vh] object-contain rounded-lg"
+                onClick={(e) => e.stopPropagation()}
+              />
+              {/* Memorial Overlay in Lightbox */}
+              {PHOTOS[selectedPhoto].overlay && (
+                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6 rounded-b-lg">
+                  <p className="text-white font-heading text-base md:text-lg italic text-center drop-shadow-lg">
+                    {PHOTOS[selectedPhoto].overlay}
+                  </p>
+                </div>
+              )}
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
