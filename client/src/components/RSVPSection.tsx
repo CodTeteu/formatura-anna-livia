@@ -469,7 +469,7 @@ Obrigada pelo convite!!`;
                                   Jantar no Mirante
                                 </FormLabel>
                                 <p className="text-xs text-muted-foreground">14/08 às 22:00</p>
-                                <p className="text-xs font-semibold text-secondary mt-1">Cada convidado paga o seu</p>
+                                <p className="text-xs font-semibold text-secondary mt-1">R$ 70,00 por pessoa</p>
                               </div>
                             </FormItem>
                           )}
@@ -571,8 +571,8 @@ Obrigada pelo convite!!`;
                           )}
                           {hasJantar && (
                             <div className="flex justify-between">
-                              <span className="text-muted-foreground">Jantar</span>
-                              <span className="font-semibold text-secondary">Cada um paga</span>
+                              <span className="text-muted-foreground">Jantar ({guestCount + 1} × R$ 70,00)</span>
+                              <span className="font-semibold text-primary">{formatPrice((guestCount + 1) * 70)}</span>
                             </div>
                           )}
                           <div className="border-t border-primary/10 pt-2 flex justify-between">

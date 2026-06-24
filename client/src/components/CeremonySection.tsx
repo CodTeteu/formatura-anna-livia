@@ -32,12 +32,13 @@ export function CeremonySection() {
                 <img
                   src={ceremonyBg}
                   alt="Local da Comemoração"
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  className="w-full h-full object-cover object-[center_20%] scale-125 transition-transform duration-700 group-hover:scale-[1.35]"
                 />
-                <div className="absolute inset-0 bg-black/40 flex flex-col items-end justify-center text-white pr-8 md:pr-12">
-                  <span className="text-5xl font-script mb-2">14</span>
-                  <span className="text-xl uppercase tracking-widest font-heading">Agosto</span>
-                  <span className="text-3xl font-script mt-2">19:30</span>
+                <div className="absolute inset-0 bg-gradient-to-r from-black/20 via-black/10 to-black/50" />
+                <div className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 text-white text-center">
+                  <span className="text-5xl font-script block mb-1">14</span>
+                  <span className="text-xl uppercase tracking-widest font-heading block">Agosto</span>
+                  <span className="text-3xl font-script block mt-2">19:30</span>
                   <div className="mt-4 px-4 py-1 border border-white/30 rounded-full bg-black/20 backdrop-blur-sm">
                     <p className="text-[10px] uppercase tracking-[0.2em] font-medium">
                       Confirmar presença até 20/07

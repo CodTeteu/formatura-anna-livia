@@ -60,15 +60,15 @@ export function GiftSection() {
                     >
                         <div className="aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl rotate-2 hover:rotate-0 transition-all duration-700 border-4 border-white/10">
                             <img
-                                src={assetPath("/assets/gallery/gallery_01.jpg")}
-                                alt="Anna Lívia"
+                                src={assetPath("/assets/gifts_section.jpg")}
+                                alt="Presentes"
                                 className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
                             />
                             <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
                         </div>
                         {/* Decorative small card */}
                         <div className="absolute -bottom-6 -left-6 bg-white p-4 rounded-lg shadow-xl -rotate-6 z-20 max-w-[180px] hidden sm:block">
-                            <p className="font-script text-2xl text-primary text-center">Enfermagem</p>
+                            <p className="font-script text-2xl text-primary text-center">Presentes</p>
                         </div>
                     </motion.div>
                 </div>

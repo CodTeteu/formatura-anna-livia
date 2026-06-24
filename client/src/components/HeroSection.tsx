@@ -91,7 +91,7 @@ export function HeroSection() {
 
       {/* Name and Course - Top */}
       <motion.div
-        className="absolute top-[15%] md:top-[20%] left-1/2 -translate-x-1/2 z-10 text-center px-4 w-full max-w-4xl"
+        className="absolute top-[25%] md:top-[20%] left-1/2 -translate-x-1/2 z-10 text-center px-4 w-full max-w-4xl"
         style={{ opacity }}
       >
         <motion.h1
