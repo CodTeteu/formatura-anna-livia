@@ -61,17 +61,17 @@ export function GraduateSection() {
                 graduação em Enfermagem, uma conquista construída com esforço, fé e amor pelo cuidado
                 ao próximo. É com grande carinho que convido você para compartilhar comigo este momento único.
               </p>
+              <p className="mt-4 font-heading font-bold text-primary">
+                Anna Lívia Carvalho
+              </p>
             </div>
 
             {/* Quote */}
             <div className="relative mb-6 py-6 px-8 max-w-2xl text-center md:text-left bg-primary/5 rounded-xl mx-auto md:mx-0">
               <Quote className="absolute top-0 left-1/2 md:left-8 w-8 h-8 text-secondary -translate-x-1/2 md:translate-x-0 -translate-y-1/2 fill-current bg-background md:bg-white/50 p-1.5 rounded-full" />
               <p className="font-heading italic text-lg md:text-2xl text-primary">
-                "É justo que muito custe o que muito vale"
+                "Há sonhos que exigem coragem, dedicação e perseverança para se tornarem realidade."
               </p>
-              <cite className="block mt-4 text-sm uppercase tracking-wider text-primary/70 not-italic">
-                — Santa Teresa d'Ávila
-              </cite>
             </div>
 
             {/* Info Grid */}

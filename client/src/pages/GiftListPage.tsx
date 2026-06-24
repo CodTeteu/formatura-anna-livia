@@ -122,7 +122,7 @@ export function GiftListPage() {
     };
 
     return (
-        <div className="min-h-screen bg-background font-body">
+        <div className="min-h-screen font-body" style={{ background: "linear-gradient(135deg, #0a1a0a 0%, #0d2818 50%, #0a1a0a 100%)" }}>
             {/* Background */}
             <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden">
                 <div className="absolute top-0 right-0 w-96 h-96 bg-primary/5 rounded-full blur-3xl" />
@@ -131,25 +131,25 @@ export function GiftListPage() {
 
             <div className="relative z-20">
                 {/* Header */}
-                <header className="bg-background/80 backdrop-blur-md border-b border-border sticky top-0 z-40 shadow-sm">
+                <header className="bg-[#0d1f12]/90 backdrop-blur-md border-b border-white/10 sticky top-0 z-40 shadow-sm">
                     <div className="container mx-auto px-4 py-4 md:py-6 flex justify-between items-center">
                         <div className="flex items-center gap-4">
-                            <Link to="/" className="text-foreground hover:text-primary transition-colors p-2 rounded-full hover:bg-muted">
+                            <Link to="/" className="text-white hover:text-secondary transition-colors p-2 rounded-full hover:bg-white/10">
                                 <ArrowLeft className="w-6 h-6" />
                             </Link>
                             <div>
-                                <h1 className="text-xl md:text-2xl font-script text-foreground">Lista de Presentes</h1>
-                                <p className="text-[10px] md:text-xs text-primary uppercase tracking-widest font-bold">Anna Lívia</p>
+                                <h1 className="text-xl md:text-2xl font-script text-white">Lista de Presentes</h1>
+                                <p className="text-[10px] md:text-xs text-secondary uppercase tracking-widest font-bold">Anna Lívia</p>
                             </div>
                         </div>
 
                         <button
                             onClick={() => setShowPixPanel(!showPixPanel)}
-                            className="relative p-2 text-foreground hover:text-primary transition-colors hidden md:block"
+                            className="relative p-2 text-white hover:text-secondary transition-colors hidden md:block"
                         >
                             <ShoppingCart className="w-6 h-6" />
                             {selectedGifts.length > 0 && (
-                                <span className="absolute -top-1 -right-1 bg-primary text-primary-foreground text-[10px] w-5 h-5 flex items-center justify-center rounded-full font-bold shadow-lg">
+                                <span className="absolute -top-1 -right-1 bg-secondary text-primary text-[10px] w-5 h-5 flex items-center justify-center rounded-full font-bold shadow-lg">
                                     {selectedGifts.length}
                                 </span>
                             )}
@@ -160,47 +160,47 @@ export function GiftListPage() {
                     <div className="container mx-auto px-4 pb-4 hidden md:block">
                         <div className="flex gap-4 max-w-2xl mx-auto">
                             <div className="flex-1 relative group">
-                                <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground w-5 h-5 group-focus-within:text-primary transition-colors" />
+                                <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-white/40 w-5 h-5 group-focus-within:text-secondary transition-colors" />
                                 <input
                                     type="text"
                                     placeholder="O que você procura?"
-                                    className="w-full bg-background border border-border text-foreground rounded-full py-3 pl-12 pr-4 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all placeholder:text-muted-foreground shadow-sm"
+                                    className="w-full bg-white/10 border border-white/10 text-white rounded-full py-3 pl-12 pr-4 focus:outline-none focus:border-secondary focus:ring-2 focus:ring-secondary/20 transition-all placeholder:text-white/40 shadow-sm"
                                     value={searchTerm}
                                     onChange={(e) => setSearchTerm(e.target.value)}
                                 />
                             </div>
                             <div className="relative">
                                 <select
-                                    className="appearance-none bg-background border border-border text-foreground rounded-full py-3 pl-6 pr-12 focus:outline-none focus:border-primary cursor-pointer hover:bg-muted transition-all shadow-sm"
+                                    className="appearance-none bg-white/10 border border-white/10 text-white rounded-full py-3 pl-6 pr-12 focus:outline-none focus:border-secondary cursor-pointer hover:bg-white/15 transition-all shadow-sm"
                                     value={selectedCategory}
                                     onChange={(e) => setSelectedCategory(e.target.value)}
                                 >
                                     {categories.map(cat => (
-                                        <option key={cat} value={cat}>{cat}</option>
+                                        <option key={cat} value={cat} className="bg-[#0d2818] text-white">{cat}</option>
                                     ))}
                                 </select>
-                                <Filter className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground w-4 h-4 pointer-events-none" />
+                                <Filter className="absolute right-4 top-1/2 -translate-y-1/2 text-white/40 w-4 h-4 pointer-events-none" />
                             </div>
                         </div>
                     </div>
                 </header>
 
                 {/* Mobile Filter */}
-                <div className="md:hidden sticky top-[73px] z-30 bg-background/95 backdrop-blur-md border-b border-border py-3 px-4 shadow-sm">
+                <div className="md:hidden sticky top-[73px] z-30 bg-[#0d1f12]/95 backdrop-blur-md border-b border-white/10 py-3 px-4 shadow-sm">
                     <div className="flex gap-3">
                         <div className="flex-1 relative">
-                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground w-4 h-4" />
+                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-white/40 w-4 h-4" />
                             <input
                                 type="text"
                                 placeholder="Buscar presente..."
-                                className="w-full bg-background border border-border text-foreground text-sm rounded-lg py-2 pl-9 pr-3 focus:outline-none focus:border-primary shadow-sm"
+                                className="w-full bg-white/10 border border-white/10 text-white text-sm rounded-lg py-2 pl-9 pr-3 focus:outline-none focus:border-secondary shadow-sm placeholder:text-white/40"
                                 value={searchTerm}
                                 onChange={(e) => setSearchTerm(e.target.value)}
                             />
                         </div>
                         <button
                             onClick={() => setIsMobileFilterOpen(true)}
-                            className={`flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-bold uppercase tracking-wider transition-all border shadow-sm ${selectedCategory !== "Todas" ? "bg-primary border-primary text-primary-foreground" : "bg-background border-border text-foreground"}`}
+                            className={`flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-bold uppercase tracking-wider transition-all border shadow-sm ${selectedCategory !== "Todas" ? "bg-secondary border-secondary text-primary" : "bg-white/10 border-white/10 text-white"}`}
                         >
                             <Filter className="w-4 h-4" />
                             <span className="max-w-[80px] truncate">{selectedCategory === "Todas" ? "Filtros" : selectedCategory}</span>
@@ -211,13 +211,13 @@ export function GiftListPage() {
                 {/* Gift Grid */}
                 <main className="container mx-auto px-4 py-8 md:py-12 max-w-7xl">
                     {filteredGifts.length === 0 ? (
-                        <div className="text-center py-16 bg-card rounded-2xl border border-border mx-auto max-w-2xl shadow-sm">
-                            <div className="w-20 h-20 bg-muted rounded-full flex items-center justify-center mx-auto mb-6 text-muted-foreground">
+                        <div className="text-center py-16 bg-white/5 rounded-2xl border border-white/10 mx-auto max-w-2xl shadow-sm">
+                            <div className="w-20 h-20 bg-white/10 rounded-full flex items-center justify-center mx-auto mb-6 text-white/40">
                                 <Search className="w-10 h-10" />
                             </div>
-                            <h3 className="text-2xl font-heading text-foreground mb-2">Nenhum presente encontrado</h3>
-                            <p className="text-muted-foreground">Tente buscar por outro termo ou categoria.</p>
-                            <button onClick={() => { setSearchTerm(""); setSelectedCategory("Todas"); }} className="mt-6 text-primary hover:text-foreground underline transition-colors">
+                            <h3 className="text-2xl font-heading text-white mb-2">Nenhum presente encontrado</h3>
+                            <p className="text-white/50">Tente buscar por outro termo ou categoria.</p>
+                            <button onClick={() => { setSearchTerm(""); setSelectedCategory("Todas"); }} className="mt-6 text-secondary hover:text-white underline transition-colors">
                                 Limpar filtros
                             </button>
                         </div>
@@ -229,8 +229,8 @@ export function GiftListPage() {
                                 return (
                                     <section key={category} className="scroll-mt-32" id={`cat-${category}`}>
                                         <div className="flex items-center gap-4 mb-6">
-                                            <h2 className="text-2xl md:text-3xl font-heading text-primary">{category}</h2>
-                                            <div className="h-px bg-border flex-1" />
+                                            <h2 className="text-2xl md:text-3xl font-heading text-secondary">{category}</h2>
+                                            <div className="h-px bg-white/10 flex-1" />
                                         </div>
                                         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6">
                                             {categoryGifts.map(gift => (
@@ -255,15 +255,15 @@ export function GiftListPage() {
             {isMobileFilterOpen && (
                 <div className="fixed inset-0 z-[60] md:hidden">
                     <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={() => setIsMobileFilterOpen(false)} />
-                    <div className="absolute bottom-0 left-0 right-0 bg-background rounded-t-3xl p-6 border-t border-border max-h-[80vh] overflow-y-auto shadow-2xl">
+                    <div className="absolute bottom-0 left-0 right-0 bg-[#0d2818] rounded-t-3xl p-6 border-t border-white/10 max-h-[80vh] overflow-y-auto shadow-2xl">
                         <div className="flex justify-between items-center mb-6">
-                            <h3 className="text-xl font-heading text-foreground">Filtrar por Categoria</h3>
-                            <button onClick={() => setIsMobileFilterOpen(false)} className="text-muted-foreground p-2"><X className="w-6 h-6" /></button>
+                            <h3 className="text-xl font-heading text-white">Filtrar por Categoria</h3>
+                            <button onClick={() => setIsMobileFilterOpen(false)} className="text-white/50 p-2"><X className="w-6 h-6" /></button>
                         </div>
                         <div className="grid grid-cols-2 gap-3">
                             {categories.map(cat => (
                                 <button key={cat} onClick={() => { setSelectedCategory(cat); setIsMobileFilterOpen(false); window.scrollTo({ top: 0, behavior: "smooth" }); }}
-                                    className={`p-4 rounded-xl text-sm font-bold uppercase tracking-wider text-left transition-all ${selectedCategory === cat ? "bg-primary text-primary-foreground shadow-lg" : "bg-muted text-foreground hover:bg-accent border border-border"}`}>
+                                    className={`p-4 rounded-xl text-sm font-bold uppercase tracking-wider text-left transition-all ${selectedCategory === cat ? "bg-secondary text-primary shadow-lg" : "bg-white/10 text-white hover:bg-white/15 border border-white/10"}`}>
                                     {cat}
                                 </button>
                             ))}
@@ -275,10 +275,10 @@ export function GiftListPage() {
             {/* Floating Cart Button (Mobile) */}
             {selectedGifts.length > 0 && (
                 <div className="fixed bottom-6 right-6 z-40 md:hidden">
-                    <button onClick={() => setShowPixPanel(true)} className="bg-primary text-primary-foreground p-4 rounded-full shadow-2xl flex items-center gap-3 pr-6 hover:scale-105 active:scale-95 transition-all">
+                    <button onClick={() => setShowPixPanel(true)} className="bg-secondary text-primary p-4 rounded-full shadow-2xl flex items-center gap-3 pr-6 hover:scale-105 active:scale-95 transition-all">
                         <div className="relative">
                             <ShoppingCart className="w-6 h-6" />
-                            <span className="absolute -top-2 -right-2 bg-background text-primary text-[10px] w-5 h-5 flex items-center justify-center rounded-full font-bold">{selectedGifts.length}</span>
+                            <span className="absolute -top-2 -right-2 bg-primary text-secondary text-[10px] w-5 h-5 flex items-center justify-center rounded-full font-bold">{selectedGifts.length}</span>
                         </div>
                         <span className="font-bold text-sm">{formatPrice(selectedTotal)}</span>
                     </button>
@@ -289,42 +289,42 @@ export function GiftListPage() {
             {showPixPanel && (
                 <div className="fixed inset-0 z-[100]">
                     <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={() => setShowPixPanel(false)} />
-                    <div className="absolute top-0 right-0 bottom-0 w-full max-w-md bg-background shadow-2xl flex flex-col">
+                    <div className="absolute top-0 right-0 bottom-0 w-full max-w-md bg-[#0d2818] shadow-2xl flex flex-col">
                         {/* Header */}
-                        <div className="bg-primary p-5 flex items-center justify-between">
-                            <div className="flex items-center gap-3 text-primary-foreground">
+                        <div className="bg-secondary p-5 flex items-center justify-between">
+                            <div className="flex items-center gap-3 text-primary">
                                 <QrCode className="w-5 h-5" />
                                 <h2 className="font-heading text-lg">Pagamento via PIX</h2>
                             </div>
-                            <button onClick={() => setShowPixPanel(false)} className="text-primary-foreground/80 hover:text-primary-foreground p-2"><X className="w-5 h-5" /></button>
+                            <button onClick={() => setShowPixPanel(false)} className="text-primary/80 hover:text-primary p-2"><X className="w-5 h-5" /></button>
                         </div>
 
                         <div className="flex-1 overflow-y-auto p-6 space-y-5">
                             {/* Selected Items */}
                             {selectedGifts.length > 0 ? (
-                                <div className="bg-gradient-to-br from-muted to-background rounded-2xl p-4 border border-border shadow-sm">
+                                <div className="bg-white/5 rounded-2xl p-4 border border-white/10 shadow-sm">
                                     <div className="flex items-center gap-2 mb-3">
-                                        <Gift className="w-4 h-4 text-primary" />
-                                        <span className="text-xs font-medium text-muted-foreground">{selectedGifts.length} {selectedGifts.length === 1 ? "item selecionado" : "itens selecionados"}</span>
+                                        <Gift className="w-4 h-4 text-secondary" />
+                                        <span className="text-xs font-medium text-white/60">{selectedGifts.length} {selectedGifts.length === 1 ? "item selecionado" : "itens selecionados"}</span>
                                     </div>
                                     <div className="space-y-2">
                                         {selectedGifts.map(id => {
                                             const gift = GIFTS.find(g => g.id === id);
                                             return gift ? (
                                                 <div key={id} className="flex items-center justify-between text-sm">
-                                                    <span className="text-foreground font-medium truncate">{gift.name}</span>
-                                                    <span className="text-primary font-bold ml-2 flex-shrink-0">{formatPrice(gift.price)}</span>
+                                                    <span className="text-white font-medium truncate">{gift.name}</span>
+                                                    <span className="text-secondary font-bold ml-2 flex-shrink-0">{formatPrice(gift.price)}</span>
                                                 </div>
                                             ) : null;
                                         })}
                                     </div>
-                                    <div className="border-t border-border mt-3 pt-3 flex justify-between">
-                                        <span className="font-bold text-foreground">Total</span>
-                                        <span className="font-bold text-primary text-lg">{formatPrice(selectedTotal)}</span>
+                                    <div className="border-t border-white/10 mt-3 pt-3 flex justify-between">
+                                        <span className="font-bold text-white">Total</span>
+                                        <span className="font-bold text-secondary text-lg">{formatPrice(selectedTotal)}</span>
                                     </div>
                                 </div>
                             ) : (
-                                <div className="text-center py-8 text-muted-foreground">
+                                <div className="text-center py-8 text-white/40">
                                     <Gift className="w-12 h-12 mx-auto mb-3 opacity-30" />
                                     <p className="text-sm">Nenhum presente selecionado</p>
                                     <p className="text-xs">Volte e selecione itens da lista</p>
@@ -333,23 +333,23 @@ export function GiftListPage() {
 
                             {/* PIX Guidance */}
                             <div className="flex justify-center">
-                                <div className="flex w-full max-w-xs flex-col items-center rounded-2xl border-2 border-dashed border-primary/30 bg-primary/5 p-5 text-center shadow-lg">
-                                    <QrCode className="mb-3 h-10 w-10 text-primary" />
-                                    <p className="text-sm font-bold text-foreground">Use a chave PIX abaixo</p>
-                                    <p className="mt-1 text-xs text-muted-foreground">Copie a chave e faça o pagamento pelo seu banco</p>
+                                <div className="flex w-full max-w-xs flex-col items-center rounded-2xl border-2 border-dashed border-secondary/30 bg-secondary/5 p-5 text-center shadow-lg">
+                                    <QrCode className="mb-3 h-10 w-10 text-secondary" />
+                                    <p className="text-sm font-bold text-white">Use a chave PIX abaixo</p>
+                                    <p className="mt-1 text-xs text-white/50">Copie a chave e faça o pagamento pelo seu banco</p>
                                 </div>
                             </div>
 
                             {/* Bank Info */}
-                            <div className="bg-gradient-to-r from-amber-50 to-orange-50 border border-orange-100 rounded-xl p-3 text-center">
-                                <p className="text-sm text-orange-900 font-heading font-bold">{PIX_NAME}</p>
-                                <p className="text-xs text-orange-600 mt-0.5">{PIX_BANK}</p>
+                            <div className="bg-white/5 border border-white/10 rounded-xl p-3 text-center">
+                                <p className="text-sm text-white font-heading font-bold">{PIX_NAME}</p>
+                                <p className="text-xs text-secondary mt-0.5">{PIX_BANK}</p>
                             </div>
 
                             {/* PIX Key */}
-                            <button onClick={copyPixKey} className={`w-full p-4 rounded-xl flex items-center justify-between transition-all ${copied ? "bg-green-500 text-white" : "bg-muted hover:bg-accent"}`}>
-                                <span className={`font-mono text-xs truncate ${copied ? "text-white" : "text-foreground"}`}>{PIX_KEY}</span>
-                                <div className={`flex items-center gap-1.5 text-xs font-medium flex-shrink-0 ml-3 ${copied ? "text-white" : "text-primary"}`}>
+                            <button onClick={copyPixKey} className={`w-full p-4 rounded-xl flex items-center justify-between transition-all ${copied ? "bg-green-500 text-white" : "bg-white/10 hover:bg-white/15"}`}>
+                                <span className={`font-mono text-xs truncate ${copied ? "text-white" : "text-white"}`}>{PIX_KEY}</span>
+                                <div className={`flex items-center gap-1.5 text-xs font-medium flex-shrink-0 ml-3 ${copied ? "text-white" : "text-secondary"}`}>
                                     {copied ? <><Check className="w-4 h-4" /> Copiado!</> : <><Copy className="w-4 h-4" /> Copiar</>}
                                 </div>
                             </button>
@@ -362,11 +362,11 @@ export function GiftListPage() {
                                 Confirmar pelo WhatsApp
                             </button>
 
-                            <p className="text-center text-muted-foreground text-[10px]">Após o pagamento, confirme pelo WhatsApp</p>
+                            <p className="text-center text-white/40 text-[10px]">Após o pagamento, confirme pelo WhatsApp</p>
                         </div>
 
                         {/* Footer */}
-                        <div className="p-4 border-t border-border bg-background">
+                        <div className="p-4 border-t border-white/10 bg-[#0a1a0a]">
                             <button onClick={() => setShowPixPanel(false)} className="w-full text-muted-foreground hover:text-foreground text-xs py-2 transition-colors">
                                 ← Voltar para a lista
                             </button>
