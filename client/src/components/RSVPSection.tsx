@@ -65,11 +65,15 @@ export function RSVPSection() {
   const hasColacao = selectedEvents.includes("colacao");
   const hasJantar = selectedEvents.includes("jantar");
 
+  const JANTAR_PRICE = 70;
+
   const totalPrice = useMemo(() => {
-    if (!hasColacao) return 0;
     const totalPeople = guestCount + 1;
-    return totalPeople * COLACAO_PRICE;
-  }, [hasColacao, guestCount]);
+    let total = 0;
+    if (hasColacao) total += totalPeople * COLACAO_PRICE;
+    if (hasJantar) total += totalPeople * JANTAR_PRICE;
+    return total;
+  }, [hasColacao, hasJantar, guestCount]);
 
   useEffect(() => {
     const currentCompanions = form.getValues("companionNames") || [];
@@ -152,7 +156,7 @@ Acompanhante(s): ${companionList}
 🎓 *Eventos:*
 ${eventList.join("\n")}
 
-💰 *Valor colação:* R$ ${totalPrice.toFixed(2)}
+💰 *Valor total:* R$ ${totalPrice.toFixed(2)}
 
 Obrigada pelo convite!!`;
     window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`, "_blank");
@@ -566,17 +570,17 @@ Obrigada pelo convite!!`;
                           {hasColacao && (
                             <div className="flex justify-between">
                               <span className="text-muted-foreground">Colação ({guestCount + 1} × R$ 60,00)</span>
-                              <span className="font-semibold text-primary">{formatPrice(totalPrice)}</span>
+                              <span className="font-semibold text-primary">{formatPrice((guestCount + 1) * COLACAO_PRICE)}</span>
                             </div>
                           )}
                           {hasJantar && (
                             <div className="flex justify-between">
                               <span className="text-muted-foreground">Jantar ({guestCount + 1} × R$ 70,00)</span>
-                              <span className="font-semibold text-primary">{formatPrice((guestCount + 1) * 70)}</span>
+                              <span className="font-semibold text-primary">{formatPrice((guestCount + 1) * JANTAR_PRICE)}</span>
                             </div>
                           )}
                           <div className="border-t border-primary/10 pt-2 flex justify-between">
-                            <span className="font-bold text-primary">Total Colação</span>
+                            <span className="font-bold text-primary">Total</span>
                             <span className="font-bold text-primary text-lg">{formatPrice(totalPrice)}</span>
                           </div>
                         </div>
