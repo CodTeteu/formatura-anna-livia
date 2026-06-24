@@ -12,7 +12,7 @@ const PHOTOS = [
   ...Array.from({ length: 37 }, (_, i) => ({
     src: assetPath(`/assets/gallery/gallery_${(i + 1).toString().padStart(2, "0")}.jpg`),
     alt: `Momento especial ${i + 1}`,
-    overlay: i === 15 ? "Em memória do meu avô Mauro Pfaiffer" : i === 16 ? "Em memória minha bisavó Coraci (Dindinha)" : i === 20 ? "Em memória primo Lucas" : null,
+    overlay: i === 15 ? "Em memória do meu avô Mauro Pfaiffer" : i === 16 ? "Em memória minha bisavó Coraci (Dindinha)" : i === 20 ? "Em memória primo Lucas" : i === 21 ? "Em memória: pai da minha melhor amiga Mayza / padrinho do meu namorado" : null,
   })),
 ];
 
