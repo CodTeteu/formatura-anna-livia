@@ -111,6 +111,27 @@
   }
 }
 
+/* Gift List Page - Dark Theme Override */
+.gift-page {
+  --background: 100 15% 8%;
+  --foreground: 40 20% 96%;
+  --primary: 38 50% 55%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 38 50% 55%;
+  --secondary-foreground: 0 0% 100%;
+  --accent: 100 15% 15%;
+  --accent-foreground: 40 20% 96%;
+  --muted: 100 10% 18%;
+  --muted-foreground: 100 10% 65%;
+  --card: 100 15% 12%;
+  --card-foreground: 40 20% 96%;
+  --popover: 100 15% 12%;
+  --popover-foreground: 40 20% 96%;
+  --border: 100 10% 22%;
+  --input: 100 10% 22%;
+  --ring: 38 50% 55%;
+}
+
 /* Custom Utility Classes */
 @layer utilities {
   .font-script {

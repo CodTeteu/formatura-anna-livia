@@ -123,7 +123,7 @@ export function GiftListPage() {
     };
 
     return (
-        <div className="min-h-screen font-body" style={{ background: "linear-gradient(135deg, #1a2a1a 0%, #1e3320 50%, #1a2a1a 100%)" }}>
+        <div className="gift-page min-h-screen font-body">
             {/* Background */}
             <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden">
                 <div className="absolute top-0 right-0 w-96 h-96 bg-primary/5 rounded-full blur-3xl" />
