@@ -16,8 +16,8 @@ const PHOTOS = [
   { src: assetPath("/assets/gallery/anna_sozinha_anatomia_mesa.jpg"), alt: "Anna na mesa no laboratório de anatomia" },
   { src: assetPath("/assets/gallery/anna_sozinha_anatomia_apoiada.jpg"), alt: "Anna apoiada no laboratório de anatomia" },
   { src: assetPath("/assets/gallery/anna_sozinha_trono_verde.jpg"), alt: "Anna no trono com beca" },
-  { src: assetPath("/assets/gallery/anna_sozinha_bata_verde_celular1.jpg"), alt: "Anna com beca segurando celular" },
-  { src: assetPath("/assets/gallery/anna_sozinha_bata_verde_celular2.jpg"), alt: "Anna com beca e celular" },
+  { src: assetPath("/assets/gallery/anna_sozinha_bata_verde_celular1.jpg"), alt: "Anna com beca segurando celular com foto do avô", overlay: "Em memória do meu avô Mauro Pfaiffer" },
+  { src: assetPath("/assets/gallery/anna_sozinha_bata_verde_celular2.jpg"), alt: "Anna com beca segurando celular com foto da Dindinha", overlay: "Em memória minha bisavó Coraci (Dindinha)" },
   { src: assetPath("/assets/gallery/anna_sozinha_scrub_ambulancia1.jpg"), alt: "Anna de scrub na ambulância" },
   { src: assetPath("/assets/gallery/anna_sozinha_scrub_ambulancia2.jpg"), alt: "Anna de scrub braços cruzados na ambulância" },
 
@@ -29,9 +29,9 @@ const PHOTOS = [
   { src: assetPath("/assets/gallery/familia_fundo_verde_5pessoas.jpg"), alt: "Anna com familiares fundo verde" },
   { src: assetPath("/assets/gallery/anna_e_avos_fundo_verde.jpg"), alt: "Anna com avós fundo verde" },
   { src: assetPath("/assets/gallery/anna_e_familia_placa_fundo_verde.jpg"), alt: "Anna com família e placa fundo verde" },
-  { src: assetPath("/assets/gallery/familia_grupo_fundo_verde_mauro.jpg"), alt: "Família reunida com Anna sentada", overlay: "Em memória do meu avô Mauro Pfaiffer" },
+  { src: assetPath("/assets/gallery/familia_grupo_fundo_verde_mauro.jpg"), alt: "Família reunida com Anna sentada" },
   { src: assetPath("/assets/gallery/anna_e_pais_fundo_verde.jpg"), alt: "Anna de beca com os pais" },
-  { src: assetPath("/assets/gallery/anna_e_avos_beijo_fundo_verde_coraci.jpg"), alt: "Anna recebendo beijo dos avós", overlay: "Em memória minha bisavó Coraci (Dindinha)" },
+  { src: assetPath("/assets/gallery/anna_e_avos_beijo_fundo_verde_coraci.jpg"), alt: "Anna recebendo beijo dos avós" },
 
   // --- GRUPO 3: OUTRAS FOTOS (17 fotos) ---
   { src: assetPath("/assets/gallery/anna_e_colega_abraço_fundo_branco.jpg"), alt: "Anna abraçando colega" },
@@ -50,7 +50,7 @@ const PHOTOS = [
   { src: assetPath("/assets/gallery/grupo_deck_noite.jpg"), alt: "Grupo reunido à noite no deck" },
   { src: assetPath("/assets/gallery/grupo_aniversario_baloes.jpg"), alt: "Grupo celebrando aniversário" },
   { src: assetPath("/assets/gallery/grupo_mesa_bolo.jpg"), alt: "Grupo ao redor da mesa de bolo" },
-  { src: assetPath("/assets/gallery/lucas_chapeu_fazenda.jpg"), alt: "Primo Lucas na fazenda", overlay: "Em memória primo Lucas" },
+  { src: assetPath("/assets/gallery/lucas_chapeu_fazenda.jpg"), alt: "Primo Lucas na fazenda", overlay: "Em memória: meu primo Lucas" },
 ];
 
 export function GallerySection() {

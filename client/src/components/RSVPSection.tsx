@@ -293,55 +293,53 @@ Obrigada pelo convite!!`;
 
                 {/* PIX Option */}
                 <div className="border-2 border-primary rounded-xl p-6 mb-6">
-                  <div className="flex items-start gap-4">
-                    <div className="p-3 bg-primary/10 rounded-full shrink-0">
+                  <div className="flex flex-col items-center text-center">
+                    <div className="p-3 bg-primary/10 rounded-full mb-3">
                       <QrCode className="w-6 h-6 text-primary" />
                     </div>
-                    <div className="flex-1">
-                      <h3 className="font-heading text-xl font-bold text-primary flex items-center gap-2">
-                        PIX
-                        <span className="text-[10px] bg-green-100 text-green-700 px-2 py-1 rounded-full">Sem taxa</span>
-                      </h3>
-                      <p className="text-sm text-muted-foreground mt-1 mb-4">Use a chave abaixo ou escaneie o QR Code.</p>
+                    <h3 className="font-heading text-xl font-bold text-primary flex items-center gap-2 mb-1">
+                      PIX
+                      <span className="text-[10px] bg-green-100 text-green-700 px-2 py-1 rounded-full">Sem taxa</span>
+                    </h3>
+                    <p className="text-sm text-muted-foreground mb-4">Use a chave abaixo ou escaneie o QR Code.</p>
 
-                      {/* QR Code */}
-                      <div className="flex justify-center mb-4">
-                        <div className="bg-white rounded-xl p-3 border border-border shadow-sm">
-                          <QRCodeSVG
-                            value={`00020126580014BR.GOV.BCB.PIX0136${PIX_KEY}0212Anna Livia05200000BRBCentral PIX54040.005802BR5913ANNA LIVIA CARVALHO6009ARAGUAINA62070503***6304`}
-                            size={180}
-                            level="M"
-                            includeMargin={false}
-                          />
-                        </div>
+                    {/* QR Code */}
+                    <div className="flex justify-center mb-4">
+                      <div className="bg-white rounded-xl p-3 border border-border shadow-sm">
+                        <QRCodeSVG
+                          value={`00020126580014BR.GOV.BCB.PIX0136${PIX_KEY}0212Anna Livia05200000BRBCentral PIX54040.005802BR5913ANNA LIVIA CARVALHO6009ARAGUAINA62070503***6304`}
+                          size={180}
+                          level="M"
+                          includeMargin={false}
+                        />
                       </div>
-
-                      {/* Receiver Info */}
-                      <div className="bg-primary/5 border border-primary/10 rounded-lg p-3 mb-4 text-center">
-                        <p className="text-sm text-primary font-heading font-bold">{PIX_NAME}</p>
-                        <p className="text-xs text-secondary">{PIX_BANK}</p>
-                      </div>
-
-                      {/* Copy Key */}
-                      <button
-                        onClick={copyPixKey}
-                        className={`w-full p-3 rounded-lg flex items-center justify-between transition-all mb-4 ${copied ? "bg-green-500 text-white" : "bg-muted hover:bg-accent"}`}
-                      >
-                        <code className={`font-mono text-sm truncate ${copied ? "text-white" : "text-foreground"}`}>{PIX_KEY}</code>
-                        <div className={`flex items-center gap-1.5 text-xs font-medium flex-shrink-0 ml-3 ${copied ? "text-white" : "text-primary"}`}>
-                          {copied ? <><Check className="w-4 h-4" /> Copiado!</> : <><Copy className="w-4 h-4" /> Copiar</>}
-                        </div>
-                      </button>
-
-                      {/* Confirm Button */}
-                      <Button
-                        onClick={handleFinalize}
-                        disabled={loading}
-                        className="w-full bg-[#25D366] hover:bg-[#20ba59] text-white font-bold py-4 text-base rounded-xl"
-                      >
-                        {loading ? "Processando..." : "Confirmar Pagamento"}
-                      </Button>
                     </div>
+
+                    {/* Receiver Info */}
+                    <div className="bg-primary/5 border border-primary/10 rounded-lg p-3 mb-4 text-center w-full">
+                      <p className="text-sm text-primary font-heading font-bold">{PIX_NAME}</p>
+                      <p className="text-xs text-secondary">{PIX_BANK}</p>
+                    </div>
+
+                    {/* Copy Key */}
+                    <button
+                      onClick={copyPixKey}
+                      className={`w-full p-3 rounded-lg flex items-center justify-between transition-all mb-4 ${copied ? "bg-green-500 text-white" : "bg-muted hover:bg-accent"}`}
+                    >
+                      <code className={`font-mono text-sm truncate ${copied ? "text-white" : "text-foreground"}`}>{PIX_KEY}</code>
+                      <div className={`flex items-center gap-1.5 text-xs font-medium flex-shrink-0 ml-3 ${copied ? "text-white" : "text-primary"}`}>
+                        {copied ? <><Check className="w-4 h-4" /> Copiado!</> : <><Copy className="w-4 h-4" /> Copiar</>}
+                      </div>
+                    </button>
+
+                    {/* Confirm Button */}
+                    <Button
+                      onClick={handleFinalize}
+                      disabled={loading}
+                      className="w-full bg-[#25D366] hover:bg-[#20ba59] text-white font-bold py-4 text-base rounded-xl"
+                    >
+                      {loading ? "Processando..." : "Confirmar Pagamento"}
+                    </Button>
                   </div>
                 </div>
 

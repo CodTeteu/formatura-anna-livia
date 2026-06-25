@@ -154,16 +154,13 @@ export function GiftListPage() {
         }
 
         setError(null);
-        setCheckoutStep("pix-details");
-    };
-
-    const handleConfirmPaymentAndWhatsApp = async () => {
         setLoading(true);
+
+        // Save to Supabase NOW — before showing PIX screen
         const selectedNames = selectedGifts.length > 0
             ? selectedGifts.map(id => GIFTS.find(g => g.id === id)?.name).filter(Boolean).join(", ")
             : "um presente";
 
-        // Save to Supabase with real Guest Info!
         try {
             await supabase.from('gift_selections').insert([{
                 guest_name: buyerName.trim(),
@@ -175,9 +172,18 @@ export function GiftListPage() {
             }]);
         } catch (err) {
             console.error('Erro ao salvar seleção de presentes:', err);
+            // Non-blocking: proceed to PIX screen even if DB save fails
         } finally {
             setLoading(false);
         }
+
+        setCheckoutStep("pix-details");
+    };
+
+    const handleConfirmPaymentAndWhatsApp = async () => {
+        const selectedNames = selectedGifts.length > 0
+            ? selectedGifts.map(id => GIFTS.find(g => g.id === id)?.name).filter(Boolean).join(", ")
+            : "um presente";
 
         const message = `Olá Anna! Acabei de fazer um PIX para te presentear na sua formatura! 🎓\n\nPresente(s): ${selectedNames}\nValor: ${formatPrice(selectedTotal)}\nDe: ${buyerName.trim()} (${buyerPhone.trim()})\n\nQue Deus abençoe essa nova fase! ❤️`;
         window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`, "_blank");
@@ -576,9 +582,14 @@ export function GiftListPage() {
                                 <>
                                     <button
                                         onClick={handleProceedToPayment}
-                                        className="w-full bg-secondary hover:bg-secondary/90 text-primary py-3 rounded-xl font-bold uppercase tracking-widest text-xs transition-all flex items-center justify-center gap-2 cursor-pointer"
+                                        disabled={loading}
+                                        className="w-full bg-secondary hover:bg-secondary/90 text-primary py-3 rounded-xl font-bold uppercase tracking-widest text-xs transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60 disabled:cursor-wait"
                                     >
-                                        <QrCode className="w-4 h-4" /> Ir para o PIX
+                                        {loading ? (
+                                            <><Loader2 className="w-4 h-4 animate-spin" /> Salvando...</>
+                                        ) : (
+                                            <><QrCode className="w-4 h-4" /> Ir para o PIX</>
+                                        )}
                                     </button>
                                     <button onClick={() => setCheckoutStep("cart")} className="w-full mt-2 text-white/40 hover:text-white text-xs py-1 transition-colors cursor-pointer">
                                         ← Voltar para a lista

@@ -65,7 +65,7 @@ export function GiftSection() {
                     transition={{ duration: 0.8 }}
                     className="text-center"
                 >
-                    <span className="text-secondary uppercase tracking-[0.3em] text-xs font-bold bg-white/10 px-4 py-1 rounded-full backdrop-blur-sm inline-block mb-6">
+                    <span className="text-white uppercase tracking-[0.3em] text-xs font-bold bg-white/10 px-4 py-1 rounded-full backdrop-blur-sm inline-block mb-6">
                         Com Carinho
                     </span>
                     <h2 className="text-4xl md:text-6xl font-script text-white mb-6">Lista de Presentes</h2>

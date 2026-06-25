@@ -83,12 +83,12 @@ export function GraduateSection() {
             </div>
 
             {/* Info Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-4 border-t border-primary/10">
-              <div className="text-center md:text-left">
+            <div className="grid grid-cols-2 gap-6 pt-4 border-t border-primary/10">
+              <div className="text-center">
                 <span className="block text-xs uppercase text-primary/60 tracking-wider mb-2">Curso</span>
                 <span className="font-heading text-2xl text-primary font-bold">Enfermagem</span>
               </div>
-              <div className="text-center md:text-left">
+              <div className="text-center">
                 <span className="block text-xs uppercase text-primary/60 tracking-wider mb-2">Universidade</span>
                 <span className="font-heading text-2xl text-primary font-bold">Uniplan</span>
               </div>

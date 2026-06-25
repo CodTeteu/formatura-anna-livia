@@ -35,26 +35,26 @@ export function CelebrationSection() {
             </p>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-10">
-              <div className="border-l border-secondary/50 pl-6">
-                <h4 className="text-secondary font-heading text-xl font-bold mb-2">Local</h4>
+              <div className="border-l border-white/30 pl-6">
+                <h4 className="text-white font-heading text-xl font-bold mb-2">Local</h4>
                 <p className="text-white/90">Salão de Festas Excellence</p>
                 <p className="text-white/60 text-sm mt-1">Av. das Nações, 500</p>
               </div>
               
-              <div className="border-l border-secondary/50 pl-6">
-                <h4 className="text-secondary font-heading text-xl font-bold mb-2">Detalhes</h4>
+              <div className="border-l border-white/30 pl-6">
+                <h4 className="text-white font-heading text-xl font-bold mb-2">Detalhes</h4>
                 <p className="text-white/90">23:00 Horas</p>
                 <p className="text-white/60 text-sm mt-1">Traje Social Completo</p>
               </div>
               
-              <div className="border-l border-secondary/50 pl-6">
-                <h4 className="text-secondary font-heading text-xl font-bold mb-2">Buffet</h4>
+              <div className="border-l border-white/30 pl-6">
+                <h4 className="text-white font-heading text-xl font-bold mb-2">Buffet</h4>
                 <p className="text-white/90">Jantar Completo</p>
                 <p className="text-white/60 text-sm mt-1">Open Bar Premium</p>
               </div>
 
-              <div className="border-l border-secondary/50 pl-6">
-                <h4 className="text-secondary font-heading text-xl font-bold mb-2">Atrações</h4>
+              <div className="border-l border-white/30 pl-6">
+                <h4 className="text-white font-heading text-xl font-bold mb-2">Atrações</h4>
                 <p className="text-white/90">Banda Show</p>
                 <p className="text-white/60 text-sm mt-1">DJ Convidado</p>
               </div>

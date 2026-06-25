@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Calendar, MapPin, Clock, Users, Info } from "lucide-react";
+import { Calendar, MapPin, Clock, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import ceremonyBg from "/assets/ceremony_bg.jpg";
@@ -101,6 +101,14 @@ export function CeremonySection() {
                   <Clock className="w-4 h-4 text-secondary" />
                   <span className="text-sm">Início às 19:30</span>
                 </div>
+                {/* Endereço por escrito */}
+                <div className="flex items-start justify-center gap-2 text-muted-foreground mb-3">
+                  <MapPin className="w-3.5 h-3.5 text-secondary mt-0.5 shrink-0" />
+                  <p className="text-xs text-left leading-relaxed">
+                    Av. Cônego João Lima, s/n — Setor São João<br />
+                    Araguaína – TO
+                  </p>
+                </div>
                 <div className="bg-primary/5 border border-primary/10 rounded-xl p-4 mb-4">
                   <p className="text-3xl font-heading font-bold text-primary">R$ 60,00</p>
                   <p className="text-xs text-muted-foreground mt-1">por pessoa</p>
@@ -148,20 +156,28 @@ export function CeremonySection() {
                   <Clock className="w-4 h-4 text-secondary" />
                   <span className="text-sm">22:00 Horas</span>
                 </div>
+                {/* Endereço por escrito */}
+                <div className="flex items-start justify-center gap-2 text-muted-foreground mb-3">
+                  <MapPin className="w-3.5 h-3.5 text-secondary mt-0.5 shrink-0" />
+                  <p className="text-xs text-left leading-relaxed">
+                    Av. Filadélfia, 2750 — Setor Central<br />
+                    Araguaína – TO
+                  </p>
+                </div>
                 <div className="bg-primary/5 border border-primary/10 rounded-xl p-4 mb-4">
                   <p className="text-3xl font-heading font-bold text-primary">R$ 70,00</p>
                   <p className="text-xs text-muted-foreground mt-1">por pessoa</p>
                 </div>
                 <div className="space-y-2 mb-4">
-                  <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                  <div className="flex items-center gap-2 text-xs text-muted-foreground justify-center">
                     <Users className="w-3 h-3 text-secondary" />
                     <span>0 a 5 anos: <strong className="text-primary">Grátis</strong></span>
                   </div>
-                  <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                  <div className="flex items-center gap-2 text-xs text-muted-foreground justify-center">
                     <Users className="w-3 h-3 text-secondary" />
                     <span>6 a 9 anos: <strong className="text-primary">Meia</strong></span>
                   </div>
-                  <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                  <div className="flex items-center gap-2 text-xs text-muted-foreground justify-center">
                     <Users className="w-3 h-3 text-secondary" />
                     <span>Acima de 10 anos: <strong className="text-primary">Integral</strong></span>
                   </div>
