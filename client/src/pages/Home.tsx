@@ -53,7 +53,7 @@ function HomeContent() {
         <HeroSection />
 
         {/* Spacer between Hero and Graduate sections */}
-        <div className="w-full h-16 md:h-24 bg-background" />
+        <div className="w-full h-8 md:h-16 bg-background" />
 
         <GraduateSection />
         <GallerySection />

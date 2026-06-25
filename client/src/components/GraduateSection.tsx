@@ -44,7 +44,7 @@ export function GraduateSection() {
       </div>
 
       {/* Section 2: Content (Mobile: Below Image / Desktop: Right Side) */}
-      <div className="w-full md:w-[55%] py-10 px-4 -mt-2 md:mt-0 md:py-0 md:px-0 relative z-20">
+      <div className="w-full md:w-[55%] pt-10 pb-4 px-4 -mt-2 md:mt-0 md:py-0 md:px-0 relative z-20">
         <div className="container mx-auto md:mx-0">
           <motion.div
             initial={{ opacity: 0, y: 30 }}

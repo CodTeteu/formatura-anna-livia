@@ -84,8 +84,45 @@ export function RSVPSection() {
   }, [guestCount, form]);
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    setFormData(values);
-    setStep("payment");
+    setLoading(true);
+    try {
+      const { submitRSVP } = await import("@/hooks/useSubmissions");
+      const hasCol = values.events.includes("colacao");
+      const hasJan = values.events.includes("jantar");
+
+      let attendance: "colacao" | "jantar" | "ambos" | "none" = "none";
+      if (hasCol && hasJan) attendance = "ambos";
+      else if (hasCol) attendance = "colacao";
+      else if (hasJan) attendance = "jantar";
+
+      const res = await submitRSVP({
+        name: values.name.trim(),
+        phone: values.phone.trim(),
+        attendance,
+        guest_count: parseInt(values.guests) || 0,
+        companion_names: values.companionNames?.filter((n: string) => n.trim() !== "") || [],
+        message: values.message?.trim() || undefined,
+      });
+
+      if (res.success) {
+        setFormData(values);
+        setStep("payment");
+      } else {
+        toast({
+          variant: "destructive",
+          title: "Erro ao salvar",
+          description: res.error || "Ocorreu um erro ao registrar sua presença. Tente novamente.",
+        });
+      }
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Erro ao salvar",
+        description: "Ocorreu um erro ao processar. Tente novamente.",
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   const copyPixKey = async () => {
@@ -109,36 +146,8 @@ export function RSVPSection() {
   };
 
   const handleFinalize = async () => {
-    setLoading(true);
-    try {
-      const { submitRSVP } = await import("@/hooks/useSubmissions");
-      const isAttending = formData.events.includes("colacao") || formData.events.includes("jantar");
-
-      let attendance: "colacao" | "jantar" | "ambos" | "none" = "none";
-      if (hasColacao && hasJantar) attendance = "ambos";
-      else if (hasColacao) attendance = "colacao";
-      else if (hasJantar) attendance = "jantar";
-
-      await submitRSVP({
-        name: formData.name.trim(),
-        phone: formData.phone.trim(),
-        attendance,
-        guest_count: parseInt(formData.guests) || 0,
-        companion_names: formData.companionNames?.filter((n: string) => n.trim() !== "") || [],
-        message: formData.message?.trim() || undefined,
-      });
-
-      setPaymentMethod("pix");
-      setStep("success");
-    } catch (error) {
-      toast({
-        variant: "destructive",
-        title: "Erro ao salvar",
-        description: "Tente novamente.",
-      });
-    } finally {
-      setLoading(false);
-    }
+    setPaymentMethod("pix");
+    setStep("success");
   };
 
   const sendWhatsApp = () => {
@@ -167,7 +176,7 @@ Obrigada pelo convite!!`;
   // STEP: SUCCESS
   if (step === "success") {
     return (
-      <section id="rsvp" className="py-16 md:py-24 relative overflow-hidden">
+      <section id="rsvp" className="py-10 md:py-24 relative overflow-hidden">
         <div className="container mx-auto px-5 md:px-4 relative z-10">
           <div className="max-w-2xl mx-auto">
             <motion.div
@@ -258,7 +267,7 @@ Obrigada pelo convite!!`;
   // STEP: PAYMENT
   if (step === "payment") {
     return (
-      <section id="rsvp" className="py-16 md:py-24 relative overflow-hidden">
+      <section id="rsvp" className="py-10 md:py-24 relative overflow-hidden">
         <div className="container mx-auto px-5 md:px-4 relative z-10">
           <div className="max-w-2xl mx-auto">
             <motion.div
@@ -349,7 +358,7 @@ Obrigada pelo convite!!`;
 
   // STEP: FORM
   return (
-    <section id="rsvp" className="py-16 md:py-24 relative overflow-hidden">
+    <section id="rsvp" className="py-10 md:py-24 relative overflow-hidden">
       <div className="container mx-auto px-5 md:px-4 relative z-10">
         <div className="text-center mb-8 md:mb-12">
           <p className="font-body text-secondary uppercase tracking-[0.3em] text-xs font-semibold mb-4">RSVP</p>
@@ -589,8 +598,8 @@ Obrigada pelo convite!!`;
                   )}
                 </AnimatePresence>
 
-                <Button type="submit" className="w-full bg-primary hover:bg-primary/90 text-white font-bold py-6 text-base rounded-xl">
-                  Continuar para Pagamento <ArrowRight className="w-4 h-4 ml-2" />
+                <Button type="submit" disabled={loading} className="w-full bg-primary hover:bg-primary/90 text-white font-bold py-6 text-base rounded-xl">
+                  {loading ? "Processando..." : "Continuar para Pagamento"} {!loading && <ArrowRight className="w-4 h-4 ml-2" />}
                 </Button>
               </form>
             </Form>

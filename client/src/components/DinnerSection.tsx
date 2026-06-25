@@ -3,7 +3,7 @@ import menuCardBg from "@assets/generated_images/menu_card.png";
 
 export function DinnerSection() {
     return (
-        <section id="cardapio" className="py-16 md:py-24 relative overflow-hidden">
+        <section id="cardapio" className="pt-10 pb-8 md:py-24 relative overflow-hidden">
             <div className="absolute inset-0 bg-black/5 pointer-events-none z-10" />
 
             <div className="container mx-auto px-5 md:px-4 relative z-10">

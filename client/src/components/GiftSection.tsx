@@ -50,7 +50,7 @@ export function GiftSection() {
     };
 
     return (
-        <section id="gifts" className="relative py-16 md:py-24 overflow-hidden bg-primary" ref={ref}>
+        <section id="gifts" className="relative py-10 md:py-24 overflow-hidden bg-primary" ref={ref}>
             {/* Background blobs */}
             <div className="absolute inset-0 pointer-events-none overflow-hidden">
                 <div className="absolute top-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full bg-secondary/10 blur-[100px]" />
