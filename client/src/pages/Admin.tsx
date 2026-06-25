@@ -208,7 +208,10 @@ export default function Admin() {
     });
 
     const filteredGiftSelections = giftSelections.filter(g => {
-        return !giftSearch || g.guest_name?.toLowerCase().includes(giftSearch.toLowerCase());
+        const query = giftSearch.toLowerCase();
+        return !giftSearch || 
+            g.guest_name?.toLowerCase().includes(query) || 
+            g.guest_phone?.includes(query);
     });
 
     const filteredGiftItems = giftItems.filter(g => {
@@ -337,6 +340,12 @@ export default function Admin() {
                                                             <Badge variant="secondary" className={`text-xs ${sel.payment_status === 'paid' ? 'bg-green-100 text-green-700' : sel.payment_status === 'confirmed' ? 'bg-blue-100 text-blue-700' : 'bg-yellow-100 text-yellow-700'}`}>
                                                                 {sel.payment_status === 'paid' ? 'Pago' : sel.payment_status === 'confirmed' ? 'Confirmado' : 'Pendente'}
                                                             </Badge>
+                                                        </div>
+                                                        <div className="flex flex-wrap gap-3 text-sm text-gray-500 mt-1">
+                                                            {sel.guest_phone && (
+                                                                <span className="flex items-center gap-1"><Phone className="w-3.5 h-3.5" /> {sel.guest_phone}</span>
+                                                            )}
+                                                            <span className="flex items-center gap-1"><Calendar className="w-3.5 h-3.5" /> {new Date(sel.created_at).toLocaleDateString("pt-BR")}</span>
                                                         </div>
                                                         <div className="flex flex-wrap gap-1 mt-2">
                                                             {Array.isArray(sel.selected_gifts) && sel.selected_gifts.map((g: any, i: number) => (

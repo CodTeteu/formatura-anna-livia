@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { Link } from "wouter";
-import { ArrowLeft, Gift, Search, X, ShoppingCart, Plus, Filter, Check, Copy, QrCode, Loader2 } from "lucide-react";
+import { ArrowLeft, Gift, Search, X, ShoppingCart, Plus, Filter, Check, Copy, QrCode, Loader2, Heart, Trash2, Sparkles } from "lucide-react";
 import { QRCodeSVG } from "qrcode.react";
 import { supabase } from "@/lib/supabase";
+import { useToast } from "@/hooks/use-toast";
 
 const PIX_KEY = "06010236177";
 const PIX_NAME = "ANNA LIVIA CARVALHO";
@@ -66,11 +67,23 @@ export function GiftListPage() {
     const [showPixPanel, setShowPixPanel] = useState(false);
     const [copied, setCopied] = useState(false);
     const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
+    const { toast } = useToast();
+
+    // Checkout Panel States
+    const [checkoutStep, setCheckoutStep] = useState<"cart" | "form" | "pix-details">("cart");
+    const [buyerName, setBuyerName] = useState("");
+    const [buyerPhone, setBuyerPhone] = useState("");
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
 
     const toggleGift = (id: string) => {
         setSelectedGifts(prev =>
             prev.includes(id) ? prev.filter(i => i !== id) : [...prev, id]
         );
+    };
+
+    const removeGift = (id: string) => {
+        setSelectedGifts(prev => prev.filter(i => i !== id));
     };
 
     const filteredGifts = GIFTS.filter(gift => {
@@ -95,7 +108,13 @@ export function GiftListPage() {
 
     const formatPrice = (price: number) => price.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
 
-    const copyPixKey = async () => {
+    const handleOpenPixPanel = () => {
+        setCheckoutStep("cart");
+        setError(null);
+        setShowPixPanel(true);
+    };
+
+    const handleCopyPix = async () => {
         try {
             if (navigator.clipboard && navigator.clipboard.writeText) {
                 await navigator.clipboard.writeText(PIX_KEY);
@@ -111,20 +130,44 @@ export function GiftListPage() {
                 document.body.removeChild(textArea);
             }
             setCopied(true);
+            toast({
+                title: "Chave Pix copiada!",
+                description: "A chave foi copiada com sucesso.",
+            });
             setTimeout(() => setCopied(false), 2000);
         } catch { /* silent */ }
     };
 
-    const sendWhatsApp = async () => {
+    const handleContinueToForm = () => {
+        if (selectedGifts.length === 0) return;
+        setCheckoutStep("form");
+    };
+
+    const handleProceedToPayment = async () => {
+        if (!buyerName.trim() || buyerName.trim().split(/\s+/).length < 2) {
+            setError("Por favor, informe seu nome completo (Nome e Sobrenome)");
+            return;
+        }
+        if (!buyerPhone.trim() || buyerPhone.replace(/\D/g, "").length < 10) {
+            setError("Por favor, informe seu telefone com DDD");
+            return;
+        }
+
+        setError(null);
+        setCheckoutStep("pix-details");
+    };
+
+    const handleConfirmPaymentAndWhatsApp = async () => {
+        setLoading(true);
         const selectedNames = selectedGifts.length > 0
             ? selectedGifts.map(id => GIFTS.find(g => g.id === id)?.name).filter(Boolean).join(", ")
             : "um presente";
 
-        // Save to Supabase
+        // Save to Supabase with real Guest Info!
         try {
             await supabase.from('gift_selections').insert([{
-                guest_name: "Convidado",
-                guest_phone: WHATSAPP_NUMBER,
+                guest_name: buyerName.trim(),
+                guest_phone: buyerPhone.trim(),
                 selected_gifts: selectedGifts.map(id => GIFTS.find(g => g.id === id)).filter(Boolean),
                 total_value: selectedTotal,
                 payment_status: 'pending',
@@ -132,15 +175,17 @@ export function GiftListPage() {
             }]);
         } catch (err) {
             console.error('Erro ao salvar seleção de presentes:', err);
+        } finally {
+            setLoading(false);
         }
 
-        const message = `Olá! Acabei de fazer um PIX para presentear a Anna Lívia na formatura! 🎓\n\nPresente(s): ${selectedNames}\nValor: ${formatPrice(selectedTotal)}\n\nQue Deus abençoe essa nova fase! ❤️`;
+        const message = `Olá Anna! Acabei de fazer um PIX para te presentear na sua formatura! 🎓\n\nPresente(s): ${selectedNames}\nValor: ${formatPrice(selectedTotal)}\nDe: ${buyerName.trim()} (${buyerPhone.trim()})\n\nQue Deus abençoe essa nova fase! ❤️`;
         window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`, "_blank");
     };
 
     return (
-        <div className="min-h-screen font-body">
-            {/* Background */}
+        <div className="min-h-screen bg-background font-body pb-24 md:pb-0">
+            {/* Decorative background */}
             <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden">
                 <div className="absolute top-0 right-0 w-96 h-96 bg-primary/5 rounded-full blur-3xl" />
                 <div className="absolute bottom-0 left-0 w-96 h-96 bg-secondary/5 rounded-full blur-3xl" />
@@ -156,17 +201,17 @@ export function GiftListPage() {
                             </Link>
                             <div>
                                 <h1 className="text-xl md:text-2xl font-script text-white">Lista de Presentes</h1>
-                                <p className="text-[10px] md:text-xs text-secondary uppercase tracking-widest font-bold">Anna Lívia</p>
+                                <p className="text-[10px] md:text-xs text-secondary uppercase tracking-widest font-bold font-heading">Anna Lívia</p>
                             </div>
                         </div>
 
                         <button
-                            onClick={() => setShowPixPanel(!showPixPanel)}
-                            className="relative p-2 text-white hover:text-secondary transition-colors hidden md:block"
+                            onClick={handleOpenPixPanel}
+                            className="relative p-2.5 text-white hover:text-secondary transition-colors hidden md:block bg-white/5 border border-white/10 rounded-full hover:bg-white/10"
                         >
-                            <ShoppingCart className="w-6 h-6" />
+                            <ShoppingCart className="w-5 h-5" />
                             {selectedGifts.length > 0 && (
-                                <span className="absolute -top-1 -right-1 bg-secondary text-primary text-[10px] w-5 h-5 flex items-center justify-center rounded-full font-bold shadow-lg">
+                                <span className="absolute -top-1.5 -right-1.5 bg-secondary text-primary text-[10px] w-5 h-5 flex items-center justify-center rounded-full font-bold shadow-lg animate-scale-in">
                                     {selectedGifts.length}
                                 </span>
                             )}
@@ -181,14 +226,14 @@ export function GiftListPage() {
                                 <input
                                     type="text"
                                     placeholder="O que você procura?"
-                                    className="w-full bg-white/10 border border-white/10 text-white rounded-full py-3 pl-12 pr-4 focus:outline-none focus:border-secondary focus:ring-2 focus:ring-secondary/20 transition-all placeholder:text-white/40 shadow-sm"
+                                    className="w-full bg-white/5 border border-white/10 text-white rounded-full py-3 pl-12 pr-4 focus:outline-none focus:border-secondary focus:ring-2 focus:ring-secondary/20 transition-all placeholder:text-white/40 shadow-sm"
                                     value={searchTerm}
                                     onChange={(e) => setSearchTerm(e.target.value)}
                                 />
                             </div>
                             <div className="relative">
                                 <select
-                                    className="appearance-none bg-white/10 border border-white/10 text-white rounded-full py-3 pl-6 pr-12 focus:outline-none focus:border-secondary cursor-pointer hover:bg-white/15 transition-all shadow-sm"
+                                    className="appearance-none bg-white/5 border border-white/10 text-white rounded-full py-3 pl-6 pr-12 focus:outline-none focus:border-secondary cursor-pointer hover:bg-white/10 transition-all shadow-sm"
                                     value={selectedCategory}
                                     onChange={(e) => setSelectedCategory(e.target.value)}
                                 >
@@ -210,14 +255,14 @@ export function GiftListPage() {
                             <input
                                 type="text"
                                 placeholder="Buscar presente..."
-                                className="w-full bg-white/10 border border-white/10 text-white text-sm rounded-lg py-2 pl-9 pr-3 focus:outline-none focus:border-secondary shadow-sm placeholder:text-white/40"
+                                className="w-full bg-white/5 border border-white/10 text-white text-sm rounded-lg py-2 pl-9 pr-3 focus:outline-none focus:border-secondary shadow-sm placeholder:text-white/40"
                                 value={searchTerm}
                                 onChange={(e) => setSearchTerm(e.target.value)}
                             />
                         </div>
                         <button
                             onClick={() => setIsMobileFilterOpen(true)}
-                            className={`flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-bold uppercase tracking-wider transition-all border shadow-sm ${selectedCategory !== "Todas" ? "bg-secondary border-secondary text-primary" : "bg-white/10 border-white/10 text-white"}`}
+                            className={`flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-bold uppercase tracking-wider transition-all border shadow-sm ${selectedCategory !== "Todas" ? "bg-secondary border-secondary text-primary" : "bg-white/5 border-white/10 text-white"}`}
                         >
                             <Filter className="w-4 h-4" />
                             <span className="max-w-[80px] truncate">{selectedCategory === "Todas" ? "Filtros" : selectedCategory}</span>
@@ -228,13 +273,13 @@ export function GiftListPage() {
                 {/* Gift Grid */}
                 <main className="container mx-auto px-4 py-8 md:py-12 max-w-7xl">
                     {filteredGifts.length === 0 ? (
-                        <div className="text-center py-16 bg-white/5 rounded-2xl border border-white/10 mx-auto max-w-2xl shadow-sm">
-                            <div className="w-20 h-20 bg-white/10 rounded-full flex items-center justify-center mx-auto mb-6 text-white/40">
+                        <div className="text-center py-16 bg-card rounded-2xl border border-border mx-auto max-w-2xl shadow-sm">
+                            <div className="w-20 h-20 bg-muted rounded-full flex items-center justify-center mx-auto mb-6 text-muted-foreground">
                                 <Search className="w-10 h-10" />
                             </div>
-                            <h3 className="text-2xl font-heading text-white mb-2">Nenhum presente encontrado</h3>
-                            <p className="text-white/50">Tente buscar por outro termo ou categoria.</p>
-                            <button onClick={() => { setSearchTerm(""); setSelectedCategory("Todas"); }} className="mt-6 text-secondary hover:text-white underline transition-colors">
+                            <h3 className="text-2xl font-heading text-foreground mb-2">Nenhum presente encontrado</h3>
+                            <p className="text-muted-foreground">Tente buscar por outro termo ou categoria.</p>
+                            <button onClick={() => { setSearchTerm(""); setSelectedCategory("Todas"); }} className="mt-6 text-secondary hover:text-primary underline transition-colors">
                                 Limpar filtros
                             </button>
                         </div>
@@ -246,8 +291,8 @@ export function GiftListPage() {
                                 return (
                                     <section key={category} className="scroll-mt-32" id={`cat-${category}`}>
                                         <div className="flex items-center gap-4 mb-6">
-                                            <h2 className="text-2xl md:text-3xl font-heading text-secondary">{category}</h2>
-                                            <div className="h-px bg-white/10 flex-1" />
+                                            <h2 className="text-2xl md:text-3xl font-heading text-primary">{category}</h2>
+                                            <div className="h-px bg-border flex-1" />
                                         </div>
                                         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6">
                                             {categoryGifts.map(gift => (
@@ -289,10 +334,10 @@ export function GiftListPage() {
                 </div>
             )}
 
-            {/* Floating Cart Button (Mobile) */}
+            {/* Floating Cart Button (Mobile Only) */}
             {selectedGifts.length > 0 && (
                 <div className="fixed bottom-6 right-6 z-40 md:hidden">
-                    <button onClick={() => setShowPixPanel(true)} className="bg-secondary text-primary p-4 rounded-full shadow-2xl flex items-center gap-3 pr-6 hover:scale-105 active:scale-95 transition-all">
+                    <button onClick={handleOpenPixPanel} className="bg-secondary text-primary p-4 rounded-full shadow-2xl flex items-center gap-3 pr-6 hover:scale-105 active:scale-95 transition-all">
                         <div className="relative">
                             <ShoppingCart className="w-6 h-6" />
                             <span className="absolute -top-2 -right-2 bg-primary text-secondary text-[10px] w-5 h-5 flex items-center justify-center rounded-full font-bold">{selectedGifts.length}</span>
@@ -302,94 +347,250 @@ export function GiftListPage() {
                 </div>
             )}
 
-            {/* PIX Side Panel */}
+            {/* PIX Side Panel (Drawer) */}
             {showPixPanel && (
                 <div className="fixed inset-0 z-[100]">
-                    <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={() => setShowPixPanel(false)} />
-                    <div className="absolute top-0 right-0 bottom-0 w-full max-w-md bg-[#0d2818] shadow-2xl flex flex-col">
-                        {/* Header */}
-                        <div className="bg-secondary p-5 flex items-center justify-between">
-                            <div className="flex items-center gap-3 text-primary">
-                                <QrCode className="w-5 h-5" />
-                                <h2 className="font-heading text-lg">Pagamento via PIX</h2>
-                            </div>
-                            <button onClick={() => setShowPixPanel(false)} className="text-primary/80 hover:text-primary p-2"><X className="w-5 h-5" /></button>
-                        </div>
+                    {/* Backdrop */}
+                    <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setShowPixPanel(false)} />
 
-                        <div className="flex-1 overflow-y-auto p-6 space-y-5">
-                            {/* Selected Items */}
-                            {selectedGifts.length > 0 ? (
-                                <div className="bg-white/5 rounded-2xl p-4 border border-white/10 shadow-sm">
-                                    <div className="flex items-center gap-2 mb-3">
-                                        <Gift className="w-4 h-4 text-secondary" />
-                                        <span className="text-xs font-medium text-white/60">{selectedGifts.length} {selectedGifts.length === 1 ? "item selecionado" : "itens selecionados"}</span>
+                    {/* Drawer Content */}
+                    <div className="absolute top-0 right-0 bottom-0 w-full max-w-md bg-[#0d2818] shadow-2xl flex flex-col border-l border-white/10 animate-slide-in-right">
+                        {/* Premium Header */}
+                        <div className="relative overflow-hidden bg-secondary text-primary">
+                            <div className="p-5 flex items-center justify-between">
+                                <div className="flex items-center gap-3">
+                                    <div className="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center backdrop-blur-sm">
+                                        {checkoutStep === 'cart' && <ShoppingCart className="w-5 h-5" />}
+                                        {checkoutStep === 'form' && <Heart className="w-5 h-5" />}
+                                        {checkoutStep === 'pix-details' && <QrCode className="w-5 h-5" />}
                                     </div>
-                                    <div className="space-y-2">
-                                        {selectedGifts.map(id => {
-                                            const gift = GIFTS.find(g => g.id === id);
-                                            return gift ? (
-                                                <div key={id} className="flex items-center justify-between text-sm">
-                                                    <span className="text-white font-medium truncate">{gift.name}</span>
-                                                    <span className="text-secondary font-bold ml-2 flex-shrink-0">{formatPrice(gift.price)}</span>
-                                                </div>
-                                            ) : null;
-                                        })}
-                                    </div>
-                                    <div className="border-t border-white/10 mt-3 pt-3 flex justify-between">
-                                        <span className="font-bold text-white">Total</span>
-                                        <span className="font-bold text-secondary text-lg">{formatPrice(selectedTotal)}</span>
+                                    <div>
+                                        <h2 className="font-heading text-lg font-bold leading-tight">
+                                            {checkoutStep === 'cart' && 'Sua Lista'}
+                                            {checkoutStep === 'form' && 'Finalizar'}
+                                            {checkoutStep === 'pix-details' && 'PIX'}
+                                        </h2>
+                                        {checkoutStep === 'cart' && (
+                                            <p className="text-primary/70 text-xs font-bold">
+                                                {selectedGifts.length} {selectedGifts.length === 1 ? 'presente' : 'presentes'}
+                                            </p>
+                                        )}
                                     </div>
                                 </div>
-                            ) : (
-                                <div className="text-center py-8 text-white/40">
-                                    <Gift className="w-12 h-12 mx-auto mb-3 opacity-30" />
-                                    <p className="text-sm">Nenhum presente selecionado</p>
-                                    <p className="text-xs">Volte e selecione itens da lista</p>
+                                <button onClick={() => setShowPixPanel(false)} className="p-2 text-primary/80 hover:text-primary transition-colors bg-primary/10 rounded-xl cursor-pointer">
+                                    <X className="w-5 h-5" />
+                                </button>
+                            </div>
+                        </div>
+
+                        {/* Body */}
+                        <div className="flex-1 overflow-y-auto p-6 space-y-5">
+                            {/* STEP: Cart Items */}
+                            {checkoutStep === 'cart' && (
+                                <>
+                                    {selectedGifts.length === 0 ? (
+                                        <div className="flex flex-col items-center justify-center py-16 text-center text-white/40">
+                                            <Gift className="w-12 h-12 mb-3 opacity-30 text-secondary" />
+                                            <p className="text-sm font-bold">Sua lista está vazia</p>
+                                            <p className="text-xs">Escolha sugestões da lista para me presentear!</p>
+                                        </div>
+                                    ) : (
+                                        <div className="space-y-3">
+                                            {selectedGifts.map(id => {
+                                                const gift = GIFTS.find(g => g.id === id);
+                                                if (!gift) return null;
+                                                return (
+                                                    <div key={id} className="flex gap-3 bg-white/5 border border-white/10 rounded-xl p-3 items-center group">
+                                                        <img src={gift.imageUrl} alt={gift.name} className="w-12 h-12 rounded-lg object-cover flex-shrink-0" />
+                                                        <div className="flex-1 min-w-0">
+                                                            <h4 className="text-white text-sm font-bold font-heading truncate">{gift.name}</h4>
+                                                            <p className="text-secondary text-sm font-bold mt-0.5">{formatPrice(gift.price)}</p>
+                                                        </div>
+                                                        <button onClick={() => removeGift(id)} className="text-white/40 hover:text-red-400 p-2 transition-colors cursor-pointer">
+                                                            <Trash2 className="w-4 h-4" />
+                                                        </button>
+                                                    </div>
+                                                );
+                                            })}
+                                        </div>
+                                    )}
+                                </>
+                            )}
+
+                            {/* STEP: Identification Form */}
+                            {checkoutStep === 'form' && (
+                                <div className="space-y-4">
+                                    {/* Preview of Items */}
+                                    <div className="bg-white/5 border border-white/10 rounded-xl p-4 shadow-sm">
+                                        <div className="flex items-center gap-2 mb-3">
+                                            <Sparkles className="w-4 h-4 text-secondary" />
+                                            <span className="text-xs font-medium text-white/60">
+                                                {selectedGifts.length} {selectedGifts.length === 1 ? 'presente selecionado' : 'presentes selecionados'}
+                                            </span>
+                                        </div>
+                                        <div className="flex gap-1.5 overflow-x-auto pb-1">
+                                            {selectedGifts.map(id => {
+                                                const gift = GIFTS.find(g => g.id === id);
+                                                return gift ? (
+                                                    <img key={id} src={gift.imageUrl} alt={gift.name} className="w-10 h-10 rounded-lg object-cover border border-white/10 flex-shrink-0" />
+                                                ) : null;
+                                            })}
+                                        </div>
+                                    </div>
+
+                                    {/* Input Fields */}
+                                    <div className="space-y-3">
+                                        <div>
+                                            <label className="block text-[10px] uppercase tracking-widest font-bold text-white/60 mb-1.5 pl-1">
+                                                Seu Nome Completo <span className="text-red-400">*</span>
+                                            </label>
+                                            <input
+                                                type="text"
+                                                value={buyerName}
+                                                onChange={(e) => setBuyerName(e.target.value)}
+                                                placeholder="Como você se chama?"
+                                                required
+                                                className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-sm text-white focus:outline-none focus:ring-2 focus:ring-secondary/30 transition-all placeholder:text-white/30 focus:border-secondary"
+                                            />
+                                        </div>
+
+                                        <div>
+                                            <label className="block text-[10px] uppercase tracking-widest font-bold text-white/60 mb-1.5 pl-1">
+                                                Seu WhatsApp / Telefone <span className="text-red-400">*</span>
+                                            </label>
+                                            <input
+                                                type="tel"
+                                                value={buyerPhone}
+                                                onChange={(e) => {
+                                                    let v = e.target.value.replace(/\D/g, "");
+                                                    if (v.length > 11) v = v.slice(0, 11);
+                                                    v = v.replace(/^(\d{2})(\d)/g, "($1) $2");
+                                                    v = v.replace(/(\d)(\d{4})$/, "$1-$2");
+                                                    setBuyerPhone(v);
+                                                }}
+                                                placeholder="(63) 99999-9999"
+                                                required
+                                                maxLength={15}
+                                                className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-sm text-white focus:outline-none focus:ring-2 focus:ring-secondary/30 transition-all placeholder:text-white/30 focus:border-secondary"
+                                            />
+                                        </div>
+                                    </div>
+
+                                    {/* Payment Method Info (PIX Only) */}
+                                    <div className="bg-white/5 border border-white/10 rounded-xl p-4 flex items-center gap-3">
+                                        <QrCode className="w-8 h-8 text-secondary" />
+                                        <div>
+                                            <h4 className="text-white text-xs font-bold uppercase tracking-wider">PIX Direto</h4>
+                                            <p className="text-white/50 text-[10px] mt-0.5">O valor é enviado direto para a conta bancária da Anna, sem taxas.</p>
+                                        </div>
+                                    </div>
+
+                                    {error && (
+                                        <div className="bg-red-500/10 border border-red-500/20 text-red-300 text-xs p-3 rounded-xl flex items-center gap-2">
+                                            <X className="w-4 h-4 flex-shrink-0" />
+                                            {error}
+                                        </div>
+                                    )}
                                 </div>
                             )}
 
-                            {/* PIX QR Code */}
-                            <div className="flex justify-center">
-                                <div className="bg-white rounded-2xl p-4 shadow-lg">
-                                    <QRCodeSVG
-                                        value={`00020126580014BR.GOV.BCB.PIX0136${PIX_KEY}0212Anna Livia05200000BRBCentral PIX54040.005802BR5913ANNA LIVIA CARVALHO6009ARAGUAINA62070503***6304`}
-                                        size={200}
-                                        level="M"
-                                        includeMargin={false}
-                                    />
+                            {/* STEP: PIX details */}
+                            {checkoutStep === 'pix-details' && (
+                                <div className="space-y-4">
+                                    <div className="text-center py-1">
+                                        <p className="text-white/60 text-xs mb-1">Valor total a transferir</p>
+                                        <p className="text-3xl font-bold text-secondary">{formatPrice(selectedTotal)}</p>
+                                    </div>
+
+                                    {/* QR Code SVG */}
+                                    <div className="flex justify-center">
+                                        <div className="bg-white rounded-2xl p-4 shadow-lg">
+                                            <QRCodeSVG
+                                                value={`00020126580014BR.GOV.BCB.PIX0136${PIX_KEY}0212Anna Livia05200000BRBCentral PIX54040.005802BR5913ANNA LIVIA CARVALHO6009ARAGUAINA62070503***6304`}
+                                                size={180}
+                                                level="M"
+                                                includeMargin={false}
+                                            />
+                                        </div>
+                                    </div>
+
+                                    {/* Bank Info Block */}
+                                    <div className="bg-white/5 border border-white/10 rounded-xl p-3 text-center">
+                                        <p className="text-sm text-white font-bold font-heading">{PIX_NAME}</p>
+                                        <p className="text-xs text-secondary mt-0.5">{PIX_BANK} · CPF</p>
+                                    </div>
+
+                                    {/* Copy Pix Key Box */}
+                                    <button
+                                        onClick={handleCopyPix}
+                                        className={`w-full p-4 rounded-xl flex items-center justify-between transition-all cursor-pointer ${copied ? "bg-green-500 text-white" : "bg-white/5 hover:bg-white/10 border border-white/10"}`}
+                                    >
+                                        <span className="font-mono text-xs truncate text-white">{PIX_KEY}</span>
+                                        <div className={`flex items-center gap-1.5 text-xs font-medium flex-shrink-0 ml-3 ${copied ? "text-white" : "text-secondary"}`}>
+                                            {copied ? <><Check className="w-4 h-4" /> Copiado!</> : <><Copy className="w-4 h-4" /> Copiar</>}
+                                        </div>
+                                    </button>
+
+                                    {/* Confirm via WhatsApp button */}
+                                    <button
+                                        onClick={handleConfirmPaymentAndWhatsApp}
+                                        disabled={loading}
+                                        className="w-full bg-green-500 hover:bg-green-600 text-white py-3.5 rounded-xl font-bold uppercase tracking-widest text-xs transition-all flex items-center justify-center gap-2 shadow-lg cursor-pointer disabled:opacity-50"
+                                    >
+                                        {loading ? (
+                                            <><Loader2 className="w-4 h-4 animate-spin" /> Salvando...</>
+                                        ) : (
+                                            <>
+                                                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                                                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+                                                </svg>
+                                                Confirmar pelo WhatsApp
+                                            </>
+                                        )}
+                                    </button>
                                 </div>
-                            </div>
-
-                            {/* Bank Info */}
-                            <div className="bg-white/5 border border-white/10 rounded-xl p-3 text-center">
-                                <p className="text-sm text-white font-heading font-bold">{PIX_NAME}</p>
-                                <p className="text-xs text-secondary mt-0.5">{PIX_BANK}</p>
-                            </div>
-
-                            {/* PIX Key */}
-                            <button onClick={copyPixKey} className={`w-full p-4 rounded-xl flex items-center justify-between transition-all ${copied ? "bg-green-500 text-white" : "bg-white/10 hover:bg-white/15"}`}>
-                                <span className={`font-mono text-xs truncate ${copied ? "text-white" : "text-white"}`}>{PIX_KEY}</span>
-                                <div className={`flex items-center gap-1.5 text-xs font-medium flex-shrink-0 ml-3 ${copied ? "text-white" : "text-secondary"}`}>
-                                    {copied ? <><Check className="w-4 h-4" /> Copiado!</> : <><Copy className="w-4 h-4" /> Copiar</>}
-                                </div>
-                            </button>
-
-                            {/* WhatsApp */}
-                            <button onClick={sendWhatsApp} className="w-full bg-green-500 hover:bg-green-600 text-white py-3.5 rounded-xl font-bold uppercase tracking-widest text-xs transition-all flex items-center justify-center gap-2 shadow-lg">
-                                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
-                                </svg>
-                                Confirmar pelo WhatsApp
-                            </button>
-
-                            <p className="text-center text-white/40 text-[10px]">Após o pagamento, confirme pelo WhatsApp</p>
+                            )}
                         </div>
 
                         {/* Footer */}
                         <div className="p-4 border-t border-white/10 bg-[#0a1a0a]">
-                            <button onClick={() => setShowPixPanel(false)} className="w-full text-muted-foreground hover:text-foreground text-xs py-2 transition-colors">
-                                ← Voltar para a lista
-                            </button>
+                            {checkoutStep === 'cart' && selectedGifts.length > 0 && (
+                                <>
+                                    <div className="flex justify-between items-center mb-3">
+                                        <span className="text-xs font-medium text-white/70">Total</span>
+                                        <span className="text-xl font-bold text-secondary">{formatPrice(selectedTotal)}</span>
+                                    </div>
+                                    <button
+                                        onClick={handleContinueToForm}
+                                        className="w-full bg-secondary hover:bg-secondary/90 text-primary py-3 rounded-xl font-bold uppercase tracking-widest text-xs transition-all flex items-center justify-center gap-2 cursor-pointer"
+                                    >
+                                        <Heart className="w-4 h-4" /> Continuar
+                                    </button>
+                                    <button onClick={() => setSelectedGifts([])} className="w-full mt-2 text-white/40 hover:text-white text-[10px] py-1 transition-colors cursor-pointer">
+                                        Limpar lista
+                                    </button>
+                                </>
+                            )}
+
+                            {checkoutStep === 'form' && (
+                                <>
+                                    <button
+                                        onClick={handleProceedToPayment}
+                                        className="w-full bg-secondary hover:bg-secondary/90 text-primary py-3 rounded-xl font-bold uppercase tracking-widest text-xs transition-all flex items-center justify-center gap-2 cursor-pointer"
+                                    >
+                                        <QrCode className="w-4 h-4" /> Ir para o PIX
+                                    </button>
+                                    <button onClick={() => setCheckoutStep("cart")} className="w-full mt-2 text-white/40 hover:text-white text-xs py-1 transition-colors cursor-pointer">
+                                        ← Voltar para a lista
+                                    </button>
+                                </>
+                            )}
+
+                            {checkoutStep === 'pix-details' && (
+                                <button onClick={() => setCheckoutStep("form")} className="w-full text-white/40 hover:text-white text-xs py-1 transition-colors cursor-pointer">
+                                    ← Voltar para identificação
+                                </button>
+                            )}
                         </div>
                     </div>
                 </div>
@@ -428,7 +629,7 @@ function GiftCard({ gift, isSelected, onToggle, formatPrice }: { gift: GiftItem;
                 {/* Quick Action Overlay */}
                 <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center backdrop-blur-[2px]">
                     <span className="bg-background text-foreground px-6 py-3 rounded-full font-bold uppercase tracking-widest text-xs flex items-center gap-2 shadow-xl">
-                        {isSelected || added ? <Check className="w-4 h-4" /> : <Plus className="w-4 h-4" />}
+                        {isSelected || added ? <Check className="w-4 h-4 text-green-500" /> : <Plus className="w-4 h-4" />}
                         {isSelected || added ? "Selecionado" : "Adicionar"}
                     </span>
                 </div>
