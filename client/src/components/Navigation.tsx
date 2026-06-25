@@ -5,6 +5,7 @@ import { Menu, X, GraduationCap } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
+import AudioPlayer from "./AudioPlayer";
 
 const NAV_LINKS = [
   { name: "Início", href: "#hero" },
@@ -95,19 +96,23 @@ export function Navigation() {
           >
             Confirmar
           </Button>
+          <AudioPlayer isScrolled={isScrolled} isMobileMenuOpen={isMobileMenuOpen} />
         </div>
 
-        {/* Mobile Menu Toggle */}
-        <button
-          className="md:hidden p-3 min-w-[48px] min-h-[48px] flex items-center justify-center text-current"
-          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-        >
-          {isMobileMenuOpen ? (
-            <X className="text-primary" />
-          ) : (
-            <Menu className="text-primary" />
-          )}
-        </button>
+        {/* Mobile Menu Toggle & Controls */}
+        <div className="flex md:hidden items-center gap-3">
+          <AudioPlayer isScrolled={isScrolled} isMobileMenuOpen={isMobileMenuOpen} />
+          <button
+            className="p-3 min-w-[48px] min-h-[48px] flex items-center justify-center text-current"
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          >
+            {isMobileMenuOpen ? (
+              <X className="text-primary" />
+            ) : (
+              <Menu className="text-primary" />
+            )}
+          </button>
+        </div>
       </div>
 
       {/* Mobile Side Drawer - Rendered via Portal to avoid stacking context issues */}
