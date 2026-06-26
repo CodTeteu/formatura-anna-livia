@@ -432,7 +432,7 @@ export function GiftListPage() {
                                     ) : (
                                         <div className="space-y-3">
                                             {selectedGifts.map(id => {
-                                                const gift = GIFTS.find(g => g.id === id);
+                                                const gift = giftsList.find(g => g.id === id);
                                                 if (!gift) return null;
                                                 return (
                                                     <div key={id} className="flex gap-3 bg-white/5 border border-white/10 rounded-xl p-3 items-center group">
@@ -465,7 +465,7 @@ export function GiftListPage() {
                                         </div>
                                         <div className="flex gap-1.5 overflow-x-auto pb-1">
                                             {selectedGifts.map(id => {
-                                                const gift = GIFTS.find(g => g.id === id);
+                                                const gift = giftsList.find(g => g.id === id);
                                                 return gift ? (
                                                     <img key={id} src={gift.imageUrl} alt={gift.name} className="w-10 h-10 rounded-lg object-cover border border-white/10 flex-shrink-0" />
                                                 ) : null;

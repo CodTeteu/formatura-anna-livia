@@ -607,8 +607,8 @@ export default function Admin() {
                                                                     className="inline-flex items-center px-2 py-0.5 rounded-lg text-[9px] font-bold uppercase"
                                                                     style={
                                                                         rsvp.email === 'paid'
-                                                                            ? { background: `${green}15`, color: green }
-                                                                            : { background: `${gold}15`, color: '#b09054' }
+                                                                            ? { background: '#e6f4ea', color: '#1a7d37' }
+                                                                            : { background: '#fde8e8', color: '#c53030' }
                                                                     }
                                                                 >
                                                                     {rsvp.email === 'paid' ? 'Pago' : 'Pendente'}
@@ -675,8 +675,8 @@ export default function Admin() {
                                                                     className="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl text-xs font-bold border-2 transition-all active:scale-[0.97]"
                                                                     style={
                                                                         rsvp.email !== 'paid'
-                                                                            ? { background: gold, borderColor: gold, color: 'white' }
-                                                                            : { borderColor: `${gold}30`, color: '#b09054', background: `${gold}05` }
+                                                                            ? { background: '#c53030', borderColor: '#c53030', color: 'white' }
+                                                                            : { borderColor: '#c5303030', color: '#c53030', background: '#c5303005' }
                                                                     }
                                                                 >
                                                                     <Clock className="w-4 h-4" />
@@ -754,8 +754,8 @@ export default function Admin() {
                                                                 className="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg text-[9px] font-bold uppercase flex-shrink-0"
                                                                 style={
                                                                     isPaid
-                                                                        ? { background: `${green}15`, color: green }
-                                                                        : { background: `${gold}15`, color: '#b09054' }
+                                                                        ? { background: '#e6f4ea', color: '#1a7d37' }
+                                                                        : { background: '#fde8e8', color: '#c53030' }
                                                                 }
                                                             >
                                                                 {isPaid ? <><CheckCircle2 className="w-2.5 h-2.5" /> Pago</> : <><Clock className="w-2.5 h-2.5" /> Aguard. PIX</>}
@@ -815,8 +815,8 @@ export default function Admin() {
                                                                     className="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl text-xs font-bold border-2 transition-all active:scale-[0.97]"
                                                                     style={
                                                                         !isPaid
-                                                                            ? { background: gold, borderColor: gold, color: 'white' }
-                                                                            : { borderColor: `${gold}30`, color: '#b09054', background: `${gold}05` }
+                                                                            ? { background: '#c53030', borderColor: '#c53030', color: 'white' }
+                                                                            : { borderColor: '#c5303030', color: '#c53030', background: '#c5303005' }
                                                                     }
                                                                 >
                                                                     <Clock className="w-4 h-4" />

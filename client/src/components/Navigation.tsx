@@ -65,14 +65,14 @@ export function Navigation() {
           onClick={(e) => scrollToSection(e, "#hero")}
           className="flex items-center transition-opacity hover:opacity-80"
         >
-          <span
+          <img
+            src="/assets/logo_al.png"
+            alt="AL"
             className={cn(
-              "font-script text-2xl md:text-3xl transition-all duration-300",
-              isScrolled ? "text-primary" : "text-white"
+              "transition-all duration-300",
+              isScrolled ? "h-10" : "h-12"
             )}
-          >
-            AL
-          </span>
+          />
         </a>
 
         {/* Desktop Menu */}
@@ -171,9 +171,11 @@ export function Navigation() {
 
                 {/* Logo */}
                 <div className="flex justify-center py-6">
-                  <span className="font-script text-4xl text-white">
-                    Anna Lívia
-                  </span>
+                  <img
+                    src="/assets/logo_al.png"
+                    alt="Anna Lívia"
+                    className="h-16"
+                  />
                 </div>
 
                 {/* Divider */}
