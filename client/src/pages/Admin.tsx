@@ -279,6 +279,14 @@ export default function Admin() {
     // Derived stats
     const totalPeople = rsvps.reduce((acc, r) => acc + (r.guest_count || 0) + 1, 0);
 
+    const colacaoCount = rsvps
+        .filter(r => r.attendance === 'colacao' || r.attendance === 'ambos')
+        .reduce((acc, r) => acc + (r.guest_count || 0) + 1, 0);
+
+    const jantarCount = rsvps
+        .filter(r => r.attendance === 'jantar' || r.attendance === 'ambos')
+        .reduce((acc, r) => acc + (r.guest_count || 0) + 1, 0);
+
     const getColacaoValue = (r: any) => {
         const count = (r.guest_count || 0) + 1;
         if (r.attendance === 'colacao' || r.attendance === 'ambos') return count * 60;
@@ -401,53 +409,53 @@ export default function Admin() {
 
                     {/* Card 2: Colação */}
                     <div className="bg-white rounded-2xl p-4 relative overflow-hidden border shadow-sm" style={{ borderColor: '#e5e0d8' }}>
-                        <div className="absolute top-0 right-0 w-16 h-16 rounded-full -translate-y-1/3 translate-x-1/3 opacity-10" style={{ background: '#3b82f6' }} />
+                        <div className="absolute top-0 right-0 w-16 h-16 rounded-full -translate-y-1/3 translate-x-1/3 opacity-10" style={{ background: gold }} />
                         <div className="flex items-center gap-2 mb-2">
-                            <div className="w-8 h-8 rounded-xl flex items-center justify-center bg-blue-50">
-                                <GraduationCap className="w-4 h-4 text-blue-600" />
+                            <div className="w-8 h-8 rounded-xl flex items-center justify-center" style={{ background: `${gold}15` }}>
+                                <GraduationCap className="w-4 h-4" style={{ color: gold }} />
                             </div>
                             <span className="text-[10px] font-bold uppercase tracking-wider" style={{ color: gold }}>Colação</span>
                         </div>
-                        <p className="text-xl font-heading text-blue-600">{formatPrice(totalColacaoPaid)}</p>
-                        <p className="text-[10px] mt-0.5 text-slate-400 font-medium truncate">Pendente: {formatPrice(totalColacaoPending)}</p>
+                        <p className="text-xl font-heading" style={{ color: green }}>{formatPrice(totalColacaoPaid)}</p>
+                        <p className="text-[10px] mt-0.5 text-slate-400 font-medium truncate">{colacaoCount} pessoa(s) • Pend.: {formatPrice(totalColacaoPending)}</p>
                     </div>
 
                     {/* Card 3: Janta */}
                     <div className="bg-white rounded-2xl p-4 relative overflow-hidden border shadow-sm" style={{ borderColor: '#e5e0d8' }}>
-                        <div className="absolute top-0 right-0 w-16 h-16 rounded-full -translate-y-1/3 translate-x-1/3 opacity-10" style={{ background: '#f97316' }} />
+                        <div className="absolute top-0 right-0 w-16 h-16 rounded-full -translate-y-1/3 translate-x-1/3 opacity-10" style={{ background: gold }} />
                         <div className="flex items-center gap-2 mb-2">
-                            <div className="w-8 h-8 rounded-xl flex items-center justify-center bg-orange-50">
-                                <UtensilsCrossed className="w-4 h-4 text-orange-600" />
+                            <div className="w-8 h-8 rounded-xl flex items-center justify-center" style={{ background: `${gold}15` }}>
+                                <UtensilsCrossed className="w-4 h-4" style={{ color: gold }} />
                             </div>
                             <span className="text-[10px] font-bold uppercase tracking-wider" style={{ color: gold }}>Janta</span>
                         </div>
-                        <p className="text-xl font-heading text-orange-600">{formatPrice(totalJantarPaid)}</p>
-                        <p className="text-[10px] mt-0.5 text-slate-400 font-medium truncate">Pendente: {formatPrice(totalJantarPending)}</p>
+                        <p className="text-xl font-heading" style={{ color: green }}>{formatPrice(totalJantarPaid)}</p>
+                        <p className="text-[10px] mt-0.5 text-slate-400 font-medium truncate">{jantarCount} pessoa(s) • Pend.: {formatPrice(totalJantarPending)}</p>
                     </div>
 
                     {/* Card 4: Recebidos */}
                     <div className="bg-white rounded-2xl p-4 relative overflow-hidden border shadow-sm" style={{ borderColor: '#e5e0d8' }}>
-                        <div className="absolute top-0 right-0 w-16 h-16 rounded-full -translate-y-1/3 translate-x-1/3 opacity-10" style={{ background: '#10b981' }} />
+                        <div className="absolute top-0 right-0 w-16 h-16 rounded-full -translate-y-1/3 translate-x-1/3 opacity-10" style={{ background: green }} />
                         <div className="flex items-center gap-2 mb-2">
-                            <div className="w-8 h-8 rounded-xl flex items-center justify-center bg-emerald-50">
-                                <TrendingUp className="w-4 h-4 text-emerald-600" />
+                            <div className="w-8 h-8 rounded-xl flex items-center justify-center" style={{ background: `${green}15` }}>
+                                <TrendingUp className="w-4 h-4" style={{ color: green }} />
                             </div>
                             <span className="text-[10px] font-bold uppercase tracking-wider" style={{ color: gold }}>Recebidos</span>
                         </div>
-                        <p className="text-xl font-heading text-emerald-600">{formatPrice(totalRsvpsPaidValue)}</p>
+                        <p className="text-xl font-heading" style={{ color: green }}>{formatPrice(totalRsvpsPaidValue)}</p>
                         <p className="text-[10px] mt-0.5 text-slate-400 font-medium truncate">Pendente: {formatPrice(totalRsvpsPendingValue)}</p>
                     </div>
 
                     {/* Card 5: Presentes */}
                     <div className="bg-white rounded-2xl p-4 relative overflow-hidden border shadow-sm" style={{ borderColor: '#e5e0d8' }}>
-                        <div className="absolute top-0 right-0 w-16 h-16 rounded-full -translate-y-1/3 translate-x-1/3 opacity-10" style={{ background: '#a855f7' }} />
+                        <div className="absolute top-0 right-0 w-16 h-16 rounded-full -translate-y-1/3 translate-x-1/3 opacity-10" style={{ background: green }} />
                         <div className="flex items-center gap-2 mb-2">
-                            <div className="w-8 h-8 rounded-xl flex items-center justify-center bg-purple-50">
-                                <Gift className="w-4 h-4 text-purple-600" />
+                            <div className="w-8 h-8 rounded-xl flex items-center justify-center" style={{ background: `${green}15` }}>
+                                <Gift className="w-4 h-4" style={{ color: green }} />
                             </div>
                             <span className="text-[10px] font-bold uppercase tracking-wider" style={{ color: gold }}>Presentes</span>
                         </div>
-                        <p className="text-xl font-heading text-purple-600">{formatPrice(totalGiftPaidValue)}</p>
+                        <p className="text-xl font-heading" style={{ color: green }}>{formatPrice(totalGiftPaidValue)}</p>
                         <p className="text-[10px] mt-0.5 text-slate-400 font-medium truncate">Pendente: {formatPrice(totalGiftPendingValue)}</p>
                     </div>
 
@@ -568,31 +576,41 @@ export default function Admin() {
                                     {filteredRsvps.map(rsvp => {
                                         const isExpanded = expandedRsvpId === rsvp.id;
                                         const attendanceBadge = rsvp.attendance === 'colacao'
-                                            ? { bg: 'bg-blue-50', text: 'text-blue-700', label: 'Colação' }
+                                            ? { style: { background: `${gold}15`, color: '#b09054' }, label: 'Colação' }
                                             : rsvp.attendance === 'jantar'
-                                            ? { bg: 'bg-orange-50', text: 'text-orange-700', label: 'Jantar' }
+                                            ? { style: { background: `${green}15`, color: green }, label: 'Jantar' }
                                             : rsvp.attendance === 'ambos'
-                                            ? { bg: 'bg-emerald-50', text: 'text-emerald-700', label: 'Ambos' }
-                                            : { bg: 'bg-gray-50', text: 'text-gray-600', label: rsvp.attendance };
+                                            ? { style: { background: green, color: 'white' }, label: 'Ambos' }
+                                            : { style: { background: creamDark, color: green }, label: rsvp.attendance };
 
                                         return (
-                                            <div key={rsvp.id} className="bg-white rounded-2xl border shadow-sm overflow-hidden transition-all" style={{ borderColor: rsvp.email === 'paid' ? '#10b981' : '#e5e0d8', borderWidth: rsvp.email === 'paid' ? '1.5px' : '1px' }}>
+                                            <div key={rsvp.id} className="bg-white rounded-2xl border shadow-sm overflow-hidden transition-all" style={{ borderColor: rsvp.email === 'paid' ? green : '#e5e0d8', borderWidth: rsvp.email === 'paid' ? '1.5px' : '1px' }}>
                                                 <button
                                                     onClick={() => setExpandedRsvpId(isExpanded ? null : rsvp.id)}
                                                     className="w-full p-4 flex items-center gap-3 text-left"
                                                 >
                                                     {/* Avatar */}
-                                                    <div className="w-11 h-11 rounded-2xl flex items-center justify-center flex-shrink-0 shadow-sm" style={{ background: rsvp.email === 'paid' ? '#10b981' : green }}>
-                                                        <span className="font-heading text-base" style={{ color: rsvp.email === 'paid' ? 'white' : gold }}>{rsvp.name?.charAt(0).toUpperCase()}</span>
+                                                    <div className="w-11 h-11 rounded-2xl flex items-center justify-center flex-shrink-0 shadow-sm" style={{ background: rsvp.email === 'paid' ? green : `${gold}20` }}>
+                                                        <span className="font-heading text-base font-bold" style={{ color: rsvp.email === 'paid' ? 'white' : '#b09054' }}>{rsvp.name?.charAt(0).toUpperCase()}</span>
                                                     </div>
                                                     <div className="flex-1 min-w-0">
                                                         <div className="flex items-center justify-between gap-2">
                                                             <h3 className="font-bold text-sm truncate" style={{ color: green }}>{rsvp.name}</h3>
                                                             <div className="flex items-center gap-1.5 flex-shrink-0">
-                                                                <span className={`inline-flex items-center px-2 py-0.5 rounded-lg text-[9px] font-bold uppercase ${attendanceBadge.bg} ${attendanceBadge.text}`}>
+                                                                <span 
+                                                                    className="inline-flex items-center px-2 py-0.5 rounded-lg text-[9px] font-bold uppercase"
+                                                                    style={attendanceBadge.style}
+                                                                >
                                                                     {attendanceBadge.label}
                                                                 </span>
-                                                                <span className={`inline-flex items-center px-2 py-0.5 rounded-lg text-[9px] font-bold uppercase ${rsvp.email === 'paid' ? 'bg-emerald-50 text-emerald-700' : 'bg-amber-50 text-amber-600'}`}>
+                                                                <span 
+                                                                    className="inline-flex items-center px-2 py-0.5 rounded-lg text-[9px] font-bold uppercase"
+                                                                    style={
+                                                                        rsvp.email === 'paid'
+                                                                            ? { background: `${green}15`, color: green }
+                                                                            : { background: `${gold}15`, color: '#b09054' }
+                                                                    }
+                                                                >
                                                                     {rsvp.email === 'paid' ? 'Pago' : 'Pendente'}
                                                                 </span>
                                                             </div>
@@ -612,7 +630,7 @@ export default function Admin() {
                                                         </div>
                                                     </div>
                                                     <div className="text-right flex-shrink-0">
-                                                        <p className="text-sm font-bold" style={{ color: rsvp.email === 'paid' ? '#10b981' : greenMid }}>{formatPrice(getColacaoValue(rsvp) + getJantarValue(rsvp))}</p>
+                                                        <p className="text-sm font-bold" style={{ color: rsvp.email === 'paid' ? green : greenMid }}>{formatPrice(getColacaoValue(rsvp) + getJantarValue(rsvp))}</p>
                                                         <ChevronRight className={`w-4 h-4 transition-transform mt-1 ml-auto ${isExpanded ? 'rotate-90' : ''}`} style={{ color: goldLight }} />
                                                     </div>
                                                 </button>
@@ -642,16 +660,24 @@ export default function Admin() {
                                                             <div className="flex gap-2">
                                                                 <button
                                                                     onClick={() => updateRsvpStatus(rsvp.id, 'paid')}
-                                                                    className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl text-xs font-bold border-2 transition-all active:scale-[0.97] ${rsvp.email === 'paid' ? 'text-white' : 'border-emerald-200 text-emerald-700 bg-emerald-50'}`}
-                                                                    style={rsvp.email === 'paid' ? { background: '#10b981', borderColor: '#10b981' } : {}}
+                                                                    className="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl text-xs font-bold border-2 transition-all active:scale-[0.97]"
+                                                                    style={
+                                                                        rsvp.email === 'paid'
+                                                                            ? { background: green, borderColor: green, color: 'white' }
+                                                                            : { borderColor: `${green}30`, color: green, background: `${green}05` }
+                                                                    }
                                                                 >
                                                                     <CheckCircle2 className="w-4 h-4" />
                                                                     Pago ✅
                                                                 </button>
                                                                 <button
                                                                     onClick={() => updateRsvpStatus(rsvp.id, 'pending')}
-                                                                    className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl text-xs font-bold border-2 transition-all active:scale-[0.97] ${rsvp.email !== 'paid' ? 'text-white' : 'border-amber-200 text-amber-600 bg-amber-50'}`}
-                                                                    style={rsvp.email !== 'paid' ? { background: '#f59e0b', borderColor: '#f59e0b' } : {}}
+                                                                    className="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl text-xs font-bold border-2 transition-all active:scale-[0.97]"
+                                                                    style={
+                                                                        rsvp.email !== 'paid'
+                                                                            ? { background: gold, borderColor: gold, color: 'white' }
+                                                                            : { borderColor: `${gold}30`, color: '#b09054', background: `${gold}05` }
+                                                                    }
                                                                 >
                                                                     <Clock className="w-4 h-4" />
                                                                     Pendente ⏳
@@ -713,18 +739,25 @@ export default function Admin() {
                                         const isExpanded = expandedGiftId === sel.id;
 
                                         return (
-                                            <div key={sel.id} className="bg-white rounded-2xl border shadow-sm overflow-hidden" style={{ borderColor: isPaid ? '#10b981' : '#e5e0d8', borderWidth: isPaid ? '1.5px' : '1px' }}>
+                                            <div key={sel.id} className="bg-white rounded-2xl border shadow-sm overflow-hidden" style={{ borderColor: isPaid ? green : '#e5e0d8', borderWidth: isPaid ? '1.5px' : '1px' }}>
                                                 <button
                                                     onClick={() => setExpandedGiftId(isExpanded ? null : sel.id)}
                                                     className="w-full p-4 flex items-center gap-3 text-left"
                                                 >
-                                                    <div className="w-11 h-11 rounded-2xl flex items-center justify-center flex-shrink-0 shadow-sm" style={{ background: isPaid ? '#10b981' : creamDark }}>
-                                                        <Gift className={`w-5 h-5 ${isPaid ? 'text-white' : ''}`} style={!isPaid ? { color: goldLight } : {}} />
+                                                    <div className="w-11 h-11 rounded-2xl flex items-center justify-center flex-shrink-0 shadow-sm" style={{ background: isPaid ? green : `${gold}20` }}>
+                                                        <Gift className="w-5 h-5" style={{ color: isPaid ? 'white' : '#b09054' }} />
                                                     </div>
                                                     <div className="flex-1 min-w-0">
                                                         <div className="flex items-center justify-between gap-2">
                                                             <h3 className="font-bold text-sm truncate" style={{ color: green }}>{sel.guest_name}</h3>
-                                                            <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-lg text-[9px] font-bold uppercase flex-shrink-0 ${isPaid ? 'bg-emerald-50 text-emerald-700' : 'bg-amber-50 text-amber-600'}`}>
+                                                            <span 
+                                                                className="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg text-[9px] font-bold uppercase flex-shrink-0"
+                                                                style={
+                                                                    isPaid
+                                                                        ? { background: `${green}15`, color: green }
+                                                                        : { background: `${gold}15`, color: '#b09054' }
+                                                                }
+                                                            >
                                                                 {isPaid ? <><CheckCircle2 className="w-2.5 h-2.5" /> Pago</> : <><Clock className="w-2.5 h-2.5" /> Aguard. PIX</>}
                                                             </span>
                                                         </div>
@@ -740,7 +773,7 @@ export default function Admin() {
                                                         </div>
                                                     </div>
                                                     <div className="text-right flex-shrink-0">
-                                                        <p className="text-sm font-bold" style={{ color: isPaid ? '#10b981' : greenMid }}>{formatPrice(sel.total_value)}</p>
+                                                        <p className="text-sm font-bold" style={{ color: isPaid ? green : greenMid }}>{formatPrice(sel.total_value)}</p>
                                                         <ChevronRight className={`w-4 h-4 transition-transform mt-1 ml-auto ${isExpanded ? 'rotate-90' : ''}`} style={{ color: goldLight }} />
                                                     </div>
                                                 </button>
@@ -767,16 +800,24 @@ export default function Admin() {
                                                             <div className="flex gap-2">
                                                                 <button
                                                                     onClick={() => updateGiftStatus(sel.id, 'paid')}
-                                                                    className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl text-xs font-bold border-2 transition-all active:scale-[0.97] ${isPaid ? 'text-white' : 'border-emerald-200 text-emerald-700 bg-emerald-50'}`}
-                                                                    style={isPaid ? { background: '#10b981', borderColor: '#10b981' } : {}}
+                                                                    className="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl text-xs font-bold border-2 transition-all active:scale-[0.97]"
+                                                                    style={
+                                                                        isPaid
+                                                                            ? { background: green, borderColor: green, color: 'white' }
+                                                                            : { borderColor: `${green}30`, color: green, background: `${green}05` }
+                                                                    }
                                                                 >
                                                                     <CheckCircle2 className="w-4 h-4" />
                                                                     Pago ✅
                                                                 </button>
                                                                 <button
                                                                     onClick={() => updateGiftStatus(sel.id, 'pending')}
-                                                                    className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl text-xs font-bold border-2 transition-all active:scale-[0.97] ${!isPaid ? 'text-white' : 'border-amber-200 text-amber-600 bg-amber-50'}`}
-                                                                    style={!isPaid ? { background: '#f59e0b', borderColor: '#f59e0b' } : {}}
+                                                                    className="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl text-xs font-bold border-2 transition-all active:scale-[0.97]"
+                                                                    style={
+                                                                        !isPaid
+                                                                            ? { background: gold, borderColor: gold, color: 'white' }
+                                                                            : { borderColor: `${gold}30`, color: '#b09054', background: `${gold}05` }
+                                                                    }
                                                                 >
                                                                     <Clock className="w-4 h-4" />
                                                                     Aguard. PIX ⏳
