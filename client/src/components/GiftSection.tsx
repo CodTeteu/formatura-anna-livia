@@ -12,7 +12,7 @@ const PIX_KEY_TYPE = "CPF";
 
 export function GiftSection() {
     const ref = useRef(null);
-    const isInView = useInView(ref, { once: true, margin: "-100px" });
+    const isInView = useInView(ref, { once: true, margin: "200px" });
     const [copied, setCopied] = useState(false);
     const [showPixModal, setShowPixModal] = useState(false);
     const { toast } = useToast();
@@ -60,9 +60,9 @@ export function GiftSection() {
             <div className="max-w-3xl mx-auto px-5 relative z-10">
                 {/* Header */}
                 <motion.div
-                    initial={{ opacity: 0, y: 30 }}
+                    initial={{ opacity: 0, y: 20 }}
                     animate={isInView ? { opacity: 1, y: 0 } : {}}
-                    transition={{ duration: 0.8 }}
+                    transition={{ duration: 0.4 }}
                     className="text-center"
                 >
                     <span className="text-white uppercase tracking-[0.3em] text-xs font-bold bg-white/10 px-4 py-1 rounded-full backdrop-blur-sm inline-block mb-6">
