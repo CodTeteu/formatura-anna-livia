@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "wouter";
 import { ArrowLeft, Gift, Search, X, ShoppingCart, Plus, Filter, Check, Copy, QrCode, Loader2, Heart, Trash2, Sparkles } from "lucide-react";
 import { QRCodeSVG } from "qrcode.react";
@@ -69,6 +69,35 @@ export function GiftListPage() {
     const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
     const { toast } = useToast();
 
+    // Gift items state loaded from Supabase
+    const [giftsList, setGiftsList] = useState<GiftItem[]>(GIFTS);
+    const [loadingGifts, setLoadingGifts] = useState(true);
+
+    useEffect(() => {
+        const fetchGifts = async () => {
+            try {
+                const { data, error } = await supabase.from('gift_items').select('*').order('created_at', { ascending: false });
+                if (data && data.length > 0) {
+                    const mapped = data.map((item: any) => ({
+                        id: String(item.id),
+                        name: item.name,
+                        price: Number(item.price),
+                        description: item.description || "",
+                        imageUrl: item.image_url || "",
+                        category: item.category || "Vale Presente",
+                        featured: item.category === "Vale Presente"
+                    }));
+                    setGiftsList(mapped);
+                }
+            } catch (err) {
+                console.error("Erro ao carregar presentes do Supabase:", err);
+            } finally {
+                setLoadingGifts(false);
+            }
+        };
+        fetchGifts();
+    }, []);
+
     // Checkout Panel States
     const [checkoutStep, setCheckoutStep] = useState<"cart" | "form" | "pix-details">("cart");
     const [buyerName, setBuyerName] = useState("");
@@ -86,7 +115,7 @@ export function GiftListPage() {
         setSelectedGifts(prev => prev.filter(i => i !== id));
     };
 
-    const filteredGifts = GIFTS.filter(gift => {
+    const filteredGifts = giftsList.filter(gift => {
         const matchesSearch = gift.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
             gift.description.toLowerCase().includes(searchTerm.toLowerCase());
         const matchesCategory = selectedCategory === "Todas" || gift.category === selectedCategory;
@@ -102,7 +131,7 @@ export function GiftListPage() {
     }
 
     const selectedTotal = selectedGifts.reduce((sum, id) => {
-        const gift = GIFTS.find(g => g.id === id);
+        const gift = giftsList.find(g => g.id === id);
         return sum + (gift?.price || 0);
     }, 0);
 
@@ -158,14 +187,14 @@ export function GiftListPage() {
 
         // Save to Supabase NOW — before showing PIX screen
         const selectedNames = selectedGifts.length > 0
-            ? selectedGifts.map(id => GIFTS.find(g => g.id === id)?.name).filter(Boolean).join(", ")
+            ? selectedGifts.map(id => giftsList.find(g => g.id === id)?.name).filter(Boolean).join(", ")
             : "um presente";
 
         try {
             await supabase.from('gift_selections').insert([{
                 guest_name: buyerName.trim(),
                 guest_phone: buyerPhone.trim(),
-                selected_gifts: selectedGifts.map(id => GIFTS.find(g => g.id === id)).filter(Boolean),
+                selected_gifts: selectedGifts.map(id => giftsList.find(g => g.id === id)).filter(Boolean),
                 total_value: selectedTotal,
                 payment_status: 'pending',
                 message: `Presente(s): ${selectedNames}`
@@ -182,7 +211,7 @@ export function GiftListPage() {
 
     const handleConfirmPaymentAndWhatsApp = async () => {
         const selectedNames = selectedGifts.length > 0
-            ? selectedGifts.map(id => GIFTS.find(g => g.id === id)?.name).filter(Boolean).join(", ")
+            ? selectedGifts.map(id => giftsList.find(g => g.id === id)?.name).filter(Boolean).join(", ")
             : "um presente";
 
         const message = `Olá Anna! Acabei de fazer um PIX para te presentear na sua formatura! 🎓\n\nPresente(s): ${selectedNames}\nValor: ${formatPrice(selectedTotal)}\nDe: ${buyerName.trim()} (${buyerPhone.trim()})\n\nQue Deus abençoe essa nova fase! ❤️`;

@@ -5,7 +5,8 @@ import {
     ArrowLeft, Users, Gift, Search, Trash2, Download, LogOut,
     Lock, Mail, Loader2, Phone, Calendar, CheckCircle2, Clock,
     Plus, Edit2, X, Save, Package, RefreshCw, TrendingUp,
-    GraduationCap, ChevronRight, Sparkles, AlertCircle, UserCheck
+    GraduationCap, ChevronRight, Sparkles, AlertCircle, UserCheck,
+    UtensilsCrossed
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -278,21 +279,36 @@ export default function Admin() {
     // Derived stats
     const totalPeople = rsvps.reduce((acc, r) => acc + (r.guest_count || 0) + 1, 0);
 
-    const getRsvpValue = (r: any) => {
+    const getColacaoValue = (r: any) => {
         const count = (r.guest_count || 0) + 1;
-        if (r.attendance === 'colacao') return count * 60;
-        if (r.attendance === 'jantar') return count * 70;
-        if (r.attendance === 'ambos') return count * 130;
+        if (r.attendance === 'colacao' || r.attendance === 'ambos') return count * 60;
         return 0;
     };
 
-    const totalRsvpsPaidValue = rsvps
-        .filter(r => r.email === 'paid')
-        .reduce((acc, r) => acc + getRsvpValue(r), 0);
+    const getJantarValue = (r: any) => {
+        const count = (r.guest_count || 0) + 1;
+        if (r.attendance === 'jantar' || r.attendance === 'ambos') return count * 70;
+        return 0;
+    };
 
-    const totalRsvpsPendingValue = rsvps
+    const totalColacaoPaid = rsvps
+        .filter(r => r.email === 'paid')
+        .reduce((acc, r) => acc + getColacaoValue(r), 0);
+
+    const totalColacaoPending = rsvps
         .filter(r => r.email !== 'paid')
-        .reduce((acc, r) => acc + getRsvpValue(r), 0);
+        .reduce((acc, r) => acc + getColacaoValue(r), 0);
+
+    const totalJantarPaid = rsvps
+        .filter(r => r.email === 'paid')
+        .reduce((acc, r) => acc + getJantarValue(r), 0);
+
+    const totalJantarPending = rsvps
+        .filter(r => r.email !== 'paid')
+        .reduce((acc, r) => acc + getJantarValue(r), 0);
+
+    const totalRsvpsPaidValue = totalColacaoPaid + totalJantarPaid;
+    const totalRsvpsPendingValue = totalColacaoPending + totalJantarPending;
 
     const paidGifts = giftSelections.filter(g => g.payment_status === 'paid');
     const pendingGifts = giftSelections.filter(g => g.payment_status !== 'paid');
@@ -369,9 +385,9 @@ export default function Admin() {
             <div className="max-w-6xl mx-auto px-4 pt-5">
 
                 {/* ── STATS CARDS ── */}
-                <div className="flex gap-3 overflow-x-auto pb-2 -mx-4 px-4 md:mx-0 md:px-0 md:grid md:grid-cols-4 scrollbar-hide mb-6">
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 mb-6">
                     {/* Card 1: Confirmações */}
-                    <div className="flex-shrink-0 w-[55vw] md:w-auto bg-white rounded-2xl p-4 relative overflow-hidden border shadow-sm" style={{ borderColor: '#e5e0d8' }}>
+                    <div className="bg-white rounded-2xl p-4 relative overflow-hidden border shadow-sm" style={{ borderColor: '#e5e0d8' }}>
                         <div className="absolute top-0 right-0 w-16 h-16 rounded-full -translate-y-1/3 translate-x-1/3 opacity-10" style={{ background: green }} />
                         <div className="flex items-center gap-2 mb-2">
                             <div className="w-8 h-8 rounded-xl flex items-center justify-center" style={{ background: `${green}15` }}>
@@ -379,47 +395,73 @@ export default function Admin() {
                             </div>
                             <span className="text-[10px] font-bold uppercase tracking-wider" style={{ color: gold }}>Confirmações</span>
                         </div>
-                        <p className="text-3xl font-heading" style={{ color: green }}>{rsvps.length}</p>
-                        <p className="text-xs mt-0.5" style={{ color: goldLight }}>{totalPeople} pessoa(s) no total</p>
+                        <p className="text-2xl font-heading" style={{ color: green }}>{rsvps.length}</p>
+                        <p className="text-[10px] mt-0.5 text-slate-400 font-medium">{totalPeople} pessoa(s)</p>
                     </div>
 
-                    {/* Card 2: Adesão (RSVP) */}
-                    <div className="flex-shrink-0 w-[55vw] md:w-auto bg-white rounded-2xl p-4 relative overflow-hidden border shadow-sm" style={{ borderColor: '#e5e0d8' }}>
+                    {/* Card 2: Colação */}
+                    <div className="bg-white rounded-2xl p-4 relative overflow-hidden border shadow-sm" style={{ borderColor: '#e5e0d8' }}>
                         <div className="absolute top-0 right-0 w-16 h-16 rounded-full -translate-y-1/3 translate-x-1/3 opacity-10" style={{ background: '#3b82f6' }} />
                         <div className="flex items-center gap-2 mb-2">
                             <div className="w-8 h-8 rounded-xl flex items-center justify-center bg-blue-50">
-                                <TrendingUp className="w-4 h-4 text-blue-600" />
+                                <GraduationCap className="w-4 h-4 text-blue-600" />
                             </div>
-                            <span className="text-[10px] font-bold uppercase tracking-wider" style={{ color: gold }}>Adesão (RSVP)</span>
+                            <span className="text-[10px] font-bold uppercase tracking-wider" style={{ color: gold }}>Colação</span>
                         </div>
-                        <p className="text-2xl font-heading text-blue-600">{formatPrice(totalRsvpsPaidValue)}</p>
-                        <p className="text-xs mt-0.5 text-slate-400 font-medium">Pendente: {formatPrice(totalRsvpsPendingValue)}</p>
+                        <p className="text-xl font-heading text-blue-600">{formatPrice(totalColacaoPaid)}</p>
+                        <p className="text-[10px] mt-0.5 text-slate-400 font-medium truncate">Pendente: {formatPrice(totalColacaoPending)}</p>
                     </div>
 
-                    {/* Card 3: Presentes */}
-                    <div className="flex-shrink-0 w-[55vw] md:w-auto bg-white rounded-2xl p-4 relative overflow-hidden border shadow-sm" style={{ borderColor: '#e5e0d8' }}>
+                    {/* Card 3: Janta */}
+                    <div className="bg-white rounded-2xl p-4 relative overflow-hidden border shadow-sm" style={{ borderColor: '#e5e0d8' }}>
+                        <div className="absolute top-0 right-0 w-16 h-16 rounded-full -translate-y-1/3 translate-x-1/3 opacity-10" style={{ background: '#f97316' }} />
+                        <div className="flex items-center gap-2 mb-2">
+                            <div className="w-8 h-8 rounded-xl flex items-center justify-center bg-orange-50">
+                                <UtensilsCrossed className="w-4 h-4 text-orange-600" />
+                            </div>
+                            <span className="text-[10px] font-bold uppercase tracking-wider" style={{ color: gold }}>Janta</span>
+                        </div>
+                        <p className="text-xl font-heading text-orange-600">{formatPrice(totalJantarPaid)}</p>
+                        <p className="text-[10px] mt-0.5 text-slate-400 font-medium truncate">Pendente: {formatPrice(totalJantarPending)}</p>
+                    </div>
+
+                    {/* Card 4: Recebidos */}
+                    <div className="bg-white rounded-2xl p-4 relative overflow-hidden border shadow-sm" style={{ borderColor: '#e5e0d8' }}>
                         <div className="absolute top-0 right-0 w-16 h-16 rounded-full -translate-y-1/3 translate-x-1/3 opacity-10" style={{ background: '#10b981' }} />
                         <div className="flex items-center gap-2 mb-2">
                             <div className="w-8 h-8 rounded-xl flex items-center justify-center bg-emerald-50">
-                                <Gift className="w-4 h-4 text-emerald-600" />
+                                <TrendingUp className="w-4 h-4 text-emerald-600" />
+                            </div>
+                            <span className="text-[10px] font-bold uppercase tracking-wider" style={{ color: gold }}>Recebidos</span>
+                        </div>
+                        <p className="text-xl font-heading text-emerald-600">{formatPrice(totalRsvpsPaidValue)}</p>
+                        <p className="text-[10px] mt-0.5 text-slate-400 font-medium truncate">Pendente: {formatPrice(totalRsvpsPendingValue)}</p>
+                    </div>
+
+                    {/* Card 5: Presentes */}
+                    <div className="bg-white rounded-2xl p-4 relative overflow-hidden border shadow-sm" style={{ borderColor: '#e5e0d8' }}>
+                        <div className="absolute top-0 right-0 w-16 h-16 rounded-full -translate-y-1/3 translate-x-1/3 opacity-10" style={{ background: '#a855f7' }} />
+                        <div className="flex items-center gap-2 mb-2">
+                            <div className="w-8 h-8 rounded-xl flex items-center justify-center bg-purple-50">
+                                <Gift className="w-4 h-4 text-purple-600" />
                             </div>
                             <span className="text-[10px] font-bold uppercase tracking-wider" style={{ color: gold }}>Presentes</span>
                         </div>
-                        <p className="text-2xl font-heading text-emerald-600">{formatPrice(totalGiftPaidValue)}</p>
-                        <p className="text-xs mt-0.5 text-slate-400 font-medium">Pendente: {formatPrice(totalGiftPendingValue)}</p>
+                        <p className="text-xl font-heading text-purple-600">{formatPrice(totalGiftPaidValue)}</p>
+                        <p className="text-[10px] mt-0.5 text-slate-400 font-medium truncate">Pendente: {formatPrice(totalGiftPendingValue)}</p>
                     </div>
 
-                    {/* Card 4: Arrecadação Geral */}
-                    <div className="flex-shrink-0 w-[55vw] md:w-auto rounded-2xl p-4 relative overflow-hidden border shadow-sm text-white" style={{ background: green, borderColor: greenMid }}>
+                    {/* Card 6: Total Geral */}
+                    <div className="rounded-2xl p-4 relative overflow-hidden border shadow-sm text-white" style={{ background: green, borderColor: greenMid }}>
                         <div className="absolute top-0 right-0 w-16 h-16 rounded-full -translate-y-1/3 translate-x-1/3 opacity-20" style={{ background: gold }} />
                         <div className="flex items-center gap-2 mb-2">
                             <div className="w-8 h-8 rounded-xl flex items-center justify-center" style={{ background: 'rgba(255,255,255,0.15)' }}>
                                 <Sparkles className="w-4 h-4 text-white" />
                             </div>
-                            <span className="text-[10px] font-bold uppercase tracking-wider" style={{ color: goldLight }}>Total Geral Pago</span>
+                            <span className="text-[10px] font-bold uppercase tracking-wider" style={{ color: goldLight }}>Total Geral</span>
                         </div>
-                        <p className="text-2xl font-heading text-white">{formatPrice(totalPaidRevenue)}</p>
-                        <p className="text-xs mt-0.5" style={{ color: 'rgba(255,255,255,0.6)' }}>Soma das adesões + presentes</p>
+                        <p className="text-xl font-heading text-white">{formatPrice(totalPaidRevenue)}</p>
+                        <p className="text-[10px] mt-0.5" style={{ color: 'rgba(255,255,255,0.6)' }}>Adesões + Presentes</p>
                     </div>
                 </div>
 
@@ -570,7 +612,7 @@ export default function Admin() {
                                                         </div>
                                                     </div>
                                                     <div className="text-right flex-shrink-0">
-                                                        <p className="text-sm font-bold" style={{ color: rsvp.email === 'paid' ? '#10b981' : greenMid }}>{formatPrice(getRsvpValue(rsvp))}</p>
+                                                        <p className="text-sm font-bold" style={{ color: rsvp.email === 'paid' ? '#10b981' : greenMid }}>{formatPrice(getColacaoValue(rsvp) + getJantarValue(rsvp))}</p>
                                                         <ChevronRight className={`w-4 h-4 transition-transform mt-1 ml-auto ${isExpanded ? 'rotate-90' : ''}`} style={{ color: goldLight }} />
                                                     </div>
                                                 </button>
