@@ -108,7 +108,7 @@ export function CeremonySection() {
                     <span className="text-xs font-medium text-secondary">Endereço</span>
                   </div>
                   <p className="text-xs text-center leading-relaxed">
-                    Av. Cônego João Lima, s/n — Setor São João<br />
+                    Alameda das Mansões, 450 — Setor Park Primavera<br />
                     Araguaína – TO
                   </p>
                 </div>
@@ -120,14 +120,14 @@ export function CeremonySection() {
                   * Acima de 5 anos, criança precisa de cadeira individual e paga convite.
                 </p>
                 <div className="flex flex-col sm:flex-row justify-center gap-3">
-                  <a href="https://www.google.com/maps/search/Veredas+do+Lago+Araguai%C3%ABna+TO" target="_blank" rel="noopener noreferrer">
+                  <a href="https://www.google.com/maps/search/?api=1&query=Veredas+do+Lago+Eventos+Aragua%C3%ADna+TO" target="_blank" rel="noopener noreferrer">
                     <Button variant="outline" className="border-secondary text-primary hover:bg-secondary/10 w-full sm:w-auto text-xs">
-                      <MapPin className="w-3 h-3 mr-1" /> Maps
+                      <MapPin className="w-3.5 h-3.5 mr-1 shrink-0" /> Maps
                     </Button>
                   </a>
                   <a href="https://waze.com/ul?q=Veredas%20do%20Lago%20Aragua%C3%ADna%20TO" target="_blank" rel="noopener noreferrer">
                     <Button variant="outline" className="border-secondary text-primary hover:bg-secondary/10 w-full sm:w-auto text-xs">
-                      <MapPin className="w-3 h-3 mr-1" /> Waze
+                      <MapPin className="w-3.5 h-3.5 mr-1 shrink-0" /> Waze
                     </Button>
                   </a>
                 </div>
