@@ -7,10 +7,10 @@ export function CelebrationSection() {
     <section id="celebration" className="py-24 bg-primary text-white relative overflow-hidden">
       {/* Decorative Elements */}
       <div className="absolute top-0 left-0 w-full h-full overflow-hidden opacity-10 pointer-events-none">
-        <div className="absolute top-10 left-10 w-32 h-32 rounded-full border-2 border-secondary" />
-        <div className="absolute bottom-20 right-20 w-64 h-64 rounded-full border border-secondary" />
-        <div className="absolute top-1/2 left-1/3 w-4 h-4 bg-secondary rounded-full" />
-        <div className="absolute top-1/4 right-1/4 w-2 h-2 bg-secondary rounded-full" />
+        <div className="absolute top-10 left-10 w-32 h-32 rounded-full border-2 border-white/20" />
+        <div className="absolute bottom-20 right-20 w-64 h-64 rounded-full border border-white/10" />
+        <div className="absolute top-1/2 left-1/3 w-4 h-4 bg-white/20 rounded-full" />
+        <div className="absolute top-1/4 right-1/4 w-2 h-2 bg-white/10 rounded-full" />
       </div>
 
       <div className="container mx-auto px-4 relative z-10">
@@ -23,7 +23,7 @@ export function CelebrationSection() {
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
           >
-            <p className="font-body text-secondary uppercase tracking-[0.3em] text-xs font-semibold mb-4">
+            <p className="font-body text-white/80 uppercase tracking-[0.3em] text-xs font-semibold mb-4">
               A Festa Continua
             </p>
             <h2 className="font-script text-5xl md:text-7xl mb-8">
@@ -62,7 +62,7 @@ export function CelebrationSection() {
 
             <Button 
               size="lg" 
-              className="bg-secondary text-primary font-bold hover:bg-white hover:text-primary transition-colors text-lg px-8 py-6 rounded-full"
+              className="bg-white text-primary font-bold hover:bg-white/90 transition-colors text-lg px-8 py-6 rounded-full"
             >
               Informações sobre Convites
             </Button>
@@ -85,7 +85,7 @@ export function CelebrationSection() {
               />
             </div>
             {/* Backdrop Elements */}
-            <div className="absolute inset-0 bg-secondary/20 transform -rotate-6 rounded-2xl -z-10 scale-105 blur-sm" />
+            <div className="absolute inset-0 bg-white/10 transform -rotate-6 rounded-2xl -z-10 scale-105 blur-sm" />
           </motion.div>
 
         </div>

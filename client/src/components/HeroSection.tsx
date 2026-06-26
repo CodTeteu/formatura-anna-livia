@@ -91,7 +91,7 @@ export function HeroSection() {
 
       {/* Name and Course - Top */}
       <motion.div
-        className="absolute top-[25%] md:top-[20%] left-1/2 -translate-x-1/2 z-10 text-center px-4 w-full max-w-4xl"
+        className="absolute top-[45%] md:top-[20%] left-1/2 -translate-x-1/2 z-10 text-center px-4 w-full max-w-4xl"
         style={{ opacity }}
       >
         <motion.h1
@@ -135,10 +135,9 @@ export function HeroSection() {
           animate={{ opacity: 1 }}
           transition={{ duration: 1, delay: 1.2 }}
           onClick={() => document.getElementById("rsvp")?.scrollIntoView({ behavior: "smooth" })}
-          className="group relative px-8 py-4 min-h-[48px] bg-secondary/90 overflow-hidden rounded-full transition-all hover:bg-secondary"
+          className="group relative px-8 py-4 min-h-[48px] bg-white/10 backdrop-blur-md overflow-hidden rounded-full transition-all hover:bg-white/20 border border-white/30 active:scale-[0.98]"
         >
-          <span className="absolute inset-0 border border-secondary/60 rounded-full" />
-          <span className="relative text-white font-medium tracking-widest uppercase text-sm group-hover:text-secondary transition-colors">
+          <span className="relative text-white font-medium tracking-widest uppercase text-sm transition-colors">
             Confirmar Presença
           </span>
         </motion.button>

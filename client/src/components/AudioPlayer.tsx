@@ -7,11 +7,13 @@ interface AudioPlayerProps {
   isMobileMenuOpen?: boolean;
 }
 
-const MUSIC_URL = "/assets/graduation-song.mp3";
+const MUSIC_URL = "/assets/graduation-song.mp4";
 
 // Single audio instance shared across all mounts of AudioPlayer
 let sharedAudio: HTMLAudioElement | null = null;
 const listeners = new Set<(isPlaying: boolean) => void>();
+
+let started = false;
 
 const getSharedAudio = () => {
   if (typeof window === "undefined") return null;
@@ -27,6 +29,10 @@ const getSharedAudio = () => {
 
     // Sync state if audio plays or pauses
     sharedAudio.addEventListener("play", () => {
+      if (!started && sharedAudio) {
+        sharedAudio.currentTime = 20;
+        started = true;
+      }
       listeners.forEach(listener => listener(true));
     });
     sharedAudio.addEventListener("pause", () => {

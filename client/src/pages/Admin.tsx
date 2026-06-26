@@ -194,6 +194,12 @@ export default function Admin() {
         toast({ title: "Confirmação removida" });
     };
 
+    const updateRsvpStatus = async (id: string, status: string) => {
+        await supabase.from('rsvp_submissions').update({ email: status }).eq('id', id);
+        setRsvps(prev => prev.map(r => r.id === id ? { ...r, email: status } : r));
+        toast({ title: status === 'paid' ? "✅ Marcado como Pago" : "⏳ Marcado como Pendente" });
+    };
+
     const exportRsvpCSV = () => {
         const headers = ["Nome", "Telefone", "Eventos", "Acompanhantes", "Mensagem", "Data"];
         const rows = rsvps.map(r => [
@@ -271,9 +277,29 @@ export default function Admin() {
 
     // Derived stats
     const totalPeople = rsvps.reduce((acc, r) => acc + (r.guest_count || 0) + 1, 0);
+
+    const getRsvpValue = (r: any) => {
+        const count = (r.guest_count || 0) + 1;
+        if (r.attendance === 'colacao') return count * 60;
+        if (r.attendance === 'jantar') return count * 70;
+        if (r.attendance === 'ambos') return count * 130;
+        return 0;
+    };
+
+    const totalRsvpsPaidValue = rsvps
+        .filter(r => r.email === 'paid')
+        .reduce((acc, r) => acc + getRsvpValue(r), 0);
+
+    const totalRsvpsPendingValue = rsvps
+        .filter(r => r.email !== 'paid')
+        .reduce((acc, r) => acc + getRsvpValue(r), 0);
+
     const paidGifts = giftSelections.filter(g => g.payment_status === 'paid');
     const pendingGifts = giftSelections.filter(g => g.payment_status !== 'paid');
-    const totalGiftValue = paidGifts.reduce((acc, g) => acc + (g.total_value || 0), 0);
+    const totalGiftPaidValue = paidGifts.reduce((acc, g) => acc + (g.total_value || 0), 0);
+    const totalGiftPendingValue = pendingGifts.reduce((acc, g) => acc + (g.total_value || 0), 0);
+
+    const totalPaidRevenue = totalRsvpsPaidValue + totalGiftPaidValue;
 
     // Filtered Data
     const filteredRsvps = rsvps.filter(r => {
@@ -357,43 +383,43 @@ export default function Admin() {
                         <p className="text-xs mt-0.5" style={{ color: goldLight }}>{totalPeople} pessoa(s) no total</p>
                     </div>
 
-                    {/* Card 2: Presentes recebidos */}
+                    {/* Card 2: Adesão (RSVP) */}
+                    <div className="flex-shrink-0 w-[55vw] md:w-auto bg-white rounded-2xl p-4 relative overflow-hidden border shadow-sm" style={{ borderColor: '#e5e0d8' }}>
+                        <div className="absolute top-0 right-0 w-16 h-16 rounded-full -translate-y-1/3 translate-x-1/3 opacity-10" style={{ background: '#3b82f6' }} />
+                        <div className="flex items-center gap-2 mb-2">
+                            <div className="w-8 h-8 rounded-xl flex items-center justify-center bg-blue-50">
+                                <TrendingUp className="w-4 h-4 text-blue-600" />
+                            </div>
+                            <span className="text-[10px] font-bold uppercase tracking-wider" style={{ color: gold }}>Adesão (RSVP)</span>
+                        </div>
+                        <p className="text-2xl font-heading text-blue-600">{formatPrice(totalRsvpsPaidValue)}</p>
+                        <p className="text-xs mt-0.5 text-slate-400 font-medium">Pendente: {formatPrice(totalRsvpsPendingValue)}</p>
+                    </div>
+
+                    {/* Card 3: Presentes */}
                     <div className="flex-shrink-0 w-[55vw] md:w-auto bg-white rounded-2xl p-4 relative overflow-hidden border shadow-sm" style={{ borderColor: '#e5e0d8' }}>
                         <div className="absolute top-0 right-0 w-16 h-16 rounded-full -translate-y-1/3 translate-x-1/3 opacity-10" style={{ background: '#10b981' }} />
                         <div className="flex items-center gap-2 mb-2">
                             <div className="w-8 h-8 rounded-xl flex items-center justify-center bg-emerald-50">
                                 <Gift className="w-4 h-4 text-emerald-600" />
                             </div>
-                            <span className="text-[10px] font-bold uppercase tracking-wider" style={{ color: gold }}>Pagos</span>
+                            <span className="text-[10px] font-bold uppercase tracking-wider" style={{ color: gold }}>Presentes</span>
                         </div>
-                        <p className="text-3xl font-heading text-emerald-600">{paidGifts.length}</p>
-                        <p className="text-xs mt-0.5" style={{ color: goldLight }}>{pendingGifts.length} aguardando</p>
+                        <p className="text-2xl font-heading text-emerald-600">{formatPrice(totalGiftPaidValue)}</p>
+                        <p className="text-xs mt-0.5 text-slate-400 font-medium">Pendente: {formatPrice(totalGiftPendingValue)}</p>
                     </div>
 
-                    {/* Card 3: Valor recebido */}
-                    <div className="flex-shrink-0 w-[55vw] md:w-auto bg-white rounded-2xl p-4 relative overflow-hidden border shadow-sm" style={{ borderColor: '#e5e0d8' }}>
-                        <div className="absolute top-0 right-0 w-16 h-16 rounded-full -translate-y-1/3 translate-x-1/3 opacity-10" style={{ background: gold }} />
-                        <div className="flex items-center gap-2 mb-2">
-                            <div className="w-8 h-8 rounded-xl flex items-center justify-center" style={{ background: `${gold}20` }}>
-                                <TrendingUp className="w-4 h-4" style={{ color: gold }} />
-                            </div>
-                            <span className="text-[10px] font-bold uppercase tracking-wider" style={{ color: gold }}>Recebido</span>
-                        </div>
-                        <p className="text-2xl font-heading" style={{ color: green }}>{formatPrice(totalGiftValue)}</p>
-                        <p className="text-xs mt-0.5" style={{ color: goldLight }}>via PIX confirmado</p>
-                    </div>
-
-                    {/* Card 4: Itens na lista */}
+                    {/* Card 4: Arrecadação Geral */}
                     <div className="flex-shrink-0 w-[55vw] md:w-auto rounded-2xl p-4 relative overflow-hidden border shadow-sm text-white" style={{ background: green, borderColor: greenMid }}>
                         <div className="absolute top-0 right-0 w-16 h-16 rounded-full -translate-y-1/3 translate-x-1/3 opacity-20" style={{ background: gold }} />
                         <div className="flex items-center gap-2 mb-2">
                             <div className="w-8 h-8 rounded-xl flex items-center justify-center" style={{ background: 'rgba(255,255,255,0.15)' }}>
-                                <Package className="w-4 h-4 text-white" />
+                                <Sparkles className="w-4 h-4 text-white" />
                             </div>
-                            <span className="text-[10px] font-bold uppercase tracking-wider" style={{ color: goldLight }}>Lista de Presentes</span>
+                            <span className="text-[10px] font-bold uppercase tracking-wider" style={{ color: goldLight }}>Total Geral Pago</span>
                         </div>
-                        <p className="text-3xl font-heading text-white">{giftItems.length}</p>
-                        <p className="text-xs mt-0.5" style={{ color: 'rgba(255,255,255,0.5)' }}>itens cadastrados</p>
+                        <p className="text-2xl font-heading text-white">{formatPrice(totalPaidRevenue)}</p>
+                        <p className="text-xs mt-0.5" style={{ color: 'rgba(255,255,255,0.6)' }}>Soma das adesões + presentes</p>
                     </div>
                 </div>
 
@@ -508,21 +534,26 @@ export default function Admin() {
                                             : { bg: 'bg-gray-50', text: 'text-gray-600', label: rsvp.attendance };
 
                                         return (
-                                            <div key={rsvp.id} className="bg-white rounded-2xl border shadow-sm overflow-hidden transition-all" style={{ borderColor: '#e5e0d8' }}>
+                                            <div key={rsvp.id} className="bg-white rounded-2xl border shadow-sm overflow-hidden transition-all" style={{ borderColor: rsvp.email === 'paid' ? '#10b981' : '#e5e0d8', borderWidth: rsvp.email === 'paid' ? '1.5px' : '1px' }}>
                                                 <button
                                                     onClick={() => setExpandedRsvpId(isExpanded ? null : rsvp.id)}
                                                     className="w-full p-4 flex items-center gap-3 text-left"
                                                 >
                                                     {/* Avatar */}
-                                                    <div className="w-11 h-11 rounded-2xl flex items-center justify-center flex-shrink-0 shadow-sm" style={{ background: green }}>
-                                                        <span className="font-heading text-base" style={{ color: gold }}>{rsvp.name?.charAt(0).toUpperCase()}</span>
+                                                    <div className="w-11 h-11 rounded-2xl flex items-center justify-center flex-shrink-0 shadow-sm" style={{ background: rsvp.email === 'paid' ? '#10b981' : green }}>
+                                                        <span className="font-heading text-base" style={{ color: rsvp.email === 'paid' ? 'white' : gold }}>{rsvp.name?.charAt(0).toUpperCase()}</span>
                                                     </div>
                                                     <div className="flex-1 min-w-0">
                                                         <div className="flex items-center justify-between gap-2">
                                                             <h3 className="font-bold text-sm truncate" style={{ color: green }}>{rsvp.name}</h3>
-                                                            <span className={`inline-flex items-center px-2 py-0.5 rounded-lg text-[9px] font-bold uppercase flex-shrink-0 ${attendanceBadge.bg} ${attendanceBadge.text}`}>
-                                                                {attendanceBadge.label}
-                                                            </span>
+                                                            <div className="flex items-center gap-1.5 flex-shrink-0">
+                                                                <span className={`inline-flex items-center px-2 py-0.5 rounded-lg text-[9px] font-bold uppercase ${attendanceBadge.bg} ${attendanceBadge.text}`}>
+                                                                    {attendanceBadge.label}
+                                                                </span>
+                                                                <span className={`inline-flex items-center px-2 py-0.5 rounded-lg text-[9px] font-bold uppercase ${rsvp.email === 'paid' ? 'bg-emerald-50 text-emerald-700' : 'bg-amber-50 text-amber-600'}`}>
+                                                                    {rsvp.email === 'paid' ? 'Pago' : 'Pendente'}
+                                                                </span>
+                                                            </div>
                                                         </div>
                                                         <div className="flex items-center gap-3 mt-1 flex-wrap">
                                                             <span className="text-[11px] flex items-center gap-1" style={{ color: goldLight }}>
@@ -538,7 +569,10 @@ export default function Admin() {
                                                             )}
                                                         </div>
                                                     </div>
-                                                    <ChevronRight className={`w-4 h-4 transition-transform flex-shrink-0 ${isExpanded ? 'rotate-90' : ''}`} style={{ color: goldLight }} />
+                                                    <div className="text-right flex-shrink-0">
+                                                        <p className="text-sm font-bold" style={{ color: rsvp.email === 'paid' ? '#10b981' : greenMid }}>{formatPrice(getRsvpValue(rsvp))}</p>
+                                                        <ChevronRight className={`w-4 h-4 transition-transform mt-1 ml-auto ${isExpanded ? 'rotate-90' : ''}`} style={{ color: goldLight }} />
+                                                    </div>
                                                 </button>
 
                                                 {isExpanded && (
@@ -559,6 +593,30 @@ export default function Admin() {
                                                                 <p className="text-xs italic" style={{ color: greenMid }}>"{rsvp.message}"</p>
                                                             </div>
                                                         )}
+
+                                                        {/* Status Manual do RSVP */}
+                                                        <div className="rounded-xl p-3 border" style={{ borderColor: '#e5e0d8', background: 'white' }}>
+                                                            <p className="text-[10px] font-bold uppercase tracking-wider mb-3" style={{ color: gold }}>Status do Pagamento (Adesão)</p>
+                                                            <div className="flex gap-2">
+                                                                <button
+                                                                    onClick={() => updateRsvpStatus(rsvp.id, 'paid')}
+                                                                    className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl text-xs font-bold border-2 transition-all active:scale-[0.97] ${rsvp.email === 'paid' ? 'text-white' : 'border-emerald-200 text-emerald-700 bg-emerald-50'}`}
+                                                                    style={rsvp.email === 'paid' ? { background: '#10b981', borderColor: '#10b981' } : {}}
+                                                                >
+                                                                    <CheckCircle2 className="w-4 h-4" />
+                                                                    Pago ✅
+                                                                </button>
+                                                                <button
+                                                                    onClick={() => updateRsvpStatus(rsvp.id, 'pending')}
+                                                                    className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl text-xs font-bold border-2 transition-all active:scale-[0.97] ${rsvp.email !== 'paid' ? 'text-white' : 'border-amber-200 text-amber-600 bg-amber-50'}`}
+                                                                    style={rsvp.email !== 'paid' ? { background: '#f59e0b', borderColor: '#f59e0b' } : {}}
+                                                                >
+                                                                    <Clock className="w-4 h-4" />
+                                                                    Pendente ⏳
+                                                                </button>
+                                                            </div>
+                                                        </div>
+
                                                         <div className="flex justify-end">
                                                             <button
                                                                 onClick={() => deleteRsvp(rsvp.id)}

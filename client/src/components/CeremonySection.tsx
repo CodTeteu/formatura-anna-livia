@@ -91,8 +91,8 @@ export function CeremonySection() {
                   alt="Veredas do Lago"
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-6">
-                  <h3 className="text-white font-script text-3xl">Veredas do Lago</h3>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end justify-center pb-6">
+                  <h3 className="text-white font-script text-3xl text-center">Veredas do Lago</h3>
                 </div>
               </div>
               <CardContent className="p-6 text-center bg-card">
@@ -102,9 +102,12 @@ export function CeremonySection() {
                   <span className="text-sm">Início às 19:30</span>
                 </div>
                 {/* Endereço por escrito */}
-                <div className="flex items-start justify-center gap-2 text-muted-foreground mb-3">
-                  <MapPin className="w-3.5 h-3.5 text-secondary mt-0.5 shrink-0" />
-                  <p className="text-xs text-left leading-relaxed">
+                <div className="flex flex-col items-center justify-center gap-1 text-muted-foreground mb-3">
+                  <div className="flex items-center gap-1.5 justify-center">
+                    <MapPin className="w-3.5 h-3.5 text-secondary shrink-0" />
+                    <span className="text-xs font-medium text-secondary">Endereço</span>
+                  </div>
+                  <p className="text-xs text-center leading-relaxed">
                     Av. Cônego João Lima, s/n — Setor São João<br />
                     Araguaína – TO
                   </p>
@@ -146,8 +149,8 @@ export function CeremonySection() {
                   alt="Restaurante Mirante"
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-6">
-                  <h3 className="text-white font-script text-3xl">Mirante</h3>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end justify-center pb-6">
+                  <h3 className="text-white font-script text-3xl text-center">Mirante</h3>
                 </div>
               </div>
               <CardContent className="p-6 text-center bg-card">
@@ -157,9 +160,12 @@ export function CeremonySection() {
                   <span className="text-sm">22:00 Horas</span>
                 </div>
                 {/* Endereço por escrito */}
-                <div className="flex items-start justify-center gap-2 text-muted-foreground mb-3">
-                  <MapPin className="w-3.5 h-3.5 text-secondary mt-0.5 shrink-0" />
-                  <p className="text-xs text-left leading-relaxed">
+                <div className="flex flex-col items-center justify-center gap-1 text-muted-foreground mb-3">
+                  <div className="flex items-center gap-1.5 justify-center">
+                    <MapPin className="w-3.5 h-3.5 text-secondary shrink-0" />
+                    <span className="text-xs font-medium text-secondary">Endereço</span>
+                  </div>
+                  <p className="text-xs text-center leading-relaxed">
                     Av. Filadélfia, 2750 — Setor Central<br />
                     Araguaína – TO
                   </p>

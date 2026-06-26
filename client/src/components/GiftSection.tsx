@@ -83,7 +83,7 @@ export function GiftSection() {
                             <motion.div
                                 whileHover={{ scale: 1.02 }}
                                 whileTap={{ scale: 0.95 }}
-                                className="group relative flex items-center justify-center px-8 py-4 overflow-hidden font-medium transition duration-300 ease-out border border-transparent rounded-full shadow-lg bg-secondary hover:bg-secondary/90 cursor-pointer w-full sm:w-auto min-w-[220px]"
+                                className="group relative flex items-center justify-center px-8 py-4 overflow-hidden font-medium transition duration-300 ease-out border border-transparent rounded-full shadow-lg bg-white hover:bg-white/90 cursor-pointer w-full sm:w-auto min-w-[220px]"
                             >
                                 <span className="flex items-center gap-2 uppercase tracking-widest text-xs font-bold text-primary">
                                     <ShoppingBag className="w-5 h-5" /> Escolher Presentes
@@ -95,7 +95,7 @@ export function GiftSection() {
                             whileHover={{ scale: 1.02 }}
                             whileTap={{ scale: 0.95 }}
                             onClick={() => setShowPixModal(true)}
-                            className="group relative flex items-center justify-center px-8 py-4 overflow-hidden font-medium transition duration-300 ease-out border-2 border-secondary rounded-full shadow-lg bg-transparent hover:bg-secondary hover:text-primary cursor-pointer w-full sm:w-auto min-w-[220px] text-secondary"
+                            className="group relative flex items-center justify-center px-8 py-4 overflow-hidden font-medium transition duration-300 ease-out border-2 border-white rounded-full shadow-lg bg-transparent hover:bg-white hover:text-primary cursor-pointer w-full sm:w-auto min-w-[220px] text-white"
                         >
                             <span className="flex items-center gap-2 uppercase tracking-widest text-xs font-bold">
                                 <Gift className="w-5 h-5" /> Presentear com Pix
@@ -130,14 +130,14 @@ export function GiftSection() {
                         </button>
 
                         {/* Decorative top border */}
-                        <div className="h-2 bg-gradient-to-r from-secondary to-secondary/40"></div>
+                        <div className="h-2 bg-gradient-to-r from-white to-white/40"></div>
 
                         {/* Content */}
                         <div className="p-6 md:p-8">
                             {/* Icon & Title */}
                             <div className="text-center mb-6">
-                                <div className="w-16 h-16 bg-secondary/15 rounded-full flex items-center justify-center mx-auto mb-4">
-                                    <Heart className="w-8 h-8 text-secondary" />
+                                <div className="w-16 h-16 bg-white/15 rounded-full flex items-center justify-center mx-auto mb-4">
+                                    <Heart className="w-8 h-8 text-white" />
                                 </div>
                                 <h3 className="text-2xl font-heading text-white font-bold mb-2">Obrigado por me presentear!</h3>
                                 <p className="text-white/60 text-sm">
@@ -157,13 +157,13 @@ export function GiftSection() {
                                 {/* PIX Key Copyable */}
                                 <div className="w-full">
                                     <div
-                                        className="bg-white/5 p-4 rounded-xl border border-white/10 flex items-center justify-between group cursor-pointer hover:border-secondary transition-colors"
+                                        className="bg-white/5 p-4 rounded-xl border border-white/10 flex items-center justify-between group cursor-pointer hover:border-white transition-colors"
                                         onClick={handleCopyPix}
                                     >
                                         <span className="font-mono text-sm text-white truncate px-2 select-all font-bold">
                                             {PIX_KEY}
                                         </span>
-                                        <button className="text-secondary group-hover:scale-110 transition-transform">
+                                        <button className="text-white group-hover:scale-110 transition-transform">
                                             {copied ? <Check className="w-5 h-5" /> : <Copy className="w-5 h-5" />}
                                         </button>
                                     </div>
@@ -171,7 +171,7 @@ export function GiftSection() {
 
                                 <button
                                     onClick={handleCopyPix}
-                                    className="w-full bg-secondary hover:bg-secondary/90 text-primary py-3 rounded-lg text-sm font-bold uppercase tracking-widest transition-colors shadow-md flex items-center justify-center gap-2 cursor-pointer"
+                                    className="w-full bg-white hover:bg-white/90 text-primary py-3 rounded-lg text-sm font-bold uppercase tracking-widest transition-colors shadow-md flex items-center justify-center gap-2 cursor-pointer"
                                 >
                                     {copied ? (
                                         <>
