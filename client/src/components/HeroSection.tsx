@@ -100,9 +100,8 @@ export function HeroSection() {
           transition={{ duration: 1, delay: 0.4 }}
           className="w-full"
         >
-          <h1 className="font-script text-6xl text-white drop-shadow-xl leading-[0.9]">
-            <span className="block">Anna Lívia</span>
-            <span className="block">Carvalho</span>
+          <h1 className="w-full whitespace-nowrap px-2 font-script text-[clamp(2.1rem,10.5vw,3rem)] text-white drop-shadow-xl leading-none">
+            Anna Lívia Carvalho
           </h1>
 
           <p className="mt-3 text-white/90 text-base font-heading tracking-[0.26em] uppercase">
