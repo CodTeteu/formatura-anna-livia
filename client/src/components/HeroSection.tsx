@@ -98,9 +98,10 @@ export function HeroSection() {
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 1, delay: 0.4 }}
-          className="font-script text-6xl md:text-8xl lg:text-9xl text-white mb-4 drop-shadow-xl whitespace-nowrap"
+          className="font-script text-6xl md:text-8xl lg:text-9xl text-white mb-4 drop-shadow-xl leading-[0.9] md:leading-none md:whitespace-nowrap"
         >
-          Anna Lívia Carvalho
+          <span className="block md:inline">Anna Lívia</span>
+          <span className="block md:inline md:ml-4">Carvalho</span>
         </motion.h1>
 
         <motion.p
