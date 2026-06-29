@@ -89,19 +89,63 @@ export function HeroSection() {
         <div className="absolute bottom-0 left-0 w-full h-[30%] bg-gradient-to-t from-background from-10% to-transparent z-0 pointer-events-none" />
       </motion.div>
 
-      {/* Name and Course - Top */}
+      {/* Mobile content: single stacked flow to avoid overlap between name, course, timer and button. */}
       <motion.div
-        className="absolute top-[45%] md:top-[20%] left-1/2 -translate-x-1/2 z-10 text-center px-4 w-full max-w-4xl"
+        className="absolute top-[39%] left-1/2 -translate-x-1/2 z-10 flex w-full max-w-[420px] flex-col items-center px-4 text-center md:hidden"
+        style={{ opacity }}
+      >
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 1, delay: 0.4 }}
+          className="w-full"
+        >
+          <h1 className="font-script text-6xl text-white drop-shadow-xl leading-[0.9]">
+            <span className="block">Anna Lívia</span>
+            <span className="block">Carvalho</span>
+          </h1>
+
+          <p className="mt-3 text-white/90 text-base font-heading tracking-[0.26em] uppercase">
+            Enfermagem
+          </p>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.8 }}
+          className="mt-5 flex flex-nowrap justify-center gap-0"
+        >
+          {timerComponents.length ? timerComponents : (
+            <span className="text-2xl text-white font-heading">O Grande Dia Chegou!</span>
+          )}
+        </motion.div>
+
+        <motion.button
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1, delay: 1.2 }}
+          onClick={() => document.getElementById("rsvp")?.scrollIntoView({ behavior: "smooth" })}
+          className="group relative mt-7 w-full max-w-[330px] px-8 py-4 min-h-[48px] bg-white/10 backdrop-blur-md overflow-hidden rounded-full transition-all hover:bg-white/20 border border-white/30 active:scale-[0.98]"
+        >
+          <span className="relative text-white font-medium tracking-widest uppercase text-sm transition-colors">
+            Confirmar Presença
+          </span>
+        </motion.button>
+      </motion.div>
+
+      {/* Desktop name and course */}
+      <motion.div
+        className="hidden md:block absolute top-[20%] left-1/2 -translate-x-1/2 z-10 text-center px-4 w-full max-w-4xl"
         style={{ opacity }}
       >
         <motion.h1
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 1, delay: 0.4 }}
-          className="font-script text-6xl md:text-8xl lg:text-9xl text-white mb-4 drop-shadow-xl leading-[0.9] md:leading-none md:whitespace-nowrap"
+          className="font-script text-8xl lg:text-9xl text-white mb-4 drop-shadow-xl leading-none whitespace-nowrap"
         >
-          <span className="block md:inline">Anna Lívia</span>
-          <span className="block md:inline md:ml-4">Carvalho</span>
+          Anna Lívia Carvalho
         </motion.h1>
 
         <motion.p
@@ -114,9 +158,9 @@ export function HeroSection() {
         </motion.p>
       </motion.div>
 
-      {/* Countdown and Button - Bottom */}
+      {/* Desktop countdown and button */}
       <motion.div
-        className="absolute bottom-[15%] md:bottom-[20%] left-1/2 -translate-x-1/2 z-10 text-center px-4 flex flex-col items-center w-full max-w-4xl"
+        className="hidden md:flex absolute bottom-[20%] left-1/2 -translate-x-1/2 z-10 text-center px-4 flex-col items-center w-full max-w-4xl"
         style={{ opacity }}
       >
         {/* Countdown */}
