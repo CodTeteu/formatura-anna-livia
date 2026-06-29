@@ -100,7 +100,7 @@ export function HeroSection() {
           transition={{ duration: 1, delay: 0.4 }}
           className="font-script text-6xl md:text-8xl lg:text-9xl text-white mb-4 drop-shadow-xl whitespace-nowrap"
         >
-          Anna Lívia
+          Anna Lívia Carvalho
         </motion.h1>
 
         <motion.p
