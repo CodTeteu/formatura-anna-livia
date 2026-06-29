@@ -15,7 +15,7 @@ export function GraduateSection() {
           Formatura
         </p>
         <h2 className="font-script text-5xl md:text-7xl text-primary mb-8">
-          Anna Lívia
+          Anna Lívia Carvalho
         </h2>
 
         <div className="prose prose-base md:prose-lg text-primary/80 mb-10 font-body leading-relaxed max-w-2xl mx-auto">
